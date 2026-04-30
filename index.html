@@ -1233,7 +1233,7 @@
                 showToast("Check your email for the verification code!", "success");
             } catch(err) {
                 showToast(err.message || "Failed to send OTP", 'error');
-                btn.innerHTML = 'Send Magic Link / OTP';
+                btn.innerHTML = 'Send OTP Code';
                 btn.disabled = false;
             }
         }
