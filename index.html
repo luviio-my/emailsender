@@ -1853,36 +1853,41 @@
                 }
             },
             
-            onRouteChange(viewId) {
-                // Trigger data loading based on view
-                switch(viewId) {
-                    case 'contacts':
-                        renderContactsTable();
-                        break;
-                    case 'settings':
-                        renderSettingsSenders();
-                        break;
-                    case 'marketing':
-                        renderMarketingHistory();
-                        break;
-                    case 'templates':
-                        renderTemplatesTable();
-                        break;
-                    case 'sent':
-                        loadSentEmails();
-                        break;
-                    case 'admin':
-                        loadAdminUsers();
-                        break;
-                    case 'dashboard':
-                        loadStats();
-                        loadRecentCampaigns();
-                        break;
-                }
-                
-                // Scroll to top smoothly
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            }
+onRouteChange(viewId) {
+    // Trigger data loading based on view
+    switch(viewId) {
+        case 'contacts':
+            renderContactsTable(); // Uses cacheContacts (already loaded)
+            break;
+        case 'settings':
+            renderSettingsSenders(); // Uses cacheSenders (already loaded)
+            break;
+        case 'marketing':
+            renderMarketingHistory(); // Fetches fresh data (intentional)
+            break;
+        case 'templates':
+            // Only reload if cache is empty (prevents double fetch)
+            if(cacheTemplates.length === 0) loadTemplatesTable();
+            else renderTemplatesTable(); // Just re-render from cache
+            break;
+        case 'sent':
+            if(cacheCampaigns.length === 0) loadSentEmails();
+            else loadSentEmails(); // This function already handles rendering from cache
+            break;
+        case 'admin':
+            loadAdminUsers();
+            break;
+        case 'dashboard':
+            // Dashboard stats are loaded once during initApp
+            // Only refresh if you want real-time updates:
+            // loadStats();
+            // loadRecentCampaigns();
+            break;
+    }
+    
+    // Scroll to top smoothly
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
         };
 
         // Check if user is SuperAdmin (people@luviio.com)
@@ -2083,76 +2088,93 @@ async function handleOTPAuth(e) {
         // APP INITIALIZATION
         // ==========================================
 
-        async function initApp(user) {
-            currentUser = user;
-            
-            document.getElementById('view-auth').classList.remove('active');
-            document.getElementById('app-container').style.display = 'block';
-            document.getElementById('app-footer').style.display = 'flex';
-            
-            // User Display
-            const initial = user.email.charAt(0).toUpperCase();
-            document.getElementById('user-avatar').innerText = initial;
-            document.getElementById('user-avatar').style.background = `linear-gradient(135deg, hsl(${Math.random()*360}, 70%, 50%), hsl(${Math.random()*360}, 70%, 40%))`;
-            
-            // Greeting
-            const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
-            document.getElementById('dashboard-greeting').innerHTML = `Hi, <strong>${escapeHtml(displayName)}</strong>! Welcome back to your infrastructure overview.`;
-            
-            // Check SuperAdmin Role - Only people@luviio.com gets admin access
-            if(isSuperAdmin()) {
-                document.getElementById('nav-admin').classList.remove('hidden');
-                document.getElementById('admin-indicator').classList.remove('hidden');
-                document.getElementById('user-role-badge').classList.remove('hidden');
-                loadAdminData();
-            } else {
-                // Ensure admin is hidden for non-superadmins
-                document.getElementById('nav-admin').classList.add('hidden');
-                document.getElementById('admin-indicator').classList.add('hidden');
-                document.getElementById('user-role-badge').classList.add('hidden');
+async function initApp(user) {
+    currentUser = null; // Reset first to prevent stale state
+    currentUser = user;
+    
+    // Hide auth, show app
+    document.getElementById('view-auth').classList.remove('active');
+    document.getElementById('app-container').style.display = 'block';
+    document.getElementById('app-footer').style.display = 'flex';
+    
+    // User Display
+    const initial = user.email.charAt(0).toUpperCase();
+    document.getElementById('user-avatar').innerText = initial;
+    document.getElementById('user-avatar').style.background = `linear-gradient(135deg, hsl(${Math.random()*360}, 70%, 50%), hsl(${Math.random()*360}, 70%, 40%))`;
+    
+    // Greeting
+    const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
+    document.getElementById('dashboard-greeting').innerHTML = `Hi, <strong>${escapeHtml(displayName)}</strong>! Welcome back to your infrastructure overview.`;
+    
+    // Check SuperAdmin Role
+    if(isSuperAdmin()) {
+        document.getElementById('nav-admin').classList.remove('hidden');
+        document.getElementById('admin-indicator').classList.remove('hidden');
+        document.getElementById('user-role-badge').classList.remove('hidden');
+        loadAdminData();
+    } else {
+        document.getElementById('nav-admin').classList.add('hidden');
+        document.getElementById('admin-indicator').classList.add('hidden');
+        document.getElementById('user-role-badge').classList.add('hidden');
+    }
+    
+    // Initialize Quill Editor (only once)
+    if (!quillEditor) {
+        quillEditor = new Quill('#editor-quill', {
+            theme: 'snow',
+            placeholder: 'Compose your message...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link'],
+                    ['clean']
+                ]
             }
-            
-            if (!quillEditor) {
-                quillEditor = new Quill('#editor-quill', {
-                    theme: 'snow',
-                    placeholder: 'Compose your message...',
-                    modules: {
-                        toolbar: [
-                            [{ 'header': [1, 2, false] }],
-                            ['bold', 'italic', 'underline', 'strike'],
-                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                            ['link'],
-                            ['clean']
-                        ]
-                    }
-                });
+        });
 
-                // Listen for text changes to update checklist
-                quillEditor.on('text-change', updateChecklist);
-                
-                // Attach listeners for mail page inputs
-                ['mail-subject', 'mail-to', 'mail-sender-email'].forEach(id => {
-                    const el = document.getElementById(id);
-                    if(el) el.addEventListener('input', updateChecklist);
-                });
-            }
+        quillEditor.on('text-change', updateChecklist);
+        
+        // Attach listeners for mail page inputs
+        ['mail-subject', 'mail-to', 'mail-sender-email'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.addEventListener('input', updateChecklist);
+        });
+    }
 
-            await Promise.allSettled([
-                loadSenders(),
-                loadContacts(),
-                loadStats(),
-                loadRecentCampaigns(),
-                loadTemplatesSidebar(),
-                loadTemplatesTable(),
-                loadSentEmails()
-            ]);
+    // CRITICAL FIX: Load all base data FIRST before initializing router
+    // This ensures data is available when dashboard renders
+    try {
+        await Promise.all([
+            loadSenders(),
+            loadContacts(),
+            loadTemplatesSidebar(),
+            loadTemplatesTable(),
+            loadSentEmails()
+        ]);
+        
+        // Load stats and recent campaigns (dashboard specific)
+        await Promise.all([
+            loadStats(),
+            loadRecentCampaigns()
+        ]);
+        
+        // Settings data
+        renderSettingsSenders();
+        
+    } catch (error) {
+        console.error("Error loading initial data:", error);
+        showToast("Error loading some data. Please refresh.", "warning");
+    }
 
-            document.getElementById('set-email').value = user.email;
-            document.getElementById('set-name').value = displayName;
-            
-            // Navigate to dashboard or current hash
-            router.init();
-        }
+    // Set profile fields
+    document.getElementById('set-email').value = user.email;
+    document.getElementById('set-name').value = displayName;
+    
+    // NOW initialize router - this will show dashboard with data already loaded
+    router.init();
+}
 
         // ==========================================
         // DATA FETCHING
