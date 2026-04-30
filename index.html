@@ -575,28 +575,31 @@
         input:checked + .slider { background-color: #000; }
         input:checked + .slider:before { transform: translateX(20px); }
 
-/* Footer Styles - Updated */
+/* Footer Styles - Fixed at Bottom */
 .app-footer {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 50;
-    background: transparent;  /* REMOVED: White glass background */
-    backdrop-filter: none;    /* REMOVED: Blur effect */
+    background: transparent;
+    backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);  /* Subtle dark border instead of white */
+    border-top: none;  /* REMOVED: Border line as requested */
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.75rem;
-    color: #000000;  /* CHANGED: Pure black text instead of gray */
-    font-weight: 500;  /* Slightly bolder for readability on light bg */
-    box-shadow: none;  /* REMOVED: Shadow */
+    color: #000000;  /* Pure black text for visibility on light bg */
+    font-weight: 500;
+    box-shadow: none;  /* No shadow */
+}
+.footer-text {
+    color: #000000;
 }
 .footer-links a {
-    color: #000000;  /* CHANGED: Black links */
+    color: #000000;  /* Black links */
     text-decoration: none;
     transition: opacity 0.2s;
     margin: 0 0.25rem;
@@ -2704,7 +2707,7 @@ document.addEventListener('change', (e) => {
             document.getElementById('edit-template-id').value = id;
             document.getElementById('new-t-name').value = template.name;
             document.getElementById('template-modal-title').innerText = 'Edit Template';
-            document.getElementById('template-submit-btn').innerText = 'Update Template';
+            document.getElementById('template-submit-btn').innerText = 'Update Template</button>';
             openModal('template-modal');
         }
 
