@@ -811,112 +811,92 @@
         }
 
 
-        // ==========================================
-        // CORE: RESEND API INTEGRATION
-        // ==========================================
+// ==========================================
+// FINAL: SEND VIA EDGE FUNCTION (CORS FIXED)
+// ==========================================
 
-        async function sendViaResend() {
-            const btn = document.getElementById('btn-send-final');
-            const originalContent = btn.innerHTML;
-            
-            // 1. Gather Data
-            const fromId = document.getElementById('comp-from').value;
-            const rawToString = document.getElementById('comp-to').value;
-            const subject = document.getElementById('comp-subject').value.trim();
-            
-            // 2. Validation
-            if (!fromId) return showToast("Please select a sender identity.", "error");
-            if (!rawToString) return showToast("Please add at least one recipient.", "error");
-            if (!subject) return showToast("Subject line cannot be empty.", "error");
+async function sendViaResend() {
+    const btn = document.getElementById('btn-send-final');
+    const originalContent = btn.innerHTML;
+    
+    // 1. Gather Data
+    const fromId = document.getElementById('comp-from').value;
+    const rawToString = document.getElementById('comp-to').value;
+    const subject = document.getElementById('comp-subject').value.trim();
+    
+    // 2. Validation
+    if (!fromId) return showToast("Please select a sender identity.", "error");
+    if (!rawToString) return showToast("Please add at least one recipient.", "error");
+    if (!subject) return showToast("Subject line cannot be empty.", "error");
 
-            // 3. Process Recipients
-            const recipients = rawToString
-                .split(',')
-                .map(email => email.trim().toLowerCase())
-                .filter(email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+    // 3. Process Recipients
+    const recipients = rawToString
+        .split(',')
+        .map(email => email.trim().toLowerCase())
+        .filter(email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
 
-            if (recipients.length === 0) {
-                return showToast("No valid email addresses found.", "error");
+    if (recipients.length === 0) {
+        return showToast("No valid email addresses found.", "error");
+    }
+
+    // Get Sender Details
+    const sender = cacheSenders.find(s => s.id === fromId);
+    if (!sender) return showToast("Selected sender not found. Refresh page.", "error");
+
+    // Prepare Content
+    const isHtmlMode = document.getElementById('editor-html-container').style.display !== 'none';
+    const htmlBody = isHtmlMode ? quillEditor.root.innerHTML : `<pre style="white-space: pre-wrap; font-family: inherit;">${document.getElementById('comp-body-text').value.replace(/</g, '&lt;')}</pre>`;
+    
+    // UI Loading State
+    btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Sending via Resend...';
+    btn.disabled = true;
+
+    try {
+        // 4. CALL YOUR DEPLOYED EDGE FUNCTION
+        const { data, error: fnError } = await _supabase.functions.invoke('send-email', {
+            body: {
+                from: `${sender.alias_name || ''} <${sender.email}>`.trim(),
+                to: recipients,
+                subject: subject,
+                html: htmlBody
             }
+        });
 
-            // Get Sender Details
-            const sender = cacheSenders.find(s => s.id === fromId);
-            if (!sender) return showToast("Selected sender not found. Refresh page.", "error");
+        if (fnError) throw new Error(fnError.message);
+        
+        // 5. Save to Database with Resend ID
+        await _supabase.from('campaigns').insert({
+            user_id: currentUser.id,
+            sender_id: sender.id,
+            subject: subject,
+            html_content: htmlBody,
+            recipients: recipients,
+            status: 'sent',
+            external_id: data?.id, // The Resend Email ID returned by your function
+            provider: 'resend',
+            sent_at: new Date().toISOString()
+        });
 
-            // Prepare Content
-            const isHtmlMode = document.getElementById('editor-html-container').style.display !== 'none';
-            const htmlBody = isHtmlMode ? quillEditor.root.innerHTML : `<pre style="white-space: pre-wrap; font-family: inherit;">${document.getElementById('comp-body-text').value.replace(/</g, '&lt;')}</pre>`;
-            
-            // UI Loading State
-            btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Sending via Resend...';
-            btn.disabled = true;
+        showToast(`✅ Email Sent! ID: ${data?.id}`, 'success');
+        
+        // Reset Form
+        document.getElementById('comp-to').value = '';
+        document.getElementById('comp-subject').value = '';
+        quillEditor.setContents([]);
+        
+        // Refresh Dashboard
+        navigateTo('dashboard');
+        await loadStats();
+        await loadRecentCampaigns();
 
-            try {
-                // 4. Construct Resend Payload
-                // Note: 'from' must be a verified domain in Resend, or use onboarding@resend.dev for testing
-                const resendPayload = {
-                    from: `${sender.alias_name || ''} <${sender.email}>`.trim(),
-                    to: recipients,
-                    subject: subject,
-                    html: htmlBody
-                };
-
-                console.log("Sending via Resend:", resendPayload);
-
-                // 5. Call Resend API
-                const response = await fetch(RESEND_ENDPOINT, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${RESEND_API_KEY}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(resendPayload)
-                });
-
-                const result = await response.json();
-
-                // 6. Handle Response
-                if (!response.ok) {
-                    // Resend returns specific error codes
-                    const errorMsg = result?.name === 'validation_error' 
-                        ? result?.message || "Validation failed"
-                        : result?.message || JSON.stringify(result);
-                    throw new Error(errorMsg);
-                }
-
-                // 7. Save to Database (with Resend ID)
-                await _supabase.from('campaigns').insert({
-                    user_id: currentUser.id,
-                    sender_id: sender.id,
-                    subject: subject,
-                    html_content: htmlBody,
-                    recipients: recipients,
-                    status: 'sent',
-                    external_id: result.id, // Resend email ID
-                    provider: 'resend',
-                    sent_at: new Date().toISOString()
-                });
-
-                showToast(`✨ Sent via Resend! ID: ${result.id}`, 'success');
-                
-                // Reset Form
-                document.getElementById('comp-to').value = '';
-                document.getElementById('comp-subject').value = '';
-                quillEditor.setContents([]);
-                
-                // Refresh Dashboard
-                navigateTo('dashboard');
-                await loadStats();
-                await loadRecentCampaigns();
-
-            } catch (err) {
-                console.error("Resend Error:", err);
-                showToast(`Resend Error: ${err.message}`, 'error');
-            } finally {
-                btn.innerHTML = originalContent;
-                btn.disabled = false;
-            }
-        }
+    } catch (err) {
+        console.error("Send Error:", err);
+        showToast(`Error: ${err.message}`, 'error');
+    } finally {
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+    }
+}
 
         async function saveAsDraft() {
              const subject = document.getElementById('comp-subject').value || 'Untitled Draft';
