@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LuvMail Enterprise</title>
+    <title>LuvMail</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -551,12 +551,17 @@
             position: relative;
         }
 
-        /* Auth View Full Height */
+        /* Auth View Full Height - FIX: Show by default */
         #view-auth {
             flex: 1;
             display: grid;
             place-items: center;
             padding: 1rem;
+            position: relative;
+            opacity: 1;
+            transform: none;
+            filter: none;
+            pointer-events: auto;
         }
 
         /* Route indicator animation */
@@ -589,7 +594,7 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- ==================== AUTH VIEW ==================== -->
-    <section id="view-auth" class="page-view" style="flex: 1;">
+    <section id="view-auth" class="page-view active" style="flex: 1;">
         <div style="min-height: 100vh; display: grid; place-items: center; padding: 1rem;">
             <div class="glass-card" style="padding: 3rem; width: 100%; max-width: 420px; text-align: center;">
                 <div style="margin-bottom: 2.5rem;">
@@ -719,7 +724,7 @@
         <main class="max-w-6xl mx-auto px-4 mt-8 mb-8 flex-1 relative">
 
             <!-- DASHBOARD (/dashboard) -->
-            <section id="view-dashboard" class="page-view active">
+            <section id="view-dashboard" class="page-view">
                 <header class="mb-8">
                     <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
                         <div>
@@ -840,7 +845,7 @@
                     <div>
                         <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Email Campaign</h1>
                         <p class="text-[var(--text-sub)]">Design, configure, and send your email.</p>
-                    </div>
+                    </header>
                     <div class="flex gap-3">
                         <button onclick="openModal('template-modal')" class="btn-secondary">Save as Template</button>
                     </div>
@@ -1473,9 +1478,10 @@
         let currentPage = 'dashboard';
 
         // ==========================================
-        // ROUTING SYSTEM
+        // ROUTING SYSTEM - CLEAN URLS (History API)
         // ==========================================
 
+        // Route mapping
         const routes = {
             '/': 'dashboard',
             '/dashboard': 'dashboard',
@@ -1488,24 +1494,36 @@
         };
 
         function initRouter() {
-            window.addEventListener('hashchange', handleRouteChange);
+            // Listen for back/forward button navigation
+            window.addEventListener('popstate', handleRouteChange);
+            
+            // Initial route check
             handleRouteChange();
         }
 
         function handleRouteChange() {
-            const hash = window.location.hash || '/';
-            const path = hash.replace('#', '') || '/';
+            // Get current path (without domain)
+            const path = window.location.pathname.replace(/\/$/, '') || '/';
             
-            if(routes[path]) {
-                navigateTo(routes[path], false);
-            } else {
-                navigateTo('dashboard', false);
+            // Determine target page from path
+            let targetPage = routes[path];
+            
+            // Fallback to dashboard if route not found
+            if (!targetPage) {
+                targetPage = 'dashboard';
+                // Update URL to match
+                window.history.replaceState({page: 'dashboard'}, '', '/');
             }
+            
+            navigateTo(targetPage, false);
         }
 
         function updateRoute(page) {
+            // Find the path for this page
             const routePath = Object.keys(routes).find(key => routes[key] === page) || '/';
-            window.location.hash = routePath;
+            
+            // Use pushState to update URL without reload (no # symbol!)
+            window.history.pushState({page: page}, '', routePath);
         }
 
         function showRouteIndicator() {
@@ -1568,7 +1586,7 @@
             // Setup OTP Input Handlers
             setupOTPInputs();
 
-            // Initialize Router
+            // Initialize Router (History API based)
             initRouter();
 
             const { data: { session } } = await _supabase.auth.getSession();
@@ -1576,7 +1594,10 @@
             if (session) {
                 initApp(session.user);
             } else {
+                // FIX: Ensure auth view is visible immediately
                 document.getElementById('view-auth').classList.add('active');
+                document.getElementById('view-auth').style.display = 'grid';
+                document.getElementById('view-auth').style.position = 'relative';
                 
                 _supabase.auth.onAuthStateChange((event, session) => {
                     if (event === 'SIGNED_IN' && session) {
@@ -1743,8 +1764,11 @@
             floatingMenu.classList.remove('visible', 'open');
             
             setTimeout(() => {
+                // Reset to root URL
+                window.history.pushState({}, '', '/');
                 document.getElementById('view-auth').classList.add('active');
-                window.location.hash = '/';
+                document.getElementById('view-auth').style.display = 'grid';
+                document.getElementById('view-auth').style.position = 'relative';
             }, 100);
         }
 
@@ -1758,7 +1782,11 @@
             // Check if user is admin
             const isAdmin = user.email === 'admin@luviio.com' || user.user_metadata?.role === 'admin' || user.user_metadata?.role === 'super_admin';
             
+            // Hide auth view
             document.getElementById('view-auth').classList.remove('active');
+            document.getElementById('view-auth').style.display = 'none';
+            
+            // Show app container
             document.getElementById('app-container').style.display = 'flex';
             
             // Show floating menu now that user is logged in
@@ -1831,9 +1859,9 @@
             document.getElementById('set-email').value = user.email;
             document.getElementById('set-name').value = displayName;
             
-            // Navigate to initial route or dashboard
-            const hash = window.location.hash.replace('#', '');
-            const targetPage = routes[hash] || 'dashboard';
+            // Navigate to initial route or dashboard (using current URL path)
+            const path = window.location.pathname.replace(/\/$/, '') || '/';
+            const targetPage = routes[path] || 'dashboard';
             navigateTo(targetPage, false);
         }
 
@@ -1841,33 +1869,37 @@
         // NAVIGATION WITH SMOOTH TRANSITIONS
         // ==========================================
 
-        function navigateTo(page, updateHash = true) {
+        function navigateTo(page, updateUrl = true) {
             showRouteIndicator();
             
             // Update current page state
             currentPage = page;
             
-            // Update URL hash if needed
-            if(updateHash) {
+            // Update URL using History API (no # symbol!) if requested
+            if(updateUrl) {
                 updateRoute(page);
             }
             
             // Hide all pages with exit animation
             const activePages = document.querySelectorAll('.page-view.active');
             activePages.forEach(view => {
-                view.style.opacity = '0';
-                view.style.transform = 'translateY(-20px) scale(0.98)';
-                view.style.filter = 'blur(4px)';
-                view.style.pointerEvents = 'none';
+                if(view.id !== 'view-auth') { // Don't hide auth view completely if we're switching within app
+                    view.style.opacity = '0';
+                    view.style.transform = 'translateY(-20px) scale(0.98)';
+                    view.style.filter = 'blur(4px)';
+                    view.style.pointerEvents = 'none';
+                }
             });
             
             // Small delay for exit animation, then switch
             setTimeout(() => {
-                // Remove active class from all
+                // Remove active class from all except auth (which handles its own visibility)
                 document.querySelectorAll('.page-view').forEach(v => {
-                    v.classList.remove('active');
-                    v.style.display = 'none';
-                    v.style.position = 'absolute';
+                    if(v.id !== 'view-auth') {
+                        v.classList.remove('active');
+                        v.style.display = 'none';
+                        v.style.position = 'absolute';
+                    }
                 });
                 
                 // Activate new page
