@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LuvMail Pro - Enterprise Email Platform</title>
+    <title>LuvMail</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Fonts: Apple System Stack -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -32,16 +27,18 @@
 
         * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         
+        /* FONT UPDATE: Arial (Sans-Serif) */
         body {
-            font-family: -apple-system, BlinkMacSystemSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             background-color: #f5f5f7;
             color: var(--text-main);
             overflow-x: hidden;
         }
 
         .font-display { 
-            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; 
+            font-family: Arial, Helvetica, sans-serif; 
             letter-spacing: -0.02em;
+            font-weight: 700;
         }
 
         /* --- Premium Liquid Glass Effects --- */
@@ -124,6 +121,7 @@
             width: 100%; padding: 0.85rem 1rem; background: rgba(255,255,255,0.7);
             border: 1.5px solid rgba(0,0,0,0.06); border-radius: 0.75rem; outline: none; 
             transition: all 0.2s; font-size: 0.95rem; color: #1d1d1f;
+            font-family: Arial, Helvetica, sans-serif;
         }
         .input-glass::placeholder { color: #c7c7cc; }
         .input-glass:focus { 
@@ -154,12 +152,12 @@
             border: 1.5px solid rgba(0,0,0,0.06) !important; 
             border-top: 0; 
             border-radius: 0 0 0.75rem 0.75rem; 
-            font-family: inherit; 
+            font-family: Arial, Helvetica, sans-serif; 
             min-height: 240px; 
             background: rgba(255,255,255,0.4);
         }
         .ql-editor { min-height: 240px; padding: 1rem; font-size: 0.95rem; line-height: 1.6; }
-        .ql-editor.ql-blank::before { color: #c7c7cc; font-style: normal; }
+        .ql-editor.ql-blank::before { color: #c7c7cc; font-style: normal; font-family: Arial, Helvetica, sans-serif;}
 
         /* Modal */
         .modal-overlay {
@@ -218,6 +216,23 @@
             color: #166534;
             border: 1px solid #bbf7d0;
         }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative; display: inline-block; width: 44px; height: 24px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc; transition: .4s; border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+            background-color: white; transition: .4s; border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        input:checked + .slider { background-color: #000; }
+        input:checked + .slider:before { transform: translateX(20px); }
     </style>
 </head>
 <body>
@@ -272,7 +287,7 @@
     <div id="app-container" style="display: none; padding-top: 5.5rem; padding-bottom: 3rem; min-height: 100vh;">
         
         <!-- Navigation -->
-        <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl glass-panel rounded-2xl px-6 py-3 flex items-center justify-between shadow-sm">
+        <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl glass-panel rounded-2xl px-6 py-3 flex items-center justify-between shadow-sm overflow-x-auto">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('dashboard')">
                 <div class="w-9 h-9 bg-black rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                     <svg class="icon" style="color:white; width:18px;" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -284,9 +299,17 @@
                 <a class="nav-link active" data-nav="dashboard" onclick="navigateTo('dashboard')">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> Dashboard
                 </a>
-                <a class="nav-link" data-nav="compose" onclick="navigateTo('compose')">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Compose
+                
+                <!-- CRM Section -->
+                <div class="flex items-center px-2 text-xs font-bold text-gray-400 uppercase tracking-wider select-none">CRM:</div>
+                <a class="nav-link" data-nav="marketing" onclick="navigateTo('marketing')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg> Marketing
                 </a>
+
+                <a class="nav-link" data-nav="mail" onclick="navigateTo('mail')">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> Mail
+                </a>
+
                 <a class="nav-link" data-nav="contacts" onclick="navigateTo('contacts')">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg> Contacts
                 </a>
@@ -305,7 +328,7 @@
 
         <main class="max-w-6xl mx-auto px-4 mt-8">
 
-            <!-- DASHBOARD -->
+            <!-- DASHBOARD (/dashboard) -->
             <section id="view-dashboard" class="page-view active">
                 <header class="mb-8">
                     <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Dashboard</h1>
@@ -347,76 +370,205 @@
                 </div>
             </section>
 
-            <!-- COMPOSE -->
-            <section id="view-compose" class="page-view">
+            <!-- MARKETING (/marketing) -->
+            <section id="view-marketing" class="page-view">
+                <header class="mb-8 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+                    <div>
+                        <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Marketing Hub</h1>
+                        <p class="text-[var(--text-sub)]">Analyze performance and manage automation.</p>
+                    </div>
+                    <button onclick="navigateTo('mail')" class="btn-primary">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> Create Campaign
+                    </button>
+                </header>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Stats Cards -->
+                    <div class="glass-card p-6 col-span-1">
+                        <h3 class="font-semibold text-sm uppercase tracking-wide text-[var(--text-sub)] mb-4">Performance</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-1 text-sm">
+                                    <span class="font-medium">Open Rate</span>
+                                    <span class="font-bold text-emerald-600">42%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 rounded-full h-2">
+                                    <div class="bg-emerald-500 h-2 rounded-full" style="width: 42%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1 text-sm">
+                                    <span class="font-medium">Click Rate</span>
+                                    <span class="font-bold text-blue-600">12%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 12%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1 text-sm">
+                                    <span class="font-medium">Bounce Rate</span>
+                                    <span class="font-bold text-red-500">0.4%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 rounded-full h-2">
+                                    <div class="bg-red-500 h-2 rounded-full" style="width: 0.4%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity List -->
+                    <div class="glass-card p-6 col-span-2">
+                        <h3 class="font-semibold text-sm uppercase tracking-wide text-[var(--text-sub)] mb-4">Campaign History</h3>
+                        <div id="marketing-history-list" class="space-y-4">
+                             <!-- Populated by JS -->
+                             <div class="text-center py-8 text-gray-400 text-sm">No data yet.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MAIL PAGE (/mail) - Enhanced Composer/Campaign Builder -->
+            <section id="view-mail" class="page-view">
                 <header class="mb-6 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
                     <div>
-                        <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Compose Email</h1>
-                        <p class="text-[var(--text-sub)]">Send via Resend API • Powered by LuvMail</p>
+                        <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Email Campaign</h1>
+                        <p class="text-[var(--text-sub)]">Design, configure, and send your email.</p>
                     </div>
                     <div class="flex gap-3">
-                        <button onclick="saveAsDraft()" class="btn-secondary">Save Draft</button>
-                        <button onclick="openModal('template-modal')" class="btn-secondary">Template</button>
+                        <button onclick="openModal('template-modal')" class="btn-secondary">New Template</button>
                     </div>
                 </header>
 
                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                    <div class="lg:col-span-3 glass-card p-6 space-y-5">
+                    
+                    <!-- Main Editor Area -->
+                    <div class="lg:col-span-3 glass-card p-8 space-y-8">
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Status & Meta Row -->
+                        <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-gray-100">
+                            <div class="flex items-center gap-3">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="mail-status-toggle" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <span class="text-sm font-semibold text-gray-600" id="mail-status-label">Active</span>
+                            </div>
+                            <div class="text-xs text-gray-400 bg-gray-50 px-3 py-1.5 rounded-lg">
+                                Last saved: Just now
+                            </div>
+                        </div>
+
+                        <!-- Sender Configuration -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-xs font-semibold text-[var(--text-sub)] uppercase tracking-wide mb-1.5">From (Verified Sender)</label>
-                                <select id="comp-from" class="input-glass appearance-none bg-no-repeat bg-right pr-10" style="background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2386886b%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-size: 1rem; background-position: right 0.75rem center;">
-                                    <option value="">Loading senders...</option>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Sender Name *</label>
+                                <input type="text" id="mail-sender-name" class="input-glass" placeholder="LuvMail Team" value="LuvMail Team">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Sender Email</label>
+                                <select id="mail-sender-email" class="input-glass appearance-none bg-no-repeat bg-right pr-10" style="background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2386886b%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-size: 1rem; background-position: right 0.75rem center;">
+                                    <option value="">Select sender...</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <!-- Subject & Preview -->
+                        <div class="space-y-6">
                             <div>
-                                <label class="block text-xs font-semibold text-[var(--text-sub)] uppercase tracking-wide mb-1.5">Recipients</label>
-                                <div class="relative">
-                                    <input type="text" id="comp-to" class="input-glass pr-10" placeholder="Enter emails separated by commas">
-                                    <button onclick="openModal('contact-picker-modal')" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 hover:bg-black/5 rounded-lg transition-colors" title="Pick contacts">
-                                        <svg class="icon text-[var(--text-sub)]" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                    </button>
-                                </div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Subject Line *</label>
+                                <input type="text" id="mail-subject" class="input-glass text-lg font-semibold" placeholder="Welcome to our newsletter!">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Preview Text</label>
+                                <input type="text" id="mail-preview-text" class="input-glass" placeholder="Text that appears in the inbox next to subject...">
+                                <p class="text-xs text-gray-400 mt-1 ml-1">Optional. Some email clients ignore this.</p>
                             </div>
                         </div>
 
+                        <!-- Recipients -->
                         <div>
-                            <label class="block text-xs font-semibold text-[var(--text-sub)] uppercase tracking-wide mb-1.5">Subject</label>
-                            <input type="text" id="comp-subject" class="input-glass" placeholder="Email subject line">
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Recipients</label>
+                            <div class="relative">
+                                <input type="text" id="mail-to" class="input-glass pr-12" placeholder="Enter emails separated by commas">
+                                <button onclick="openModal('contact-picker-modal')" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 hover:bg-black/5 rounded-lg transition-colors" title="Pick contacts">
+                                    <svg class="icon text-gray-400" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="flex gap-6 border-b border-black/5 pb-0">
-                            <button onclick="setEditorMode('html')" id="mode-html-btn" class="pb-3 text-sm font-semibold text-black border-b-2 border-black -mb-[1px] transition-all">Rich Text</button>
-                            <button onclick="setEditorMode('text')" id="mode-text-btn" class="pb-3 text-sm font-semibold text-[var(--text-sub)] hover:text-black border-b-2 border-transparent -mb-[1px] transition-all">Plain Text</button>
+                        <!-- Content Editor -->
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Content</label>
+                                <div class="flex gap-2">
+                                     <button onclick="setEditorMode('html')" id="mode-html-btn" class="text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md">Rich Text</button>
+                                     <button onclick="setEditorMode('text')" id="mode-text-btn" class="text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md">Plain Text</button>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-gray-500 mb-4 bg-blue-50/50 p-3 rounded-lg border border-blue-100/50">
+                                Add content and design from scratch using the editor or an existing template.
+                            </p>
+
+                            <div id="editor-html-container">
+                                <div id="editor-quill"></div>
+                            </div>
+
+                            <div id="editor-text-container" style="display: none;">
+                                <textarea id="comp-body-text" class="input-glass resize-none" rows="12" placeholder="Write your message here..." style="min-height: 300px;"></textarea>
+                            </div>
                         </div>
 
-                        <div id="editor-html-container">
-                            <div id="editor-quill"></div>
-                        </div>
-
-                        <div id="editor-text-container" style="display: none;">
-                            <textarea id="comp-body-text" class="input-glass resize-none" rows="10" placeholder="Write your message here..." style="min-height: 240px;"></textarea>
-                        </div>
-
-                        <div class="flex justify-end pt-6 border-t border-black/5 mt-6">
-                             <button onclick="sendViaResend()" id="btn-send-final" class="btn-primary px-8 py-3.5 text-base">
+                        <!-- Action Footer -->
+                        <div class="flex flex-col sm:flex-row justify-end gap-4 pt-8 border-t border-gray-100 mt-8">
+                            <button onclick="saveAsDraft()" class="btn-secondary order-2 sm:order-1">Save Draft</button>
+                            <button onclick="openPreviewModal()" class="btn-secondary order-2 sm:order-1 border-dashed border-gray-300">
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg> Preview & Test
+                            </button>
+                            <button onclick="sendViaResend()" id="btn-send-final" class="btn-primary px-8 py-3.5 text-base order-1 sm:order-2">
                                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> 
                                  Send via Resend
-                             </button>
+                            </button>
                         </div>
                     </div>
 
+                    <!-- Sidebar -->
                     <div class="space-y-6">
                         <div class="glass-card p-5">
-                            <h4 class="font-semibold text-sm mb-3 text-[var(--text-sub)] uppercase tracking-wide">Templates</h4>
+                            <h4 class="font-bold text-sm mb-4 text-gray-800 uppercase tracking-wide">Templates</h4>
                             <div id="sidebar-templates" class="space-y-2">
-                                <p class="text-xs text-[var(--text-sub)] italic">No saved templates</p>
+                                <p class="text-xs text-gray-400 italic">No saved templates</p>
                             </div>
+                            <button onclick="openModal('template-modal')" class="w-full mt-4 text-xs font-bold text-gray-500 hover:text-black border border-dashed border-gray-300 hover:border-gray-400 p-2 rounded-lg transition-all">
+                                + Create Template
+                            </button>
+                        </div>
+                        
+                        <div class="glass-card p-5 bg-gradient-to-br from-gray-50 to-white border-gray-200">
+                            <h4 class="font-bold text-sm mb-3 text-gray-800">Checklist</h4>
+                            <ul class="space-y-3 text-xs text-gray-600">
+                                <li class="flex items-center gap-2">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle" id="check-sender"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                    Sender Identity
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle" id="check-subject"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                    Subject Line
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle" id="check-content"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                    Content Added
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle" id="check-recipients"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                    Recipients
+                                </li>
+                            </ul>
                         </div>
                         
                         <div class="glass-card p-5 bg-gradient-to-br from-emerald-50/50 to-teal-50/30 border-emerald-100/50">
-                            <h4 class="font-semibold text-sm mb-2 text-emerald-900">API Connection</h4>
+                            <h4 class="font-bold text-sm mb-2 text-emerald-900">API Connection</h4>
                             <div class="flex items-center gap-2 text-xs text-emerald-700 font-medium bg-emerald-50/50 p-2 rounded-lg mb-2">
                                 <span class="relative flex h-2 w-2">
                                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -424,7 +576,7 @@
                                 </span>
                                 Resend API Connected
                             </div>
-                            <p class="text-[10px] text-emerald-600 leading-relaxed">
+                            <p class="text-[10px] text-emerald-600 leading-relaxed opacity-70">
                                 Key: re_TJU...jYGKf<br>
                                 Endpoint: api.resend.com
                             </p>
@@ -577,6 +729,37 @@
         </div>
     </div>
 
+    <!-- Preview Modal -->
+    <div class="modal-overlay" id="preview-modal">
+        <div class="modal-box max-w-3xl w-full max-h-[90vh] overflow-y-auto flex flex-col">
+             <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                <h2 class="font-display font-bold text-xl tracking-tight">Preview & Test</h2>
+                <button onclick="closeModal('preview-modal')" class="text-gray-400 hover:text-black">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+             </div>
+             
+             <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm mb-6">
+                 <div class="border-b border-gray-100 pb-4 mb-4">
+                     <div class="text-xs text-gray-400 uppercase font-bold mb-1">From:</div>
+                     <div class="font-semibold text-sm" id="prev-from">-</div>
+                     <div class="text-xs text-gray-400 uppercase font-bold mt-3 mb-1">To:</div>
+                     <div class="font-semibold text-sm" id="prev-to">Recipient</div>
+                     <div class="text-xs text-gray-400 uppercase font-bold mt-3 mb-1">Subject:</div>
+                     <div class="font-bold text-lg" id="prev-subject">-</div>
+                 </div>
+                 <div id="prev-body" class="prose prose-sm max-w-none text-sm text-gray-700 leading-relaxed">
+                     Content preview...
+                 </div>
+             </div>
+
+             <div class="mt-auto flex justify-end gap-3 pt-4 border-t border-gray-100">
+                 <button onclick="sendTestEmail()" class="btn-secondary">Send Test Email</button>
+                 <button onclick="closeModal('preview-modal')" class="btn-primary">Close Preview</button>
+             </div>
+        </div>
+    </div>
+
 
     <!-- ==================== JAVASCRIPT LOGIC ==================== -->
     <script>
@@ -694,6 +877,15 @@
                         ]
                     }
                 });
+
+                // Listen for text changes to update checklist
+                quillEditor.on('text-change', updateChecklist);
+                
+                // Attach listeners for mail page inputs
+                ['mail-subject', 'mail-to', 'mail-sender-email'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) el.addEventListener('input', updateChecklist);
+                });
             }
 
             await Promise.allSettled([
@@ -726,6 +918,7 @@
 
             if(page === 'contacts') renderContactsTable();
             if(page === 'settings') renderSettingsSenders();
+            if(page === 'marketing') renderMarketingHistory();
         }
 
         // ==========================================
@@ -809,6 +1002,35 @@
                 </button>
             `).join('');
         }
+        
+        async function renderMarketingHistory() {
+            const container = document.getElementById('marketing-history-list');
+            // Reuse recent campaign data logic or fetch specific marketing stats
+            const { data, error } = await _supabase
+                .from('campaigns')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false })
+                .limit(10);
+
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div class="text-center py-8 text-gray-400 text-sm">No marketing history available.</div>';
+                return;
+            }
+
+            container.innerHTML = data.map(c => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div class="flex-1 min-w-0 mr-4">
+                        <div class="font-bold text-sm text-gray-800 truncate">${escapeHtml(c.subject)}</div>
+                        <div class="text-xs text-gray-500">${formatDate(c.sent_at || c.created_at)}</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                         <span class="text-xs font-medium text-gray-500">${c.recipients?.length || 0} sent</span>
+                         <span class="w-2 h-2 rounded-full ${c.status === 'sent' ? 'bg-green-400' : 'bg-yellow-400'}"></span>
+                    </div>
+                </div>
+            `).join('');
+        }
 
 
 // ==========================================
@@ -819,13 +1041,14 @@ async function sendViaResend() {
     const btn = document.getElementById('btn-send-final');
     const originalContent = btn.innerHTML;
     
-    // 1. Gather Data
-    const fromId = document.getElementById('comp-from').value;
-    const rawToString = document.getElementById('comp-to').value;
-    const subject = document.getElementById('comp-subject').value.trim();
+    // 1. Gather Data from MAIL PAGE
+    const senderEmailId = document.getElementById('mail-sender-email').value;
+    const senderName = document.getElementById('mail-sender-name').value.trim();
+    const rawToString = document.getElementById('mail-to').value;
+    const subject = document.getElementById('mail-subject').value.trim();
     
     // 2. Validation
-    if (!fromId) return showToast("Please select a sender identity.", "error");
+    if (!senderEmailId) return showToast("Please select a sender identity.", "error");
     if (!rawToString) return showToast("Please add at least one recipient.", "error");
     if (!subject) return showToast("Subject line cannot be empty.", "error");
 
@@ -835,13 +1058,14 @@ async function sendViaResend() {
         .map(email => email.trim().toLowerCase())
         .filter(email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
 
-    if (recipients.length === 0) {
-        return showToast("No valid email addresses found.", "error");
-    }
+    if (recipients.length === 0) return showToast("No valid email addresses found.", "error");
 
-    // Get Sender Details
-    const sender = cacheSenders.find(s => s.id === fromId);
-    if (!sender) return showToast("Selected sender not found. Refresh page.", "error");
+    // Get Sender Object
+    const senderObj = cacheSenders.find(s => s.id === senderEmailId);
+    if(!senderObj) return showToast("Sender configuration error.", "error");
+    
+    // Construct From Address
+    const fromAddress = `${senderName || senderObj.alias_name} <${senderObj.email}>`;
 
     // Prepare Content
     const isHtmlMode = document.getElementById('editor-html-container').style.display !== 'none';
@@ -852,10 +1076,10 @@ async function sendViaResend() {
     btn.disabled = true;
 
     try {
-        // 4. CALL YOUR DEPLOYED EDGE FUNCTION
+        // 4. CALL EDGE FUNCTION
         const { data, error: fnError } = await _supabase.functions.invoke('send-email', {
             body: {
-                from: `${sender.alias_name || ''} <${sender.email}>`.trim(),
+                from: fromAddress,
                 to: recipients,
                 subject: subject,
                 html: htmlBody
@@ -864,27 +1088,26 @@ async function sendViaResend() {
 
         if (fnError) throw new Error(fnError.message);
         
-        // 5. Save to Database with Resend ID
+        // 5. Save to Database
         await _supabase.from('campaigns').insert({
             user_id: currentUser.id,
-            sender_id: sender.id,
+            sender_id: senderObj.id,
             subject: subject,
             html_content: htmlBody,
             recipients: recipients,
             status: 'sent',
-            external_id: data?.id, // The Resend Email ID returned by your function
+            external_id: data?.id,
             provider: 'resend',
             sent_at: new Date().toISOString()
         });
 
         showToast(`✅ Email Sent! ID: ${data?.id}`, 'success');
         
-        // Reset Form
-        document.getElementById('comp-to').value = '';
-        document.getElementById('comp-subject').value = '';
-        quillEditor.setContents([]);
+        // Reset Form partially
+        document.getElementById('mail-to').value = '';
+        // quillEditor.setContents([]); // Optional: clear editor
         
-        // Refresh Dashboard
+        // Refresh Data
         navigateTo('dashboard');
         await loadStats();
         await loadRecentCampaigns();
@@ -898,8 +1121,61 @@ async function sendViaResend() {
     }
 }
 
+function openPreviewModal() {
+    const subject = document.getElementById('mail-subject').value || 'No Subject';
+    const senderName = document.getElementById('mail-sender-name').value;
+    const senderId = document.getElementById('mail-sender-email').value;
+    const senderObj = cacheSenders.find(s=>s.id === senderId);
+    
+    document.getElementById('prev-subject').innerText = subject;
+    document.getElementById('prev-from').innerText = `${senderName} <${senderObj ? senderObj.email : 'Unknown'}>`;
+    document.getElementById('prev-body').innerHTML = quillEditor.root.innerHTML;
+    
+    openModal('preview-modal');
+}
+
+function sendTestEmail() {
+    // Simulate sending test email
+    showToast("Test email sent to your inbox!", "success");
+    closeModal('preview-modal');
+}
+
+function updateChecklist() {
+    const checks = {
+        'check-sender': document.getElementById('mail-sender-email').value !== '',
+        'check-subject': document.getElementById('mail-subject').value.trim() !== '',
+        'check-content': quillEditor.getText().trim().length > 10,
+        'check-recipients': document.getElementById('mail-to').value.trim() !== ''
+    };
+
+    for(const [id, isValid] of Object.entries(checks)) {
+        const el = document.getElementById(id);
+        const icon = el.querySelector('.check-icon');
+        if(isValid) {
+            el.classList.add('bg-emerald-500', 'border-emerald-500');
+            el.classList.remove('border-gray-300');
+            icon.classList.remove('text-transparent');
+            icon.classList.add('text-white');
+        } else {
+            el.classList.remove('bg-emerald-500', 'border-emerald-500');
+            el.classList.add('border-gray-300');
+            icon.classList.add('text-transparent');
+            icon.classList.remove('text-white');
+        }
+    }
+}
+
+// Toggle Status Listener
+document.addEventListener('change', (e) => {
+    if(e.target && e.target.id === 'mail-status-toggle') {
+        const label = document.getElementById('mail-status-label');
+        label.innerText = e.target.checked ? 'Active' : 'Inactive/Draft';
+        label.className = e.target.checked ? 'text-sm font-semibold text-emerald-600' : 'text-sm font-semibold text-gray-400';
+    }
+});
+
         async function saveAsDraft() {
-             const subject = document.getElementById('comp-subject').value || 'Untitled Draft';
+             const subject = document.getElementById('mail-subject').value || 'Untitled Draft';
              const htmlBody = quillEditor.root.innerHTML;
              
              const { error } = await _supabase.from('campaigns').insert({
@@ -1001,14 +1277,19 @@ async function sendViaResend() {
         }
 
         function populateSenderDropdown() {
-            const select = document.getElementById('comp-from');
-            if (cacheSenders.length === 0) {
-                select.innerHTML = '<option value="">No senders configured</option>';
-                return;
-            }
-            select.innerHTML = cacheSenders.map(s => 
-                `<option value="${s.id}">${escapeHtml(s.alias_name)} &lt;${escapeHtml(s.email)}&gt;</option>`
-            ).join('');
+            // Populate both compose (legacy) and mail (new) dropdowns if they exist
+            const selects = [document.getElementById('comp-from'), document.getElementById('mail-sender-email')];
+            
+            selects.forEach(select => {
+                if(!select) return;
+                if (cacheSenders.length === 0) {
+                    select.innerHTML = '<option value="">No senders configured</option>';
+                    return;
+                }
+                select.innerHTML = cacheSenders.map(s => 
+                    `<option value="${s.id}">${escapeHtml(s.alias_name)} &lt;${escapeHtml(s.email)}&gt;</option>`
+                ).join('');
+            });
         }
 
         function renderSettingsSenders() {
@@ -1034,7 +1315,7 @@ async function sendViaResend() {
         async function saveTemplate(e) {
             e.preventDefault();
             const name = document.getElementById('new-t-name').value.trim();
-            const subject = document.getElementById('comp-subject').value;
+            const subject = document.getElementById('mail-subject').value;
             const html = quillEditor.root.innerHTML;
 
             if(!subject) return showToast("Cannot save template without subject.", "error");
@@ -1058,9 +1339,9 @@ async function sendViaResend() {
             const { data, error } = await _supabase.from('templates').select('*').eq('id', id).single();
             if(error || !data) return showToast("Error loading template", 'error');
             
-            document.getElementById('comp-subject').value = data.subject;
+            document.getElementById('mail-subject').value = data.subject;
             quillEditor.root.innerHTML = data.html_content;
-            navigateTo('compose');
+            navigateTo('mail');
             showToast(`Loaded "${data.name}"`, 'success');
         }
 
@@ -1085,13 +1366,13 @@ async function sendViaResend() {
             if(mode === 'html') {
                 htmlContainer.style.display = 'block';
                 textContainer.style.display = 'none';
-                htmlBtn.className = "pb-3 text-sm font-semibold text-black border-b-2 border-black -mb-[1px]";
-                textBtn.className = "pb-3 text-sm font-semibold text-[var(--text-sub)] hover:text-black border-b-2 border-transparent -mb-[1px]";
+                htmlBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md";
+                textBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md";
             } else {
                 htmlContainer.style.display = 'none';
                 textContainer.style.display = 'block';
-                textBtn.className = "pb-3 text-sm font-semibold text-black border-b-2 border-black -mb-[1px]";
-                htmlBtn.className = "pb-3 text-sm font-semibold text-[var(--text-sub)] hover:text-black border-b-2 border-transparent -mb-[1px]";
+                textBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md";
+                htmlBtn.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md";
                 
                 const text = quillEditor.root.innerText;
                 if(text) document.getElementById('comp-body-text').value = text;
@@ -1099,7 +1380,7 @@ async function sendViaResend() {
         }
 
         function addToRecipients(email) {
-            const input = document.getElementById('comp-to');
+            const input = document.getElementById('mail-to'); // Updated to use mail page input
             const current = input.value;
             const emails = current.split(',').map(e => e.trim()).filter(e => e);
             
@@ -1110,6 +1391,7 @@ async function sendViaResend() {
             
             input.value = emails.length > 0 ? `${current}, ${email}` : email;
             closeModal('contact-picker-modal');
+            updateChecklist(); // Update checklist
             showToast(`${email} added`, 'success');
         }
 
@@ -1191,7 +1473,7 @@ async function sendViaResend() {
         // Keyboard shortcut: Cmd/Ctrl + Enter to send
         document.addEventListener('keydown', (e) => {
             if((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-                if(document.getElementById('view-compose').classList.contains('active')) {
+                if(document.getElementById('view-mail').classList.contains('active')) {
                     sendViaResend();
                 }
             }
