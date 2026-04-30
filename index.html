@@ -414,7 +414,7 @@
                         <input type="text" id="otp-code" class="input-glass" placeholder="Enter 6-digit code" maxlength="6" pattern="[0-9]{6}">
                     </div>
                     <button type="submit" class="btn-primary" style="width: 100%; margin-top: 0.5rem; padding: 0.9rem;" id="otp-btn">
-                        
+                        Send Magic Link / OTP
                     </button>
                 </form>
                 
@@ -2041,7 +2041,8 @@ document.addEventListener('change', (e) => {
                     `"${c.status}"`,
                     `"${c.sent_at || c.created_at}"`
                 ].join(','))
-            ].join('\n');
+            ].join('
+');
             
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = URL.createObjectURL(blob);
