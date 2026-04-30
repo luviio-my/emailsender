@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LuvMail</title>
+    <title>LuvMail Enterprise</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,6 +32,12 @@
         }
 
         * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
         
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -112,10 +118,10 @@
         /* Components */
         .nav-link { 
             padding: 0.6rem 1rem; border-radius: 0.75rem; font-weight: 500; font-size: 0.875rem; 
-            color: var(--text-sub); transition: all 0.2s ease-out; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
+            color: var(--text-sub); transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
             position: relative;
         }
-        .nav-link:hover { background: rgba(0,0,0,0.04); color: var(--text-main); }
+        .nav-link:hover { background: rgba(0,0,0,0.04); color: var(--text-main); transform: translateY(-1px); }
         .nav-link.active { 
             background: rgba(0,0,0,0.05); color: #000; font-weight: 600;
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.05);
@@ -125,37 +131,37 @@
             background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
             color: #fff; padding: 0.75rem 1.5rem; border-radius: 0.875rem;
             font-weight: 600; font-size: 0.875rem; border: none; cursor: pointer; 
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
             box-shadow: 0 4px 14px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
         }
         .btn-primary:hover:not(:disabled) { 
-            transform: translateY(-1px); 
+            transform: translateY(-2px) scale(1.02); 
             box-shadow: 0 8px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15);
             filter: brightness(1.1);
         }
-        .btn-primary:active:not(:disabled) { transform: translateY(0); }
+        .btn-primary:active:not(:disabled) { transform: translateY(0) scale(0.98); }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .btn-secondary {
             background: rgba(255,255,255,0.9); color: #000; padding: 0.75rem 1.5rem; border-radius: 0.875rem;
             font-weight: 600; font-size: 0.875rem; border: 1px solid rgba(0,0,0,0.08); cursor: pointer; 
-            transition: all 0.2s; backdrop-filter: blur(4px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(4px);
         }
-        .btn-secondary:hover { border-color: rgba(0,0,0,0.2); background: #fff; }
+        .btn-secondary:hover { border-color: rgba(0,0,0,0.2); background: #fff; transform: translateY(-1px); }
         
         .btn-danger {
             background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
             color: #fff; padding: 0.5rem 1rem; border-radius: 0.75rem;
             font-weight: 600; font-size: 0.8rem; border: none; cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .btn-danger:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(239,68,68,0.3); }
 
         .input-glass {
             width: 100%; padding: 0.85rem 1rem; background: rgba(255,255,255,0.7);
             border: 1.5px solid rgba(0,0,0,0.06); border-radius: 0.75rem; outline: none; 
-            transition: all 0.2s; font-size: 0.95rem; color: #1d1d1f;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-size: 0.95rem; color: #1d1d1f;
             font-family: Arial, Helvetica, sans-serif;
         }
         .input-glass::placeholder { color: #c7c7cc; }
@@ -163,17 +169,32 @@
             border-color: rgba(0,0,0,0.3); 
             background: #fff;
             box-shadow: 0 0 0 4px rgba(0,0,0,0.03);
+            transform: scale(1.01);
         }
 
-        /* Page Transitions */
-        .page-view { display: none; opacity: 0; transform: translateY(10px); }
+        /* Page Transitions - Enhanced Smooth Animations */
+        .page-view { 
+            display: none; 
+            opacity: 0; 
+            transform: translateY(20px) scale(0.98);
+            filter: blur(4px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: absolute;
+            width: 100%;
+            pointer-events: none;
+        }
         .page-view.active { 
             display: block; 
-            animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            opacity: 1; 
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+            pointer-events: auto;
+            position: relative;
         }
+        
         @keyframes fadeUp { 
-            from { opacity: 0; transform: translateY(12px); } 
-            to { opacity: 1; transform: translateY(0); } 
+            from { opacity: 0; transform: translateY(24px) scale(0.96); filter: blur(8px); } 
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
         }
 
         /* Quill Editor Customization */
@@ -182,6 +203,11 @@
             border-radius: 0.75rem 0.75rem 0 0; 
             background: rgba(255,255,255,0.6); 
             backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .ql-toolbar.ql-snow:focus-within {
+            border-color: rgba(0,0,0,0.2) !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         .ql-container.ql-snow { 
             border: 1.5px solid rgba(0,0,0,0.06) !important; 
@@ -190,49 +216,66 @@
             font-family: Arial, Helvetica, sans-serif; 
             min-height: 240px; 
             background: rgba(255,255,255,0.4);
+            transition: all 0.3s ease;
+        }
+        .ql-container.ql-snow:focus-within {
+            border-color: rgba(0,0,0,0.2) !important;
         }
         .ql-editor { min-height: 240px; padding: 1rem; font-size: 0.95rem; line-height: 1.6; }
         .ql-editor.ql-blank::before { color: #c7c7cc; font-style: normal; font-family: Arial, Helvetica, sans-serif;}
 
-        /* Modal */
+        /* Modal - Enhanced Transitions */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.2); backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             z-index: 1000; display: none; align-items: center; justify-content: center; 
-            opacity: 0; transition: opacity 0.3s ease; padding: 1rem;
+            opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); padding: 1rem;
         }
-        .modal-overlay.open { display: flex; opacity: 1; }
+        .modal-overlay.open { 
+            display: flex; 
+            opacity: 1; 
+        }
         .modal-box { 
             background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(24px);
             border: 1px solid rgba(255,255,255,0.8);
             border-radius: 1.5rem; padding: 2rem; width: 100%; max-width: 480px; 
             box-shadow: 0 24px 48px rgba(0,0,0,0.12); 
-            transform: scale(0.96) translateY(10px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(0.9) translateY(20px) rotateX(5deg);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             max-height: 90vh; overflow-y: auto;
+            opacity: 0;
         }
-        .modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
+        .modal-overlay.open .modal-box { 
+            transform: scale(1) translateY(0) rotateX(0deg); 
+            opacity: 1;
+        }
 
-        /* Toast */
+        /* Toast - Enhanced Animation */
         .toast-container { position: fixed; top: 2rem; right: 2rem; z-index: 2000; display: flex; flex-direction: column; gap: 0.75rem; }
         .toast {
             background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(16px);
             padding: 1rem 1.5rem; border-radius: 1rem; 
             box-shadow: 0 12px 36px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.8) inset;
             border-left: 4px solid #000; display: flex; align-items: center; gap: 0.75rem; 
-            transform: translateX(120%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transform: translateX(120%) scale(0.8); 
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             min-width: 320px; max-width: 420px; font-size: 0.875rem;
+            opacity: 0;
         }
-        .toast.show { transform: translateX(0); }
+        .toast.show { 
+            transform: translateX(0) scale(1); 
+            opacity: 1;
+        }
         .toast.success { border-left-color: #22c55e; }
         .toast.error { border-left-color: #ef4444; }
 
         /* Utilities */
         .icon { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         
-        /* Scrollbar */
+        /* Scrollbar - Smooth */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; transition: background 0.3s; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
 
         /* Loading Spinner */
@@ -251,34 +294,40 @@
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
             color: #166534;
             border: 1px solid #bbf7d0;
+            transition: all 0.3s ease;
         }
 
-        /* Toggle Switch */
+        /* Toggle Switch - Smooth */
         .toggle-switch {
             position: relative; display: inline-block; width: 44px; height: 24px;
         }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #ccc; transition: .4s; border-radius: 34px;
+            background-color: #ccc; transition: .4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border-radius: 34px;
         }
         .slider:before {
             position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
-            background-color: white; transition: .4s; border-radius: 50%;
+            background-color: white; transition: .4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border-radius: 50%;
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
         input:checked + .slider { background-color: #000; }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* Footer Styles */
+        /* Footer Styles - Sticky Bottom */
         .app-footer {
             margin-top: auto;
-            background: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.6);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid rgba(0,0,0,0.05);
             padding: 1.5rem 2rem;
             font-size: 0.8rem;
             color: var(--text-sub);
+            position: sticky;
+            bottom: 0;
+            z-index: 40;
+            transition: all 0.3s ease;
         }
 
         /* Weather Widget */
@@ -289,6 +338,11 @@
             padding: 1.25rem;
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .weather-widget:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
         }
         .weather-widget::before {
             content: '';
@@ -299,6 +353,11 @@
             height: 150px;
             background: rgba(255,255,255,0.1);
             border-radius: 50%;
+            animation: floatWeather 10s infinite ease-in-out;
+        }
+        @keyframes floatWeather {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-10px, 10px); }
         }
 
         /* Code Block Style */
@@ -314,18 +373,21 @@
             word-break: break-all;
             max-height: 400px;
             overflow-y: auto;
+            transition: all 0.3s ease;
         }
 
-        /* Action Buttons Group */
+        /* Action Buttons Group - Smooth Reveal */
         .action-btn-group {
             display: flex;
             gap: 0.5rem;
             opacity: 0;
-            transition: opacity 0.2s;
+            transform: translateX(10px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         tr:hover .action-btn-group,
         .group-hover-container:hover .action-btn-group {
             opacity: 1;
+            transform: translateX(0);
         }
 
         /* Admin Badge */
@@ -338,13 +400,19 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            animation: pulse-badge 2s infinite;
+        }
+        @keyframes pulse-badge {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
 
-        /* OTP Input Styles */
+        /* OTP Input Styles - Enhanced Focus */
         .otp-input-group {
             display: flex;
             gap: 0.5rem;
             margin-bottom: 1rem;
+            justify-content: center;
         }
         .otp-input {
             width: 48px;
@@ -355,16 +423,17 @@
             border: 2px solid rgba(0,0,0,0.1);
             border-radius: 0.75rem;
             outline: none;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             background: rgba(255,255,255,0.9);
         }
         .otp-input:focus {
             border-color: #000;
             background: #fff;
-            box-shadow: 0 0 0 4px rgba(0,0,0,0.03);
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.03), 0 4px 12px rgba(0,0,0,0.08);
+            transform: translateY(-2px) scale(1.05);
         }
 
-        /* Floating Menu Enhancement */
+        /* Floating Menu Enhancement - Only visible when logged in */
         .floating-menu {
             position: fixed;
             bottom: 2rem;
@@ -374,6 +443,15 @@
             flex-direction: column;
             gap: 0.75rem;
             align-items: flex-end;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .floating-menu.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
         .floating-menu-item {
             width: 48px;
@@ -387,12 +465,12 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: scale(0);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(0) translateY(20px);
             opacity: 0;
         }
         .floating-menu.open .floating-menu-item {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
             opacity: 1;
         }
         .floating-menu-trigger {
@@ -406,16 +484,22 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 10;
         }
         .floating-menu.open .floating-menu-trigger {
-            transform: rotate(45deg);
+            transform: rotate(45deg) scale(1.1);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.3);
         }
         .floating-menu-item:nth-child(1) { transition-delay: 0.05s; }
         .floating-menu-item:nth-child(2) { transition-delay: 0.1s; }
         .floating-menu-item:nth-child(3) { transition-delay: 0.15s; }
         .floating-menu-item:nth-child(4) { transition-delay: 0.2s; }
+        .floating-menu-item:hover {
+            transform: scale(1.1) !important;
+            background: white;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
 
         /* IP Address Display */
         .ip-badge {
@@ -426,14 +510,25 @@
             font-size: 0.75rem;
             color: var(--text-sub);
             border: 1px solid rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+        }
+        .ip-badge:hover {
+            background: rgba(0,0,0,0.08);
+            transform: scale(1.05);
         }
 
-        /* Log Entry Styles */
+        /* Log Entry Styles - Animated Border */
         .log-entry {
             border-left: 3px solid #2a2a2a;
             padding-left: 1rem;
             margin-bottom: 0.75rem;
             font-size: 0.85rem;
+            transition: all 0.3s ease;
+            animation: slideInLog 0.4s ease-out;
+        }
+        @keyframes slideInLog {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
         }
         .log-entry.success { border-left-color: #22c55e; }
         .log-entry.error { border-left-color: #ef4444; }
@@ -441,12 +536,46 @@
         .log-entry.info { border-left-color: #3b82f6; }
 
         /* User Status Badge */
-        .status-active { background: #dcfce7; color: #166534; }
-        .status-banned { background: #fee2e2; color: #991b1b; }
-        .status-suspended { background: #fef3c7; color: #92400e; }
+        .status-active { background: #dcfce7; color: #166534; transition: all 0.3s; }
+        .status-banned { background: #fee2e2; color: #991b1b; transition: all 0.3s; }
+        .status-suspended { background: #fef3c7; color: #92400e; transition: all 0.3s; }
+
+        /* App Container Layout */
+        #app-container {
+            display: none;
+            padding-top: 5.5rem;
+            padding-bottom: 1rem;
+            min-height: 100vh;
+            flex: 1;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Auth View Full Height */
+        #view-auth {
+            flex: 1;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+        }
+
+        /* Route indicator animation */
+        .route-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #000, #666);
+            z-index: 9999;
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 0%;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Route Loading Indicator -->
+    <div class="route-indicator" id="route-indicator"></div>
 
     <!-- Background Scene -->
     <div class="bg-scene">
@@ -528,11 +657,7 @@
                     </button>
                 </form>
                 
-                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.05);">
-                     <button onclick="handleSignUp()" style="background:none; border:none; color:var(--text-sub); font-size:0.85rem; cursor:pointer; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#000'" onmouseout="this.style.color='var(--text-sub)'">
-                         Don't have an account? <span style="font-weight:600; color:#000;">Create one</span>
-                     </button>
-                </div>
+                <!-- Removed "Don't have an account? Create one" section as requested -->
             </div>
         </div>
     </section>
@@ -541,9 +666,9 @@
     <div id="app-container" style="display: none; padding-top: 5.5rem; padding-bottom: 1rem; min-height: 100vh; flex: 1; flex-direction: column;">
         
         <!-- Navigation -->
-        <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl glass-panel rounded-2xl px-6 py-3 flex items-center justify-between shadow-sm overflow-x-auto">
+        <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl glass-panel rounded-2xl px-6 py-3 flex items-center justify-between shadow-sm overflow-x-auto transition-all duration-300">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('dashboard')">
-                <div class="w-9 h-9 bg-black rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                <div class="w-9 h-9 bg-black rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <svg class="icon" style="color:white; width:18px;" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 </div>
                 <span class="font-display font-bold text-lg tracking-tight">LuvMail</span>
@@ -584,14 +709,14 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <div id="user-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-800 to-black text-white flex items-center justify-center text-xs font-bold shadow-md">U</div>
-                <button onclick="handleLogout()" class="p-2 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all" title="Sign Out">
+                <div id="user-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-800 to-black text-white flex items-center justify-center text-xs font-bold shadow-md transition-transform duration-300 hover:scale-110">U</div>
+                <button onclick="handleLogout()" class="p-2 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all duration-300" title="Sign Out">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                 </button>
             </div>
         </nav>
 
-        <main class="max-w-6xl mx-auto px-4 mt-8 mb-8 flex-1">
+        <main class="max-w-6xl mx-auto px-4 mt-8 mb-8 flex-1 relative">
 
             <!-- DASHBOARD (/dashboard) -->
             <section id="view-dashboard" class="page-view active">
@@ -609,7 +734,7 @@
                         </div>
                         
                         <!-- Date & Time Widget -->
-                        <div class="glass-card p-4 text-right min-w-[200px]">
+                        <div class="glass-card p-4 text-right min-w-[200px] hover:shadow-lg transition-all duration-300">
                             <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1" id="current-date">Loading...</div>
                             <div class="font-display text-2xl font-bold text-gray-800" id="current-time">--:--:--</div>
                         </div>
@@ -633,26 +758,26 @@
                         </div>
                     </div>
 
-                    <div class="glass-card p-6">
+                    <div class="glass-card p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                         <div class="flex justify-between items-start mb-4">
-                            <div class="p-3 bg-blue-50 rounded-xl text-blue-600"><svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+                            <div class="p-3 bg-blue-50 rounded-xl text-blue-600 transition-transform duration-300 hover:scale-110"><svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
                             <span class="resend-status">Resend Active</span>
                         </div>
                         <div class="font-display text-3xl font-bold tracking-tight" id="stat-sent">0</div>
                         <div class="text-sm text-[var(--text-sub)] mt-1 font-medium">Emails Sent</div>
                     </div>
                     
-                    <div class="glass-card p-6">
+                    <div class="glass-card p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                          <div class="flex justify-between items-start mb-4">
-                            <div class="p-3 bg-purple-50 rounded-xl text-purple-600"><svg class="icon" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+                            <div class="p-3 bg-purple-50 rounded-xl text-purple-600 transition-transform duration-300 hover:scale-110"><svg class="icon" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
                         </div>
                         <div class="font-display text-3xl font-bold tracking-tight" id="stat-contacts">0</div>
                         <div class="text-sm text-[var(--text-sub)] mt-1 font-medium">Contacts</div>
                     </div>
 
-                    <div class="glass-card p-6">
+                    <div class="glass-card p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                          <div class="flex justify-between items-start mb-4">
-                            <div class="p-3 bg-orange-50 rounded-xl text-orange-600"><svg class="icon" viewBox="0 0 24 24"><path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div>
+                            <div class="p-3 bg-orange-50 rounded-xl text-orange-600 transition-transform duration-300 hover:scale-110"><svg class="icon" viewBox="0 0 24 24"><path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg></div>
                         </div>
                         <div class="font-display text-3xl font-bold tracking-tight" id="stat-senders">0</div>
                         <div class="text-sm text-[var(--text-sub)] mt-1 font-medium">Senders</div>
@@ -663,7 +788,7 @@
                     <div class="glass-card p-6">
                         <h3 class="font-display font-bold text-lg mb-5 tracking-tight flex justify-between items-center">
                             Recent Campaigns
-                            <button onclick="navigateTo('sent')" class="text-xs font-normal text-gray-500 hover:text-black underline">View All</button>
+                            <button onclick="navigateTo('sent')" class="text-xs font-normal text-gray-500 hover:text-black underline transition-colors duration-300">View All</button>
                         </h3>
                         <div id="dashboard-recent-list" class="space-y-3">
                             <div class="flex items-center justify-center py-12 text-[var(--text-sub)] text-sm">Loading activity...</div>
@@ -673,32 +798,32 @@
                     <div class="glass-card p-6">
                         <h3 class="font-display font-bold text-lg mb-5 tracking-tight">Quick Actions</h3>
                         <div class="grid grid-cols-2 gap-3">
-                            <button onclick="navigateTo('mail')" class="p-4 bg-black/[0.02] hover:bg-black/[0.05] rounded-xl text-left transition-all group">
-                                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                            <button onclick="navigateTo('mail')" class="p-4 bg-black/[0.02] hover:bg-black/[0.05] rounded-xl text-left transition-all duration-300 group hover:shadow-md hover:-translate-y-1">
+                                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                                     <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
                                 </div>
                                 <div class="font-semibold text-sm">New Campaign</div>
                                 <div class="text-xs text-gray-400">Compose & Send</div>
                             </button>
                             
-                            <button onclick="openModal('contact-modal')" class="p-4 bg-black/[0.02] hover:bg-black/[0.05] rounded-xl text-left transition-all group">
-                                <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                            <button onclick="openModal('contact-modal')" class="p-4 bg-black/[0.02] hover:bg-black/[0.05] rounded-xl text-left transition-all duration-300 group hover:shadow-md hover:-translate-y-1">
+                                <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                                     <svg class="icon" viewBox="0 0 24 24"><path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
                                 </div>
                                 <div class="font-semibold text-sm">Add Contact</div>
                                 <div class="text-xs text-gray-400">Grow Audience</div>
                             </button>
 
-                            <button onclick="openModal('template-modal')" class="p-4 bg-black/[0.02] hover:bg-black/[0.05] rounded-xl text-left transition-all group">
-                                <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                            <button onclick="openModal('template-modal')" class="p-4 bg-black/[0.02] hover:bg-black/[0.05] rounded-xl text-left transition-all duration-300 group hover:shadow-md hover:-translate-y-1">
+                                <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                                     <svg class="icon" viewBox="0 0 24 24"><path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6z"/></svg>
                                 </div>
                                 <div class="font-semibold text-sm">Save Template</div>
                                 <div class="text-xs text-gray-400">Reuse Content</div>
                             </button>
 
-                            <button onclick="navigateTo('templates')" class="p-4 bg-black/[0.02] hover:bg-black/[0.05] rounded-xl text-left transition-all group">
-                                <div class="w-10 h-10 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                            <button onclick="navigateTo('templates')" class="p-4 bg-black/[0.02] hover:bg-black/[0.05] rounded-xl text-left transition-all duration-300 group hover:shadow-md hover:-translate-y-1">
+                                <div class="w-10 h-10 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center mb-3 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                                     <svg class="icon" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                                 </div>
                                 <div class="font-semibold text-sm">View Templates</div>
@@ -735,7 +860,7 @@
                                 </label>
                                 <span class="text-sm font-semibold text-gray-600" id="mail-status-label">Active</span>
                             </div>
-                            <div class="text-xs text-gray-400 bg-gray-50 px-3 py-1.5 rounded-lg">
+                            <div class="text-xs text-gray-400 bg-gray-50 px-3 py-1.5 rounded-lg transition-all duration-300 hover:bg-gray-100">
                                 Last saved: Just now
                             </div>
                         </div>
@@ -772,7 +897,7 @@
                             <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Recipients</label>
                             <div class="relative">
                                 <input type="text" id="mail-to" class="input-glass pr-12" placeholder="Enter emails separated by commas">
-                                <button onclick="openModal('contact-picker-modal')" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 hover:bg-black/5 rounded-lg transition-colors" title="Pick contacts">
+                                <button onclick="openModal('contact-picker-modal')" class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 hover:bg-black/5 rounded-lg transition-all duration-300 hover:scale-110" title="Pick contacts">
                                     <svg class="icon text-gray-400" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 </button>
                             </div>
@@ -783,13 +908,13 @@
                             <div class="flex items-center justify-between mb-4">
                                 <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider">Content</label>
                                 <div class="flex gap-2">
-                                     <button onclick="setEditorMode('html')" id="mode-html-btn" class="text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md">Rich Text</button>
-                                     <button onclick="setEditorMode('code')" id="mode-code-btn" class="text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md">HTML Code</button>
-                                     <button onclick="setEditorMode('text')" id="mode-text-btn" class="text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md">Plain Text</button>
+                                     <button onclick="setEditorMode('html')" id="mode-html-btn" class="text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md transition-all duration-300 hover:bg-black/10">Rich Text</button>
+                                     <button onclick="setEditorMode('code')" id="mode-code-btn" class="text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-300 hover:bg-black/5">HTML Code</button>
+                                     <button onclick="setEditorMode('text')" id="mode-text-btn" class="text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-300 hover:bg-black/5">Plain Text</button>
                                 </div>
                             </div>
                             
-                            <p class="text-sm text-gray-500 mb-4 bg-blue-50/50 p-3 rounded-lg border border-blue-100/50">
+                            <p class="text-sm text-gray-500 mb-4 bg-blue-50/50 p-3 rounded-lg border border-blue-100/50 transition-all duration-300">
                                 Add content and design from scratch using the editor or an existing template.
                             </p>
 
@@ -808,11 +933,11 @@
 
                         <!-- Action Footer -->
                         <div class="flex flex-col sm:flex-row justify-end gap-4 pt-8 border-t border-gray-100 mt-8">
-                            <button onclick="saveAsDraft()" class="btn-secondary order-2 sm:order-1">Save Draft</button>
-                            <button onclick="openPreviewModal()" class="btn-secondary order-2 sm:order-1 border-dashed border-gray-300">
+                            <button onclick="saveAsDraft()" class="btn-secondary order-2 sm:order-1 transition-all duration-300 hover:shadow-lg">Save Draft</button>
+                            <button onclick="openPreviewModal()" class="btn-secondary order-2 sm:order-1 border-dashed border-gray-300 transition-all duration-300 hover:shadow-lg hover:border-solid">
                                 <svg class="icon" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg> Preview & Test
                             </button>
-                            <button onclick="sendViaResend()" id="btn-send-final" class="btn-primary px-8 py-3.5 text-base order-1 sm:order-2">
+                            <button onclick="sendViaResend()" id="btn-send-final" class="btn-primary px-8 py-3.5 text-base order-1 sm:order-2 transition-all duration-300 hover:scale-105 hover:shadow-xl">
                                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> 
                                  Send via Resend
                             </button>
@@ -826,7 +951,7 @@
                             <div id="sidebar-templates" class="space-y-2">
                                 <p class="text-xs text-gray-400 italic">No saved templates</p>
                             </div>
-                            <button onclick="openModal('template-modal')" class="w-full mt-4 text-xs font-bold text-gray-500 hover:text-black border border-dashed border-gray-300 hover:border-gray-400 p-2 rounded-lg transition-all">
+                            <button onclick="openModal('template-modal')" class="w-full mt-4 text-xs font-bold text-gray-500 hover:text-black border border-dashed border-gray-300 hover:border-gray-400 p-2 rounded-lg transition-all duration-300 hover:bg-gray-50">
                                 + Create Template
                             </button>
                         </div>
@@ -834,20 +959,20 @@
                         <div class="glass-card p-5 bg-gradient-to-br from-gray-50 to-white border-gray-200">
                             <h4 class="font-bold text-sm mb-3 text-gray-800">Checklist</h4>
                             <ul class="space-y-3 text-xs text-gray-600">
-                                <li class="flex items-center gap-2">
-                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle" id="check-sender"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                <li class="flex items-center gap-2 transition-all duration-300 hover:translate-x-1">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300" id="check-sender"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
                                     Sender Identity
                                 </li>
-                                <li class="flex items-center gap-2">
-                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle" id="check-subject"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                <li class="flex items-center gap-2 transition-all duration-300 hover:translate-x-1">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300" id="check-subject"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
                                     Subject Line
                                 </li>
-                                <li class="flex items-center gap-2">
-                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle" id="check-content"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                <li class="flex items-center gap-2 transition-all duration-300 hover:translate-x-1">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300" id="check-content"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
                                     Content Added
                                 </li>
-                                <li class="flex items-center gap-2">
-                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle" id="check-recipients"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
+                                <li class="flex items-center gap-2 transition-all duration-300 hover:translate-x-1">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center check-circle transition-all duration-300" id="check-recipients"><svg class="w-2.5 h-2.5 text-transparent check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg></div> 
                                     Recipients
                                 </li>
                             </ul>
@@ -855,7 +980,7 @@
                         
                         <div class="glass-card p-5 bg-gradient-to-br from-emerald-50/50 to-teal-50/30 border-emerald-100/50">
                             <h4 class="font-bold text-sm mb-2 text-emerald-900">API Connection</h4>
-                            <div class="flex items-center gap-2 text-xs text-emerald-700 font-medium bg-emerald-50/50 p-2 rounded-lg mb-2">
+                            <div class="flex items-center gap-2 text-xs text-emerald-700 font-medium bg-emerald-50/50 p-2 rounded-lg mb-2 transition-all duration-300 hover:bg-emerald-100/50">
                                 <span class="relative flex h-2 w-2">
                                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                   <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -879,7 +1004,7 @@
                         <p class="text-[var(--text-sub)]">View and manage your campaign history.</p>
                     </div>
                     <div class="flex gap-2">
-                        <input type="text" id="search-sent" class="input-glass py-2 px-4 text-sm w-64" placeholder="Search by subject..." oninput="filterSentEmails()">
+                        <input type="text" id="search-sent" class="input-glass py-2 px-4 text-sm w-64 transition-all duration-300 focus:w-80" placeholder="Search by subject..." oninput="filterSentEmails()">
                     </div>
                 </header>
                 <div class="glass-card overflow-hidden">
@@ -907,7 +1032,7 @@
                         <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Templates</h1>
                         <p class="text-[var(--text-sub)]">Create and manage your email templates.</p>
                     </div>
-                    <button onclick="openModal('template-modal')" class="btn-primary">
+                    <button onclick="openModal('template-modal')" class="btn-primary transition-all duration-300 hover:scale-105">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> New Template
                     </button>
                 </header>
@@ -924,7 +1049,7 @@
                         <h1 class="font-display text-3xl font-bold mb-2 tracking-tight">Contacts</h1>
                         <p class="text-[var(--text-sub)]">Manage your audience lists.</p>
                     </div>
-                    <button onclick="openModal('contact-modal')" class="btn-primary">
+                    <button onclick="openModal('contact-modal')" class="btn-primary transition-all duration-300 hover:scale-105">
                         <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg> Add Contact
                     </button>
                 </header>
@@ -963,14 +1088,14 @@
                                 <label class="block text-xs font-semibold text-[var(--text-sub)] mb-1.5 uppercase">Account Email</label>
                                 <input type="email" id="set-email" class="input-glass bg-black/[0.02]" disabled>
                             </div>
-                            <button type="submit" class="btn-primary mt-2">Update Profile</button>
+                            <button type="submit" class="btn-primary mt-2 transition-all duration-300 hover:scale-105">Update Profile</button>
                         </form>
                     </div>
 
                     <div class="glass-card p-6">
                         <div class="flex justify-between items-center mb-6 pb-4 border-b border-black/5">
                             <h3 class="font-semibold text-lg">Sender Identities</h3>
-                            <button onclick="openModal('sender-modal')" class="text-xs font-semibold text-black bg-black/5 px-3 py-1.5 rounded-lg hover:bg-black/10 transition-colors">+ Add New</button>
+                            <button onclick="openModal('sender-modal')" class="text-xs font-semibold text-black bg-black/5 px-3 py-1.5 rounded-lg hover:bg-black/10 transition-all duration-300">+ Add New</button>
                         </div>
                         <ul id="settings-sender-list" class="space-y-3">
                             <li class="text-sm text-[var(--text-sub)] italic py-4 text-center">No senders configured</li>
@@ -994,7 +1119,7 @@
 
                 <!-- Stats Grid - Developer Style -->
                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="dev-surface p-6">
+                    <div class="dev-surface p-6 hover:scale-105 transition-all duration-300 cursor-default">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-mono text-dev-accent">// TOTAL_USERS</span>
                             <svg class="icon w-4 h-4 dev-accent" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -1003,7 +1128,7 @@
                         <div class="text-xs dev-text mt-1">Registered Users</div>
                     </div>
                     
-                    <div class="dev-surface p-6">
+                    <div class="dev-surface p-6 hover:scale-105 transition-all duration-300 cursor-default">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-mono text-dev-info">// ACTIVE_SESSIONS</span>
                             <svg class="icon w-4 h-4 dev-info" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -1012,7 +1137,7 @@
                         <div class="text-xs dev-text mt-1">Active Today</div>
                     </div>
                     
-                    <div class="dev-surface p-6">
+                    <div class="dev-surface p-6 hover:scale-105 transition-all duration-300 cursor-default">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-mono text-dev-warning">// EMAIL_SENT</span>
                             <svg class="icon w-4 h-4 dev-warning" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -1021,7 +1146,7 @@
                         <div class="text-xs dev-text mt-1">Total Emails</div>
                     </div>
                     
-                    <div class="dev-surface p-6">
+                    <div class="dev-surface p-6 hover:scale-105 transition-all duration-300 cursor-default">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-mono text-dev-error">// SYSTEM_LOGS</span>
                             <svg class="icon w-4 h-4 dev-error" viewBox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -1038,10 +1163,10 @@
                             <span class="text-dev-accent">&lt;</span>User Management<span class="text-dev-accent">/&gt;</span>
                         </h3>
                         <div class="flex gap-2">
-                            <button onclick="refreshAdminUsers()" class="text-xs font-mono bg-dev-border hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded transition-colors">
+                            <button onclick="refreshAdminUsers()" class="text-xs font-mono bg-dev-border hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded transition-all duration-300 hover:scale-105">
                                 [REFRESH]
                             </button>
-                            <button onclick="openModal('admin-log-modal')" class="text-xs font-mono bg-dev-border hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded transition-colors">
+                            <button onclick="openModal('admin-log-modal')" class="text-xs font-mono bg-dev-border hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded transition-all duration-300 hover:scale-105">
                                 [VIEW_LOGS]
                             </button>
                         </div>
@@ -1082,16 +1207,16 @@
 
         </main>
 
-        <!-- FOOTER -->
+        <!-- FOOTER - Sticky at bottom -->
         <footer class="app-footer">
             <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="text-center md:text-left">
                     © 2025 - <span id="footer-year"></span> luviio.com. All rights reserved.
                 </div>
                 <div class="flex items-center gap-2 text-center md:text-right">
-                    <a href="https://luviio.com/terms" target="_blank" class="hover:text-black transition-colors">Terms</a>
+                    <a href="https://luviio.com/terms" target="_blank" class="hover:text-black transition-colors duration-300">Terms</a>
                     <span>•</span>
-                    <a href="https://luviio.com/privacy" target="_blank" class="hover:text-black transition-colors">Policy</a>
+                    <a href="https://luviio.com/privacy" target="_blank" class="hover:text-black transition-colors duration-300">Policy</a>
                     <span>|</span>
                     <span>Malaysia 🇲🇾</span>
                 </div>
@@ -1099,7 +1224,7 @@
         </footer>
     </div>
 
-    <!-- FLOATING MENU -->
+    <!-- FLOATING MENU - Hidden by default, shows only when logged in -->
     <div class="floating-menu" id="floating-menu">
         <div class="floating-menu-trigger" onclick="toggleFloatingMenu()">
             <svg class="icon" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
@@ -1135,8 +1260,8 @@
                     <input type="email" id="new-c-email" class="input-glass" placeholder="john@example.com" required>
                 </div>
                 <div class="flex gap-3 pt-4">
-                    <button type="button" onclick="closeModal('contact-modal')" class="btn-secondary flex-1">Cancel</button>
-                    <button type="submit" class="btn-primary flex-1">Save Contact</button>
+                    <button type="button" onclick="closeModal('contact-modal')" class="btn-secondary flex-1 transition-all duration-300">Cancel</button>
+                    <button type="submit" class="btn-primary flex-1 transition-all duration-300 hover:scale-105">Save Contact</button>
                 </div>
             </form>
         </div>
@@ -1162,8 +1287,8 @@
                     <label for="new-s-default" class="text-sm text-[var(--text-sub)]">Set as default sender</label>
                 </div>
                 <div class="flex gap-3 pt-4">
-                    <button type="button" onclick="closeModal('sender-modal')" class="btn-secondary flex-1">Cancel</button>
-                    <button type="submit" class="btn-primary flex-1">Add Sender</button>
+                    <button type="button" onclick="closeModal('sender-modal')" class="btn-secondary flex-1 transition-all duration-300">Cancel</button>
+                    <button type="submit" class="btn-primary flex-1 transition-all duration-300 hover:scale-105">Add Sender</button>
                 </div>
             </form>
         </div>
@@ -1178,8 +1303,8 @@
                 <input type="text" id="new-t-name" class="input-glass" placeholder="e.g., Welcome Series #1" required>
                 <p class="text-xs text-[var(--text-sub)]">Saves current subject and body content.</p>
                 <div class="flex gap-3 pt-4">
-                    <button type="button" onclick="closeModal('template-modal')" class="btn-secondary flex-1">Cancel</button>
-                    <button type="submit" class="btn-primary flex-1">Save Template</button>
+                    <button type="button" onclick="closeModal('template-modal')" class="btn-secondary flex-1 transition-all duration-300">Cancel</button>
+                    <button type="submit" class="btn-primary flex-1 transition-all duration-300 hover:scale-105">Save Template</button>
                 </div>
             </form>
         </div>
@@ -1192,7 +1317,7 @@
             <div id="picker-list" class="space-y-1 mb-4 overflow-y-auto flex-1 pr-2">
             </div>
             <div class="flex justify-end pt-4 border-t border-black/5">
-                <button onclick="closeModal('contact-picker-modal')" class="btn-primary">Done</button>
+                <button onclick="closeModal('contact-picker-modal')" class="btn-primary transition-all duration-300 hover:scale-105">Done</button>
             </div>
         </div>
     </div>
@@ -1202,7 +1327,7 @@
         <div class="modal-box max-w-3xl w-full max-h-[90vh] overflow-y-auto flex flex-col">
              <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
                 <h2 class="font-display font-bold text-xl tracking-tight">Preview & Test</h2>
-                <button onclick="closeModal('preview-modal')" class="text-gray-400 hover:text-black">
+                <button onclick="closeModal('preview-modal')" class="text-gray-400 hover:text-black transition-colors duration-300 hover:rotate-90">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
              </div>
@@ -1219,8 +1344,8 @@
                  
                  <!-- Tabs for Preview -->
                  <div class="flex gap-2 mb-4">
-                     <button onclick="switchPreviewMode('rendered')" id="prev-tab-rendered" class="text-xs font-bold bg-black text-white px-3 py-1.5 rounded">Rendered</button>
-                     <button onclick="switchPreviewMode('html')" id="prev-tab-html" class="text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200">HTML Source</button>
+                     <button onclick="switchPreviewMode('rendered')" id="prev-tab-rendered" class="text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-300">Rendered</button>
+                     <button onclick="switchPreviewMode('html')" id="prev-tab-html" class="text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-300">HTML Source</button>
                  </div>
 
                  <div id="prev-body-rendered" class="prose prose-sm max-w-none text-sm text-gray-700 leading-relaxed">
@@ -1233,8 +1358,8 @@
              </div>
 
              <div class="mt-auto flex justify-end gap-3 pt-4 border-t border-gray-100">
-                 <button onclick="sendTestEmail()" class="btn-secondary">Send Test Email</button>
-                 <button onclick="closeModal('preview-modal')" class="btn-primary">Close Preview</button>
+                 <button onclick="sendTestEmail()" class="btn-secondary transition-all duration-300">Send Test Email</button>
+                 <button onclick="closeModal('preview-modal')" class="btn-primary transition-all duration-300 hover:scale-105">Close Preview</button>
              </div>
         </div>
     </div>
@@ -1244,7 +1369,7 @@
         <div class="modal-box max-w-3xl w-full max-h-[90vh] overflow-y-auto flex flex-col">
              <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
                 <h2 class="font-display font-bold text-xl tracking-tight">Email Details</h2>
-                <button onclick="closeModal('view-email-modal')" class="text-gray-400 hover:text-black">
+                <button onclick="closeModal('view-email-modal')" class="text-gray-400 hover:text-black transition-colors duration-300 hover:rotate-90">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
              </div>
@@ -1254,7 +1379,7 @@
              </div>
 
              <div class="mt-auto flex justify-end pt-4 border-t border-gray-100">
-                 <button onclick="closeModal('view-email-modal')" class="btn-primary">Close</button>
+                 <button onclick="closeModal('view-email-modal')" class="btn-primary transition-all duration-300 hover:scale-105">Close</button>
              </div>
         </div>
     </div>
@@ -1264,7 +1389,7 @@
         <div class="modal-box max-w-2xl w-full max-h-[90vh] overflow-y-auto" style="background: var(--dev-surface); border: 1px solid var(--dev-border);">
              <div class="flex justify-between items-center mb-6 border-b border-dev-border pb-4">
                 <h2 class="font-mono font-bold text-lg tracking-tight text-dev-accent">&lt;User_Details/&gt;</h2>
-                <button onclick="closeModal('admin-user-modal')" class="text-gray-400 hover:text-white">
+                <button onclick="closeModal('admin-user-modal')" class="text-gray-400 hover:text-white transition-colors duration-300">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
              </div>
@@ -1274,19 +1399,19 @@
              </div>
 
              <div class="mt-6 pt-4 border-t border-dev-border flex flex-wrap gap-2">
-                 <button onclick="resetUserPassword()" class="text-xs bg-yellow-900/30 text-yellow-400 hover:bg-yellow-900/50 px-3 py-2 rounded border border-yellow-800/50 transition-colors">
+                 <button onclick="resetUserPassword()" class="text-xs bg-yellow-900/30 text-yellow-400 hover:bg-yellow-900/50 px-3 py-2 rounded border border-yellow-800/50 transition-all duration-300 hover:scale-105">
                      [RESET_PASSWORD]
                  </button>
-                 <button onclick="sendVerificationLink()" class="text-xs bg-blue-900/30 text-blue-400 hover:bg-blue-900/50 px-3 py-2 rounded border border-blue-800/50 transition-colors">
+                 <button onclick="sendVerificationLink()" class="text-xs bg-blue-900/30 text-blue-400 hover:bg-blue-900/50 px-3 py-2 rounded border border-blue-800/50 transition-all duration-300 hover:scale-105">
                      [SEND_VERIFICATION]
                  </button>
-                 <button onclick="toggleUserBan()" class="text-xs bg-red-900/30 text-red-400 hover:bg-red-900/50 px-3 py-2 rounded border border-red-800/50 transition-colors" id="ban-toggle-btn">
+                 <button onclick="toggleUserBan()" class="text-xs bg-red-900/30 text-red-400 hover:bg-red-900/50 px-3 py-2 rounded border border-red-800/50 transition-all duration-300 hover:scale-105" id="ban-toggle-btn">
                      [BAN_USER]
                  </button>
-                 <button onclick="grantSuperAdmin()" class="text-xs bg-purple-900/30 text-purple-400 hover:bg-purple-900/50 px-3 py-2 rounded border border-purple-800/50 transition-colors">
+                 <button onclick="grantSuperAdmin()" class="text-xs bg-purple-900/30 text-purple-400 hover:bg-purple-900/50 px-3 py-2 rounded border border-purple-800/50 transition-all duration-300 hover:scale-105">
                      [GRANT_SUPERADMIN]
                  </button>
-                 <button onclick="deleteUserAdmin()" class="text-xs bg-gray-700 text-gray-300 hover:bg-gray-600 px-3 py-2 rounded border border-gray-600 transition-colors ml-auto">
+                 <button onclick="deleteUserAdmin()" class="text-xs bg-gray-700 text-gray-300 hover:bg-gray-600 px-3 py-2 rounded border border-gray-600 transition-all duration-300 hover:scale-105 ml-auto">
                      [DELETE_USER]
                  </button>
              </div>
@@ -1298,7 +1423,7 @@
         <div class="modal-box max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col" style="background: var(--dev-surface); border: 1px solid var(--dev-border);">
              <div class="flex justify-between items-center p-6 border-b border-dev-border bg-black/20">
                 <h2 class="font-mono font-bold text-lg tracking-tight text-dev-accent">&lt;System_Logs/&gt;</h2>
-                <button onclick="closeModal('admin-log-modal')" class="text-gray-400 hover:text-white">
+                <button onclick="closeModal('admin-log-modal')" class="text-gray-400 hover:text-white transition-colors duration-300">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
              </div>
@@ -1309,7 +1434,7 @@
 
              <div class="p-4 border-t border-dev-border bg-black/20 flex justify-between items-center">
                  <span class="text-dev-text text-xs">Showing all entries</span>
-                 <button onclick="exportLogs()" class="text-xs bg-dev-border hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded transition-colors">
+                 <button onclick="exportLogs()" class="text-xs bg-dev-border hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded transition-all duration-300 hover:scale-105">
                      [EXPORT_LOGS]
                  </button>
              </div>
@@ -1343,6 +1468,60 @@
         let cacheTemplates = [];
         let cacheCampaigns = [];
         let selectedUserIdForAdmin = null;
+
+        // Current route/page state
+        let currentPage = 'dashboard';
+
+        // ==========================================
+        // ROUTING SYSTEM
+        // ==========================================
+
+        const routes = {
+            '/': 'dashboard',
+            '/dashboard': 'dashboard',
+            '/compose': 'mail',
+            '/sent': 'sent',
+            '/templates': 'templates',
+            '/contacts': 'contacts',
+            '/settings': 'settings',
+            '/admin': 'admin'
+        };
+
+        function initRouter() {
+            window.addEventListener('hashchange', handleRouteChange);
+            handleRouteChange();
+        }
+
+        function handleRouteChange() {
+            const hash = window.location.hash || '/';
+            const path = hash.replace('#', '') || '/';
+            
+            if(routes[path]) {
+                navigateTo(routes[path], false);
+            } else {
+                navigateTo('dashboard', false);
+            }
+        }
+
+        function updateRoute(page) {
+            const routePath = Object.keys(routes).find(key => routes[key] === page) || '/';
+            window.location.hash = routePath;
+        }
+
+        function showRouteIndicator() {
+            const indicator = document.getElementById('route-indicator');
+            indicator.style.width = '30%';
+            setTimeout(() => {
+                indicator.style.width = '100%';
+                setTimeout(() => {
+                    indicator.style.width = '0%';
+                    indicator.style.opacity = '0';
+                    setTimeout(() => {
+                        indicator.style.opacity = '1';
+                    }, 300);
+                }, 300);
+            }, 100);
+        }
 
         // ==========================================
         // GEOLOCATION HANDLER (Auto-detect)
@@ -1389,6 +1568,9 @@
             // Setup OTP Input Handlers
             setupOTPInputs();
 
+            // Initialize Router
+            initRouter();
+
             const { data: { session } } = await _supabase.auth.getSession();
             
             if (session) {
@@ -1415,13 +1597,13 @@
             if(tab === 'password') {
                 passwordForm.style.display = 'flex';
                 otpForm.style.display = 'none';
-                tabPass.className = 'flex-1 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-black transition-all';
-                tabOtp.className = 'flex-1 py-2 text-sm font-semibold rounded-lg text-gray-500 hover:text-black transition-all';
+                tabPass.className = 'flex-1 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-black transition-all duration-300';
+                tabOtp.className = 'flex-1 py-2 text-sm font-semibold rounded-lg text-gray-500 hover:text-black transition-all duration-300';
             } else {
                 passwordForm.style.display = 'none';
                 otpForm.style.display = 'flex';
-                tabOtp.className = 'flex-1 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-black transition-all';
-                tabPass.className = 'flex-1 py-2 text-sm font-semibold rounded-lg text-gray-500 hover:text-black transition-all';
+                tabOtp.className = 'flex-1 py-2 text-sm font-semibold rounded-lg bg-white shadow-sm text-black transition-all duration-300';
+                tabPass.className = 'flex-1 py-2 text-sm font-semibold rounded-lg text-gray-500 hover:text-black transition-all duration-300';
             }
         }
 
@@ -1440,7 +1622,6 @@
                 const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
                 
-                // Log login attempt
                 logSystemEvent('LOGIN_SUCCESS', `User ${email} signed in via password from IP: ${userIP}`, 'success');
                 
                 initApp(data.user);
@@ -1461,26 +1642,20 @@
             const otpContainer = document.getElementById('otp-input-container');
             const verifyBtn = document.getElementById('verify-otp-btn');
             
-            // Check if we're sending OTP or verifying
             if(otpContainer.style.display !== 'block') {
-                // Send OTP
                 btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full spinner mr-2"></span> Sending...';
                 btn.disabled = true;
 
                 try {
-                    // Note: In real implementation, you'd use a custom edge function or service to generate OTP
-                    // For demo, we'll simulate it
                     const { error } = await _supabase.auth.signInWithOtp({ 
                         email,
                         options: {
                             emailRedirectTo: window.location.origin,
-                            // This would normally trigger an OTP flow
                         }
                     });
                     
                     if (error) throw error;
                     
-                    // Show OTP inputs
                     otpContainer.style.display = 'block';
                     btn.style.display = 'none';
                     verifyBtn.style.display = 'inline-flex';
@@ -1538,8 +1713,6 @@
             btn.disabled = true;
 
             try {
-                // In production, this would call your backend to verify the OTP
-                // For demo, we'll attempt to verify with Supabase's OTP mechanism
                 const { data, error } = await _supabase.auth.verifyOtp({
                     email,
                     token: otp,
@@ -1559,24 +1732,19 @@
             }
         }
 
-        async function handleSignUp() {
-             const email = document.getElementById('auth-email').value.trim();
-             const password = document.getElementById('auth-pass').value;
-             
-             if(!email || !password) return showToast("Please enter email and password", "error");
-             const { error } = await _supabase.auth.signUp({ email, password });
-             if(error) return showToast(error.message, 'error');
-             showToast("Check your inbox to confirm!", "success");
-        }
-
         async function handleLogout() {
             await _supabase.auth.signOut();
             currentUser = null;
             document.getElementById('app-container').style.display = 'none';
             document.getElementById('view-auth').classList.remove('active');
             
+            // Hide floating menu on logout
+            const floatingMenu = document.getElementById('floating-menu');
+            floatingMenu.classList.remove('visible', 'open');
+            
             setTimeout(() => {
                 document.getElementById('view-auth').classList.add('active');
+                window.location.hash = '/';
             }, 100);
         }
 
@@ -1585,13 +1753,21 @@
         // ==========================================
 
         async function initApp(user) {
-            currentUser = user;
+            currentUser = null; // Reset first
             
             // Check if user is admin
             const isAdmin = user.email === 'admin@luviio.com' || user.user_metadata?.role === 'admin' || user.user_metadata?.role === 'super_admin';
             
             document.getElementById('view-auth').classList.remove('active');
             document.getElementById('app-container').style.display = 'flex';
+            
+            // Show floating menu now that user is logged in
+            const floatingMenu = document.getElementById('floating-menu');
+            setTimeout(() => {
+                floatingMenu.classList.add('visible');
+            }, 500);
+            
+            currentUser = user;
             
             // Set Avatar & Greeting
             const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
@@ -1655,32 +1831,76 @@
             document.getElementById('set-email').value = user.email;
             document.getElementById('set-name').value = displayName;
             
-            navigateTo('dashboard');
+            // Navigate to initial route or dashboard
+            const hash = window.location.hash.replace('#', '');
+            const targetPage = routes[hash] || 'dashboard';
+            navigateTo(targetPage, false);
         }
 
         // ==========================================
-        // NAVIGATION
+        // NAVIGATION WITH SMOOTH TRANSITIONS
         // ==========================================
 
-        function navigateTo(page) {
-            document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-            const targetView = document.getElementById(`view-${page}`);
-            if(targetView) targetView.classList.add('active');
+        function navigateTo(page, updateHash = true) {
+            showRouteIndicator();
             
-            document.querySelectorAll('.nav-link').forEach(l => {
-                l.classList.remove('active');
-                if(l.dataset.nav === page) l.classList.add('active');
+            // Update current page state
+            currentPage = page;
+            
+            // Update URL hash if needed
+            if(updateHash) {
+                updateRoute(page);
+            }
+            
+            // Hide all pages with exit animation
+            const activePages = document.querySelectorAll('.page-view.active');
+            activePages.forEach(view => {
+                view.style.opacity = '0';
+                view.style.transform = 'translateY(-20px) scale(0.98)';
+                view.style.filter = 'blur(4px)';
+                view.style.pointerEvents = 'none';
             });
+            
+            // Small delay for exit animation, then switch
+            setTimeout(() => {
+                // Remove active class from all
+                document.querySelectorAll('.page-view').forEach(v => {
+                    v.classList.remove('active');
+                    v.style.display = 'none';
+                    v.style.position = 'absolute';
+                });
+                
+                // Activate new page
+                const targetView = document.getElementById(`view-${page}`);
+                if(targetView) {
+                    targetView.style.display = 'block';
+                    targetView.style.position = 'relative';
+                    
+                    // Force reflow
+                    void targetView.offsetWidth;
+                    
+                    targetView.classList.add('active');
+                }
+                
+                // Update nav links
+                document.querySelectorAll('.nav-link').forEach(l => {
+                    l.classList.remove('active');
+                    if(l.dataset.nav === page) l.classList.add('active');
+                });
 
-            // Close floating menu if open
-            document.getElementById('floating-menu').classList.remove('open');
+                // Close floating menu if open
+                document.getElementById('floating-menu').classList.remove('open');
 
-            // Page specific loads
-            if(page === 'contacts') renderContactsTable();
-            if(page === 'settings') renderSettingsSenders();
-            if(page === 'templates') renderTemplatesGrid();
-            if(page === 'sent') loadSentEmails();
-            if(page === 'admin') refreshAdminUsers();
+                // Page specific loads with staggered animations
+                setTimeout(() => {
+                    if(page === 'contacts') renderContactsTable();
+                    if(page === 'settings') renderSettingsSenders();
+                    if(page === 'templates') renderTemplatesGrid();
+                    if(page === 'sent') loadSentEmails();
+                    if(page === 'admin') refreshAdminUsers();
+                }, 100);
+                
+            }, 200);
         }
 
         // ==========================================
@@ -1736,10 +1956,10 @@
                 return;
             }
 
-            container.innerHTML = data.map(c => `
-                <div class="group flex items-center justify-between p-4 bg-black/[0.02] hover:bg-black/[0.04] rounded-xl transition-all cursor-pointer" onclick="viewSentEmailDetail('${c.id}')">
+            container.innerHTML = data.map((c, index) => `
+                <div class="group flex items-center justify-between p-4 bg-black/[0.02] hover:bg-black/[0.04] rounded-xl transition-all duration-300 cursor-pointer hover:shadow-md hover:-translate-y-0.5" onclick="viewSentEmailDetail('${c.id}')" style="animation: fadeUp 0.5s ${index * 0.1}s both;">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-[var(--text-sub)] group-hover:text-black group-hover:shadow transition-all">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-[var(--text-sub)] group-hover:text-black group-hover:shadow transition-all duration-300 group-hover:scale-110">
                             <svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         </div>
                         <div>
@@ -1747,7 +1967,7 @@
                             <div class="text-xs text-[var(--text-sub)]">${formatDate(c.created_at)} • ${c.recipients?.length || 0} recipients</div>
                         </div>
                     </div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full ${c.status === 'sent' ? 'bg-emerald-50 text-emerald-700' : c.status === 'draft' ? 'bg-yellow-50 text-yellow-700' : 'bg-gray-100 text-gray-500'}">${c.status}</span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full ${c.status === 'sent' ? 'bg-emerald-50 text-emerald-700' : c.status === 'draft' ? 'bg-yellow-50 text-yellow-700' : 'bg-gray-100 text-gray-500'} transition-all duration-300">${c.status}</span>
                 </div>
             `).join('');
         }
@@ -1759,11 +1979,11 @@
             if(!data || data.length === 0) return;
 
             container.innerHTML = data.map(t => `
-                <button onclick="loadTemplate('${t.id}')" class="w-full text-left p-2.5 text-xs font-medium bg-black/[0.02] hover:bg-black/[0.05] rounded-lg border border-transparent hover:border-black/10 truncate transition-all group-hover-container relative">
+                <button onclick="loadTemplate('${t.id}')" class="w-full text-left p-2.5 text-xs font-medium bg-black/[0.02] hover:bg-black/[0.05] rounded-lg border border-transparent hover:border-black/10 truncate transition-all duration-300 group-hover-container relative hover:shadow-sm">
                     ${escapeHtml(t.name)}
                     <div class="action-btn-group absolute right-2 top-1/2 -translate-y-1/2">
-                        <button onclick="event.stopPropagation(); editTemplate('${t.id}')" class="p-1 hover:bg-blue-100 rounded text-blue-600" title="Edit"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
-                        <button onclick="event.stopPropagation(); deleteTemplate('${t.id}')" class="p-1 hover:bg-red-100 rounded text-red-600" title="Delete"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                        <button onclick="event.stopPropagation(); editTemplate('${t.id}')" class="p-1 hover:bg-blue-100 rounded text-blue-600 transition-all duration-200 hover:scale-110" title="Edit"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                        <button onclick="event.stopPropagation(); deleteTemplate('${t.id}')" class="p-1 hover:bg-red-100 rounded text-red-600 transition-all duration-200 hover:scale-110" title="Delete"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                     </div>
                 </button>
             `).join('');
@@ -1788,20 +2008,20 @@
             }
 
             cacheCampaigns = data;
-            tbody.innerHTML = data.map(c => `
-                <tr class="group-hover-container hover:bg-black/[0.02] transition-colors sent-row" data-subject="${c.subject.toLowerCase()}">
+            tbody.innerHTML = data.map((c, index) => `
+                <tr class="group-hover-container hover:bg-black/[0.02] transition-all duration-300 sent-row" data-subject="${c.subject.toLowerCase()}" style="animation: fadeUp 0.4s ${index * 0.05}s both;">
                     <td class="p-4 font-medium text-sm">${escapeHtml(c.subject)}</td>
                     <td class="p-4 text-sm text-[var(--text-sub)]">${c.recipients?.length || 0} recipient(s)</td>
                     <td class="p-4">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${c.status === 'sent' ? 'bg-emerald-50 text-emerald-700' : 'bg-yellow-50 text-yellow-700'}">${c.status}</span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${c.status === 'sent' ? 'bg-emerald-50 text-emerald-700' : 'bg-yellow-50 text-yellow-700'} transition-all duration-300">${c.status}</span>
                     </td>
                     <td class="p-4 text-sm text-[var(--text-sub)]">${formatDate(c.sent_at || c.created_at)}</td>
                     <td class="p-4 text-right">
                         <div class="action-btn-group justify-end">
-                            <button onclick="viewSentEmailDetail('${c.id}')" class="p-2 hover:bg-blue-50 rounded-lg text-blue-600 transition-colors" title="View">
+                            <button onclick="viewSentEmailDetail('${c.id}')" class="p-2 hover:bg-blue-50 rounded-lg text-blue-600 transition-all duration-200 hover:scale-110" title="View">
                                 <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                             </button>
-                            <button onclick="deleteCampaign('${c.id}')" class="p-2 hover:bg-red-50 rounded-lg text-red-600 transition-colors" title="Delete">
+                            <button onclick="deleteCampaign('${c.id}')" class="p-2 hover:bg-red-50 rounded-lg text-red-600 transition-all duration-200 hover:scale-110" title="Delete">
                                 <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                             </button>
                         </div>
@@ -1828,20 +2048,20 @@
             }
 
             cacheTemplates = data;
-            grid.innerHTML = data.map(t => `
-                <div class="glass-card p-6 group-hover-container relative">
+            grid.innerHTML = data.map((t, index) => `
+                <div class="glass-card p-6 group-hover-container relative hover:shadow-xl hover:-translate-y-2 transition-all duration-300" style="animation: fadeUp 0.5s ${index * 0.1}s both;">
                     <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center text-indigo-600 font-bold text-lg">
+                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center text-indigo-600 font-bold text-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                             ${t.name.charAt(0)}
                         </div>
                         <div class="action-btn-group">
-                            <button onclick="loadTemplate('${t.id}')" class="p-1.5 bg-black text-white rounded-lg hover:bg-gray-800" title="Use Template">
+                            <button onclick="loadTemplate('${t.id}')" class="p-1.5 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 hover:scale-110" title="Use Template">
                                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                             </button>
-                            <button onclick="editTemplate('${t.id}')" class="p-1.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50" title="Edit Details">
+                            <button onclick="editTemplate('${t.id}')" class="p-1.5 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-all duration-200 hover:scale-110" title="Edit Details">
                                 <svg class="w-3.5 h-3.5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                             </button>
-                            <button onclick="deleteTemplate('${t.id}')" class="p-1.5 bg-white border border-gray-200 rounded-lg hover:bg-red-50 text-red-500" title="Delete">
+                            <button onclick="deleteTemplate('${t.id}')" class="p-1.5 bg-white border border-gray-200 rounded-lg hover:bg-red-50 text-red-500 transition-all duration-200 hover:scale-110" title="Delete">
                                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                             </button>
                         </div>
@@ -1992,13 +2212,13 @@ function switchPreviewMode(mode) {
     if(mode === 'rendered') {
         rendered.classList.remove('hidden');
         htmlCode.classList.add('hidden');
-        tabR.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded';
-        tabH.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200';
+        tabR.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-300';
+        tabH.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-300';
     } else {
         rendered.classList.add('hidden');
         htmlCode.classList.remove('hidden');
-        tabH.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded';
-        tabR.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200';
+        tabH.className = 'text-xs font-bold bg-black text-white px-3 py-1.5 rounded transition-all duration-300';
+        tabR.className = 'text-xs font-bold bg-gray-100 text-gray-600 px-3 py-1.5 rounded hover:bg-gray-200 transition-all duration-300';
     }
 }
 
@@ -2044,11 +2264,13 @@ function updateChecklist() {
         if(isValid) {
             el.classList.add('bg-emerald-500', 'border-emerald-500');
             el.classList.remove('border-gray-300');
+            el.style.transform = 'scale(1.1)';
             icon.classList.remove('text-transparent');
             icon.classList.add('text-white');
         } else {
             el.classList.remove('bg-emerald-500', 'border-emerald-500');
             el.classList.add('border-gray-300');
+            el.style.transform = 'scale(1)';
             icon.classList.add('text-transparent');
             icon.classList.remove('text-white');
         }
@@ -2060,894 +2282,923 @@ document.addEventListener('change', (e) => {
     if(e.target && e.target.id === 'mail-status-toggle') {
         const label = document.getElementById('mail-status-label');
         label.innerText = e.target.checked ? 'Active' : 'Inactive/Draft';
-        label.className = e.target.checked ? 'text-sm font-semibold text-emerald-600' : 'text-sm font-semibold text-gray-400';
+        label.className = e.target.checked ? 'text-sm font-semibold text-emerald-600 transition-all duration-300' : 'text-sm font-semibold text-gray-400 transition-all duration-300';
     }
 });
 
-        async function saveAsDraft() {
-             const subject = document.getElementById('mail-subject').value || 'Untitled Draft';
-             const htmlBody = getEditorContent();
-             
-             const { error } = await _supabase.from('campaigns').insert({
-                user_id: currentUser.id,
-                subject: subject,
-                html_content: htmlBody,
-                status: 'draft'
-             });
-             
-             if(error) return showToast(error.message, 'error');
-             showToast("Draft saved successfully.", 'success');
-        }
+async function saveAsDraft() {
+     const subject = document.getElementById('mail-subject').value || 'Untitled Draft';
+     const htmlBody = getEditorContent();
+     
+     const { error } = await _supabase.from('campaigns').insert({
+        user_id: currentUser.id,
+        subject: subject,
+        html_content: htmlBody,
+        status: 'draft'
+     });
+     
+     if(error) return showToast(error.message, 'error');
+     showToast("Draft saved successfully.", 'success');
+}
 
-        function getEditorContent() {
-            const htmlContainer = document.getElementById('editor-html-container');
-            const codeContainer = document.getElementById('editor-code-container');
-            const textContainer = document.getElementById('editor-text-container');
-            
-            if(htmlContainer.style.display !== 'none') return quillEditor.root.innerHTML;
-            if(codeContainer.style.display !== 'none') return document.getElementById('comp-body-code').value;
-            if(textContainer.style.display !== 'none') return document.getElementById('comp-body-text').value;
-            return '';
-        }
+function getEditorContent() {
+    const htmlContainer = document.getElementById('editor-html-container');
+    const codeContainer = document.getElementById('editor-code-container');
+    const textContainer = document.getElementById('editor-text-container');
+    
+    if(htmlContainer.style.display !== 'none') return quillEditor.root.innerHTML;
+    if(codeContainer.style.display !== 'none') return document.getElementById('comp-body-code').value;
+    if(textContainer.style.display !== 'none') return document.getElementById('comp-body-text').value;
+    return '';
+}
 
-        // ==========================================
-        // CRUD OPERATIONS
-        // ==========================================
+// ==========================================
+// CRUD OPERATIONS - Enhanced with Animations
+// ==========================================
 
-        // CONTACTS CRUD
-        async function saveContact(e) {
-            e.preventDefault();
-            const editId = document.getElementById('edit-contact-id').value;
-            const name = document.getElementById('new-c-name').value.trim();
-            const email = document.getElementById('new-c-email').value.trim().toLowerCase();
+// CONTACTS CRUD
+async function saveContact(e) {
+    e.preventDefault();
+    const editId = document.getElementById('edit-contact-id').value;
+    const name = document.getElementById('new-c-name').value.trim();
+    const email = document.getElementById('new-c-email').value.trim().toLowerCase();
 
-            if(editId) {
-                // UPDATE
-                const { error } = await _supabase.from('contacts').update({ name, email }).eq('id', editId);
-                if(error) return showToast(error.message, 'error');
-                showToast(`${name} updated!`, 'success');
-                const idx = cacheContacts.findIndex(c => c.id === editId);
-                if(idx > -1) cacheContacts[idx] = {...cacheContacts[idx], name, email};
-            } else {
-                // CREATE
-                const { data, error } = await _supabase.from('contacts').insert({
-                    user_id: currentUser.id, name, email
-                }).select().single();
-                if(error) return showToast(error.message, 'error');
-                showToast(`${name} added to contacts`, 'success');
-                cacheContacts.unshift(data);
-            }
-            
-            closeModal('contact-modal');
-            resetContactForm();
-            renderContactsTable();
-            loadStats();
-        }
+    if(editId) {
+        // UPDATE
+        const { error } = await _supabase.from('contacts').update({ name, email }).eq('id', editId);
+        if(error) return showToast(error.message, 'error');
+        showToast(`${name} updated!`, 'success');
+        const idx = cacheContacts.findIndex(c => c.id === editId);
+        if(idx > -1) cacheContacts[idx] = {...cacheContacts[idx], name, email};
+    } else {
+        // CREATE
+        const { data, error } = await _supabase.from('contacts').insert({
+            user_id: currentUser.id, name, email
+        }).select().single();
+        if(error) return showToast(error.message, 'error');
+        showToast(`${name} added to contacts`, 'success');
+        cacheContacts.unshift(data);
+    }
+    
+    closeModal('contact-modal');
+    resetContactForm();
+    renderContactsTable();
+    loadStats();
+}
 
-        function editContact(id) {
-            const contact = cacheContacts.find(c => c.id === id);
-            if(!contact) return;
-            
-            document.getElementById('edit-contact-id').value = id;
-            document.getElementById('new-c-name').value = contact.name;
-            document.getElementById('new-c-email').value = contact.email;
-            document.getElementById('contact-modal-title').innerText = 'Edit Contact';
-            openModal('contact-modal');
-        }
+function editContact(id) {
+    const contact = cacheContacts.find(c => c.id === id);
+    if(!contact) return;
+    
+    document.getElementById('edit-contact-id').value = id;
+    document.getElementById('new-c-name').value = contact.name;
+    document.getElementById('new-c-email').value = contact.email;
+    document.getElementById('contact-modal-title').innerText = 'Edit Contact';
+    openModal('contact-modal');
+}
 
-        function resetContactForm() {
-            document.getElementById('edit-contact-id').value = '';
-            document.getElementById('new-c-name').value = '';
-            document.getElementById('new-c-email').value = '';
-            document.getElementById('contact-modal-title').innerText = 'New Contact';
-        }
+function resetContactForm() {
+    document.getElementById('edit-contact-id').value = '';
+    document.getElementById('new-c-name').value = '';
+    document.getElementById('new-c-email').value = '';
+    document.getElementById('contact-modal-title').innerText = 'New Contact';
+}
 
-        async function deleteContact(id) {
-            if(!confirm("Remove this contact?")) return;
-            const { error } = await _supabase.from('contacts').delete().eq('id', id);
-            if(error) return showToast(error.message, 'error');
-            
-            cacheContacts = cacheContacts.filter(c => c.id !== id);
-            renderContactsTable();
-            showToast("Contact removed.", 'success');
-        }
+async function deleteContact(id) {
+    if(!confirm("Remove this contact?")) return;
+    const { error } = await _supabase.from('contacts').delete().eq('id', id);
+    if(error) return showToast(error.message, 'error');
+    
+    cacheContacts = cacheContacts.filter(c => c.id !== id);
+    renderContactsTable();
+    showToast("Contact removed.", 'success');
+}
 
-        function renderContactsTable() {
-            const tbody = document.getElementById('contacts-table-body');
-            if(cacheContacts.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="p-12 text-center text-[var(--text-sub)] text-sm">No contacts added yet.</td></tr>';
-                return;
-            }
-            tbody.innerHTML = cacheContacts.map(c => `
-                <tr class="group hover:bg-black/[0.02] transition-colors">
-                    <td class="p-4 font-medium text-sm">${escapeHtml(c.name)}</td>
-                    <td class="p-4 text-sm text-[var(--text-sub)]">${escapeHtml(c.email)}</td>
-                    <td class="p-4">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700">Active</span>
-                    </td>
-                    <td class="p-4 text-right">
-                        <div class="action-btn-group justify-end">
-                            <button onclick="editContact('${c.id}')" class="p-2 hover:bg-blue-50 rounded-lg text-blue-600 transition-colors" title="Edit">
-                                <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                            </button>
-                            <button onclick="deleteContact('${c.id}')" class="p-2 hover:bg-red-50 rounded-lg text-red-600 transition-colors" title="Delete">
-                                <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-            
-            document.getElementById('picker-list').innerHTML = cacheContacts.map(c => `
-                <div class="flex items-center justify-between p-2.5 hover:bg-black/[0.03] rounded-lg cursor-pointer transition-colors" onclick="addToRecipients('${c.email}')">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-xs font-bold">${c.name.charAt(0)}</div>
-                        <div>
-                            <div class="text-sm font-medium">${escapeHtml(c.name)}</div>
-                            <div class="text-xs text-[var(--text-sub)]">${escapeHtml(c.email)}</div>
-                        </div>
-                    </div>
-                    <svg class="icon w-4 h-4 text-[var(--text-sub)]" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+function renderContactsTable() {
+    const tbody = document.getElementById('contacts-table-body');
+    if(cacheContacts.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="p-12 text-center text-[var(--text-sub)] text-sm">No contacts added yet.</td></tr>';
+        return;
+    }
+    tbody.innerHTML = cacheContacts.map((c, index) => `
+        <tr class="group hover:bg-black/[0.02] transition-all duration-300" style="animation: fadeUp 0.4s ${index * 0.05}s both;">
+            <td class="p-4 font-medium text-sm">${escapeHtml(c.name)}</td>
+            <td class="p-4 text-sm text-[var(--text-sub)]">${escapeHtml(c.email)}</td>
+            <td class="p-4">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 transition-all duration-300">Active</span>
+            </td>
+            <td class="p-4 text-right">
+                <div class="action-btn-group justify-end">
+                    <button onclick="editContact('${c.id}')" class="p-2 hover:bg-blue-50 rounded-lg text-blue-600 transition-all duration-200 hover:scale-110" title="Edit">
+                        <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                    </button>
+                    <button onclick="deleteContact('${c.id}')" class="p-2 hover:bg-red-50 rounded-lg text-red-600 transition-all duration-200 hover:scale-110" title="Delete">
+                        <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    </button>
                 </div>
-            `).join('');
-        }
-
-        // SENDERS CRUD
-        async function saveSender(e) {
-            e.preventDefault();
-            const editId = document.getElementById('edit-sender-id').value;
-            const newSender = {
-                alias_name: document.getElementById('new-s-name').value.trim(),
-                email: document.getElementById('new-s-email').value.trim().toLowerCase(),
-                is_default: document.getElementById('new-s-default').checked
-            };
-            
-            if(editId) {
-                const { error } = await _supabase.from('senders').update(newSender).eq('id', editId);
-                if(error) return showToast(error.message, 'error');
-                showToast("Sender updated!", 'success');
-                const idx = cacheSenders.findIndex(s => s.id === editId);
-                if(idx > -1) cacheSenders[idx] = {...cacheSenders[idx], ...newSender};
-            } else {
-                newSender.user_id = currentUser.id;
-                const { error } = await _supabase.from('senders').insert(newSender);
-                if(error) return showToast(error.message, 'error');
-                showToast("Sender added!", 'success');
-                cacheSenders.push({...newSender, id: Date.now().toString()});
-            }
-
-            closeModal('sender-modal');
-            resetSenderForm();
-            await loadSenders();
-            renderSettingsSenders();
-        }
-
-        function editSender(id) {
-            const s = cacheSenders.find(s => s.id === id);
-            if(!s) return;
-            document.getElementById('edit-sender-id').value = id;
-            document.getElementById('new-s-name').value = s.alias_name;
-            document.getElementById('new-s-email').value = s.email;
-            document.getElementById('new-s-default').checked = s.is_default;
-            document.getElementById('sender-modal-title').innerText = 'Edit Sender Identity';
-            openModal('sender-modal');
-        }
-
-        function resetSenderForm() {
-            document.getElementById('edit-sender-id').value = '';
-            document.getElementById('new-s-name').value = '';
-            document.getElementById('new-s-email').value = '';
-            document.getElementById('new-s-default').checked = false;
-            document.getElementById('sender-modal-title').innerText = 'Add Sender Identity';
-        }
-
-        async function deleteSender(id) {
-            if(!confirm("Remove this sender?")) return;
-            const { error } = await _supabase.from('senders').delete().eq('id', id);
-            if(error) return showToast(error.message, 'error');
-            cacheSenders = cacheSenders.filter(s => s.id !== id);
-            populateSenderDropdown();
-            renderSettingsSenders();
-            showToast("Sender removed.", 'success');
-        }
-
-        function populateSenderDropdown() {
-            const selects = [document.getElementById('mail-sender-email')];
-            
-            selects.forEach(select => {
-                if(!select) return;
-                if (cacheSenders.length === 0) {
-                    select.innerHTML = '<option value="">No senders configured</option>';
-                    return;
-                }
-                select.innerHTML = cacheSenders.map(s => 
-                    `<option value="${s.id}">${escapeHtml(s.alias_name)} &lt;${escapeHtml(s.email)}&gt;</option>`
-                ).join('');
-            });
-        }
-
-        function renderSettingsSenders() {
-            const list = document.getElementById('settings-sender-list');
-            if(cacheSenders.length === 0) {
-                list.innerHTML = '<li class="text-sm text-[var(--text-sub)] italic py-4 text-center">No senders configured</li>';
-                return;
-            }
-            list.innerHTML = cacheSenders.map(s => `
-                <li class="flex items-center justify-between p-4 bg-black/[0.02] rounded-xl group-hover-container">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xs font-bold text-gray-600">${s.alias_name.charAt(0)}</div>
-                        <div>
-                            <div class="font-semibold text-sm">${escapeHtml(s.alias_name)}</div>
-                            <div class="text-xs text-[var(--text-sub)]">${escapeHtml(s.email)}</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        ${s.is_default ? '<span class="text-[10px] font-bold uppercase tracking-wider bg-black text-white px-2 py-1 rounded">Primary</span>' : ''}
-                        <div class="action-btn-group">
-                            <button onclick="editSender('${s.id}')" class="p-1.5 hover:bg-blue-100 rounded text-blue-600"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
-                                                        <button onclick="deleteSender('${s.id}')" class="p-1.5 hover:bg-red-100 rounded text-red-600"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
-                        </div>
-                    </div>
-                </li>
-            `).join('');
-        }
-
-        // TEMPLATES CRUD
-        async function saveTemplate(e) {
-            e.preventDefault();
-            const editId = document.getElementById('edit-template-id').value;
-            const name = document.getElementById('new-t-name').value.trim();
-            const subject = document.getElementById('mail-subject').value;
-            const html = getEditorContent();
-
-            if(!subject) return showToast("Cannot save template without subject.", 'error');
-            
-            if(editId) {
-                const { error } = await _supabase.from('templates').update({ name, subject, html_content: html }).eq('id', editId);
-                if(error) return showToast(error.message, 'error');
-                showToast("Template updated!", 'success');
-            } else {
-                const { error } = await _supabase.from('templates').insert({
-                    user_id: currentUser.id, name, subject, html_content: html
-                });
-                if(error) return showToast(error.message, 'error');
-                showToast("Template saved!", 'success');
-            }
-
-            closeModal('template-modal');
-            resetTemplateForm();
-            loadTemplatesSidebar();
-            if(document.getElementById('view-templates').classList.contains('active')) renderTemplatesGrid();
-            e.target.reset();
-        }
-
-        function editTemplate(id) {
-            const t = cacheTemplates.find(t => t.id === id);
-            if(!t) return;
-            document.getElementById('edit-template-id').value = id;
-            document.getElementById('new-t-name').value = t.name;
-            document.getElementById('template-modal-title').innerText = 'Edit Template';
-            openModal('template-modal');
-        }
-
-        function resetTemplateForm() {
-            document.getElementById('edit-template-id').value = '';
-            document.getElementById('new-t-name').value = '';
-            document.getElementById('template-modal-title').innerText = 'Save Template';
-        }
-
-        async function deleteTemplate(id) {
-            if(!confirm("Delete this template?")) return;
-            const { error } = await _supabase.from('templates').delete().eq('id', id);
-            if(error) return showToast(error.message, 'error');
-            showToast("Template deleted.", 'success');
-            loadTemplatesSidebar();
-            if(document.getElementById('view-templates').classList.contains('active')) renderTemplatesGrid();
-        }
-
-        async function loadTemplate(id) {
-            const { data, error } = await _supabase.from('templates').select('*').eq('id', id).single();
-            if(error || !data) return showToast("Error loading template", 'error');
-            
-            document.getElementById('mail-subject').value = data.subject;
-            quillEditor.root.innerHTML = data.html_content;
-            navigateTo('mail');
-            showToast(`Loaded "${data.name}"`, 'success');
-        }
-
-        // CAMPAIGNS CRUD
-        async function deleteCampaign(id) {
-            if(!confirm("Delete this record? This cannot be undone.")) return;
-            const { error } = await _supabase.from('campaigns').delete().eq('id', id);
-            if(error) return showToast(error.message, 'error');
-            showToast("Record deleted.", 'success');
-            loadSentEmails();
-            loadStats();
-        }
-
-        // PROFILE
-        async function updateProfile(e) {
-            e.preventDefault();
-            const name = document.getElementById('set-name').value.trim();
-            const { error } = await _supabase.auth.updateUser({ data: { full_name: name } });
-            if(error) return showToast(error.message, 'error');
-            showToast("Profile updated!", 'success');
-            document.getElementById('greeting-text').innerText = `${new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 18 ? 'Good afternoon' : 'Good evening'}, ${name}`;
-        }
-
-        // ==========================================
-        // SUPER ADMIN FUNCTIONS (ENHANCED)
-        // ==========================================
-
-        // Mock user database for admin (in real app, this would be from profiles table)
-        let adminUsersDB = [
-            { 
-                id: 'usr_001', 
-                email: 'admin@luviio.com', 
-                name: 'Super Admin', 
-                role: 'super_admin',
-                ip: '192.168.1.100',
-                location: 'Kuala Lumpur, MY',
-                status: 'active',
-                last_login: new Date().toISOString(),
-                created_at: '2024-01-01T00:00:00Z',
-                is_banned: false,
-                is_suspended: false
-            },
-            { 
-                id: 'usr_002', 
-                email: 'user@example.com', 
-                name: 'Test User', 
-                role: 'user',
-                ip: '10.0.0.50',
-                location: 'Singapore, SG',
-                status: 'active',
-                last_login: new Date(Date.now() - 86400000).toISOString(),
-                created_at: '2024-06-15T12:00:00Z',
-                is_banned: false,
-                is_suspended: false
-            }
-        ];
-
-        let systemLogs = [
-            { timestamp: new Date().toISOString(), type: 'info', message: 'System initialized' },
-            { timestamp: new Date(Date.now() - 3600000).toISOString(), type: 'success', message: 'User usr_002 logged in' }
-        ];
-
-        async function loadAdminData() {
-            // Load stats for admin dashboard
-            animateValue('admin-total-users', adminUsersDB.length);
-            animateValue('admin-active-users', adminUsersDB.filter(u => u.status === 'active').length);
-            
-            // Mock email count
-            const { count } = await _supabase.from('campaigns').select('*', { count: 'exact', head: true }).eq('status', 'sent');
-            animateValue('admin-total-emails', count || 0);
-            animateValue('admin-total-logs', systemLogs.length);
-        }
-
-        function logSystemEvent(type, message, level = 'info') {
-            const entry = {
-                timestamp: new Date().toISOString(),
-                type: type,
-                message: message,
-                level: level
-            };
-            systemLogs.unshift(entry);
-            
-            // Update logs display if visible
-            updateAdminLogsDisplay();
-            
-            // Keep only last 1000 logs
-            if(systemLogs.length > 1000) systemLogs = systemLogs.slice(0, 1000);
-        }
-
-        function updateAdminLogsDisplay() {
-            const container = document.getElementById('admin-logs-container');
-            if(!container) return;
-            
-            container.innerHTML = systemLogs.slice(0, 20).map(log => `
-                <div class="log-entry ${log.level}">
-                    <span class="dev-text">[${formatDate(log.timestamp)}]</span>
-                    <span class="${log.level === 'error' ? 'dev-error' : log.level === 'warning' ? 'dev-warning' : log.level === 'success' ? 'dev-accent' : 'dev-info'}">
-                        [${log.type.toUpperCase()}]
-                    </span>
-                    ${escapeHtml(log.message)}
+            </td>
+        </tr>
+    `).join('');
+    
+    document.getElementById('picker-list').innerHTML = cacheContacts.map(c => `
+        <div class="flex items-center justify-between p-2.5 hover:bg-black/[0.03] rounded-lg cursor-pointer transition-all duration-300 hover:shadow-sm hover:-translate-x-1" onclick="addToRecipients('${c.email}')">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-xs font-bold transition-transform duration-300 group-hover:scale-110">${c.name.charAt(0)}</div>
+                <div>
+                    <div class="text-sm font-medium">${escapeHtml(c.name)}</div>
+                    <div class="text-xs text-[var(--text-sub)]">${escapeHtml(c.email)}</div>
                 </div>
-            `).join('');
+            </div>
+            <svg class="icon w-4 h-4 text-[var(--text-sub)] transition-transform duration-300" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+        </div>
+    `).join('');
+}
+
+// SENDERS CRUD
+async function saveSender(e) {
+    e.preventDefault();
+    const editId = document.getElementById('edit-sender-id').value;
+    const newSender = {
+        alias_name: document.getElementById('new-s-name').value.trim(),
+        email: document.getElementById('new-s-email').value.trim().toLowerCase(),
+        is_default: document.getElementById('new-s-default').checked
+    };
+    
+    if(editId) {
+        const { error } = await _supabase.from('senders').update(newSender).eq('id', editId);
+        if(error) return showToast(error.message, 'error');
+        showToast("Sender updated!", 'success');
+        const idx = cacheSenders.findIndex(s => s.id === editId);
+        if(idx > -1) cacheSenders[idx] = {...cacheSenders[idx], ...newSender};
+    } else {
+        newSender.user_id = currentUser.id;
+        const { error } = await _supabase.from('senders').insert(newSender);
+        if(error) return showToast(error.message, 'error');
+        showToast("Sender added!", 'success');
+        cacheSenders.push({...newSender, id: Date.now().toString()});
+    }
+
+    closeModal('sender-modal');
+    resetSenderForm();
+    await loadSenders();
+    renderSettingsSenders();
+}
+
+function editSender(id) {
+    const s = cacheSenders.find(s => s.id === id);
+    if(!s) return;
+    document.getElementById('edit-sender-id').value = id;
+    document.getElementById('new-s-name').value = s.alias_name;
+    document.getElementById('new-s-email').value = s.email;
+    document.getElementById('new-s-default').checked = s.is_default;
+    document.getElementById('sender-modal-title').innerText = 'Edit Sender Identity';
+    openModal('sender-modal');
+}
+
+function resetSenderForm() {
+    document.getElementById('edit-sender-id').value = '';
+    document.getElementById('new-s-name').value = '';
+    document.getElementById('new-s-email').value = '';
+    document.getElementById('new-s-default').checked = false;
+    document.getElementById('sender-modal-title').innerText = 'Add Sender Identity';
+}
+
+async function deleteSender(id) {
+    if(!confirm("Remove this sender?")) return;
+    const { error } = await _supabase.from('senders').delete().eq('id', id);
+    if(error) return showToast(error.message, 'error');
+    cacheSenders = cacheSenders.filter(s => s.id !== id);
+    populateSenderDropdown();
+    renderSettingsSenders();
+    showToast("Sender removed.", 'success');
+}
+
+function populateSenderDropdown() {
+    const selects = [document.getElementById('mail-sender-email')];
+    
+    selects.forEach(select => {
+        if(!select) return;
+        if (cacheSenders.length === 0) {
+            select.innerHTML = '<option value="">No senders configured</option>';
+            return;
         }
+        select.innerHTML = cacheSenders.map(s => 
+            `<option value="${s.id}">${escapeHtml(s.alias_name)} &lt;${escapeHtml(s.email)}&gt;</option>`
+        ).join('');
+    });
+}
 
-        async function refreshAdminUsers() {
-            const tbody = document.getElementById('admin-users-table');
-            tbody.innerHTML = '<tr><td colspan="8" class="p-8 text-center"><span class="spinner inline-block w-4 h-4 border-2 border-gray-300 border-t-white rounded-full mr-2"></span>Loading users...</td></tr>';
-            
-            // Simulate loading delay
-            await new Promise(resolve => setTimeout(resolve, 500));
+function renderSettingsSenders() {
+    const list = document.getElementById('settings-sender-list');
+    if(cacheSenders.length === 0) {
+        list.innerHTML = '<li class="text-sm text-[var(--text-sub)] italic py-4 text-center">No senders configured</li>';
+        return;
+    }
+    list.innerHTML = cacheSenders.map((s, index) => `
+        <li class="flex items-center justify-between p-4 bg-black/[0.02] rounded-xl group-hover-container transition-all duration-300 hover:bg-black/[0.04]" style="animation: fadeUp 0.4s ${index * 0.1}s both;">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xs font-bold text-gray-600 transition-transform duration-300">${s.alias_name.charAt(0)}</div>
+                <div>
+                    <div class="font-semibold text-sm">${escapeHtml(s.alias_name)}</div>
+                    <div class="text-xs text-[var(--text-sub)]">${escapeHtml(s.email)}</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                ${s.is_default ? '<span class="text-[10px] font-bold uppercase tracking-wider bg-black text-white px-2 py-1 rounded transition-all duration-300">Primary</span>' : ''}
+                <div class="action-btn-group">
+                    <button onclick="editSender('${s.id}')" class="p-1.5 hover:bg-blue-100 rounded text-blue-600 transition-all duration-200 hover:scale-110"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                    <button onclick="deleteSender('${s.id}')" class="p-1.5 hover:bg-red-100 rounded text-red-600 transition-all duration-200 hover:scale-110"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                </div>
+            </div>
+        </li>
+    `).join('');
+}
 
-            tbody.innerHTML = adminUsersDB.map(u => `
-                <tr class="hover:bg-gray-800/30 transition-colors" onclick="openAdminUserDetail('${u.id}')">
-                    <td class="p-4 font-mono text-dev-accent">${u.id.substring(0, 8)}...</td>
-                    <td class="p-4">
-                        <div class="flex items-center gap-2">
-                            <div class="w-6 h-6 rounded bg-dev-border flex items-center justify-center text-xs font-bold">${u.name.charAt(0)}</div>
-                            <div>
-                                <div class="font-medium text-gray-200">${escapeHtml(u.name)}</div>
-                                <div class="text-xs dev-text">${u.email}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="p-4">
-                        <span class="px-2 py-1 rounded text-xs font-mono ${u.role === 'super_admin' ? 'bg-purple-900/30 text-purple-400 border border-purple-800/50' : u.role === 'admin' ? 'bg-orange-900/30 text-orange-400 border border-orange-800/50' : 'bg-gray-700 text-gray-300 border border-gray-600'}">
-                            ${u.role}
-                        </span>
-                    </td>
-                    <td class="p-4 font-mono text-dev-info">${u.ip}</td>
-                    <td class="p-4 text-xs dev-text">${u.location}</td>
-                    <td class="p-4">
-                        ${u.is_banned ? '<span class="px-2 py-1 rounded text-xs font-mono status-banned">BANNED</span>' : 
-                          u.is_suspended ? '<span class="px-2 py-1 rounded text-xs font-mono status-suspended">SUSPENDED</span>' :
-                          '<span class="px-2 py-1 rounded text-xs font-mono status-active">ACTIVE</span>'}
-                    </td>
-                    <td class="p-4 text-xs dev-text">${formatDate(u.last_login)}</td>
-                    <td class="p-4 text-right">
-                        <div class="action-btn-group justify-end">
-                            <button onclick="event.stopPropagation(); openAdminUserDetail('${u.id}')" class="p-1.5 bg-blue-900/30 text-blue-400 hover:bg-blue-900/50 rounded transition-colors" title="View Details">
-                                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
+// TEMPLATES CRUD
+async function saveTemplate(e) {
+    e.preventDefault();
+    const editId = document.getElementById('edit-template-id').value;
+    const name = document.getElementById('new-t-name').value.trim();
+    const subject = document.getElementById('mail-subject').value;
+    const html = getEditorContent();
 
-            // Update stats
-            document.getElementById('admin-total-users').innerText = adminUsersDB.length;
-            document.getElementById('admin-active-users').innerText = adminUsersDB.filter(u => u.status === 'active' && !u.is_banned && !u.is_suspended).length;
-            document.getElementById('admin-total-logs').innerText = systemLogs.length;
-        }
+    if(!subject) return showToast("Cannot save template without subject.", 'error');
+    
+    if(editId) {
+        const { error } = await _supabase.from('templates').update({ name, subject, html_content: html }).eq('id', editId);
+        if(error) return showToast(error.message, 'error');
+        showToast("Template updated!", 'success');
+    } else {
+        const { error } = await _supabase.from('templates').insert({
+            user_id: currentUser.id, name, subject, html_content: html
+        });
+        if(error) return showToast(error.message, 'error');
+        showToast("Template saved!", 'success');
+    }
 
-        function openAdminUserDetail(userId) {
-            selectedUserIdForAdmin = userId;
-            const user = adminUsersDB.find(u => u.id === userId);
-            if(!user) return;
+    closeModal('template-modal');
+    resetTemplateForm();
+    loadTemplatesSidebar();
+    if(document.getElementById('view-templates').classList.contains('active')) renderTemplatesGrid();
+    e.target.reset();
+}
 
-            const content = document.getElementById('admin-user-detail-content');
-            content.innerHTML = `
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div class="bg-black/20 p-3 rounded border border-dev-border">
-                        <div class="text-dev-text text-[10px] uppercase mb-1">// User_ID</div>
-                        <div class="text-dev-accent break-all">${user.id}</div>
-                    </div>
-                    <div class="bg-black/20 p-3 rounded border border-dev-border">
-                        <div class="text-dev-text text-[10px] uppercase mb-1">// Email</div>
-                        <div class="text-gray-200 break-all">${user.email}</div>
-                    </div>
-                    <div class="bg-black/20 p-3 rounded border border-dev-border">
-                        <div class="text-dev-text text-[10px] uppercase mb-1">// Display_Name</div>
-                        <div class="text-gray-200">${user.name}</div>
-                    </div>
-                    <div class="bg-black/20 p-3 rounded border border-dev-border">
-                        <div class="text-dev-text text-[10px] uppercase mb-1">// Role</div>
-                        <div class="${user.role === 'super_admin' ? 'text-purple-400' : 'text-gray-200'}">${user.role}</div>
-                    </div>
-                    <div class="bg-black/20 p-3 rounded border border-dev-border">
-                        <div class="text-dev-text text-[10px] uppercase mb-1">// IP_Address</div>
-                        <div class="text-dev-info font-mono">${user.ip}</div>
-                    </div>
-                    <div class="bg-black/20 p-3 rounded border border-dev-border">
-                        <div class="text-dev-text text-[10px] uppercase mb-1">// Location</div>
-                        <div class="text-gray-200">${user.location}</div>
-                    </div>
-                    <div class="bg-black/20 p-3 rounded border border-dev-border">
-                        <div class="text-dev-text text-[10px] uppercase mb-1">// Status</div>
-                        <div>${user.is_banned ? '<span class="status-banned px-2 py-1 rounded text-xs">BANNED</span>' : user.is_suspended ? '<span class="status-suspended px-2 py-1 rounded text-xs">SUSPENDED</span>' : '<span class="status-active px-2 py-1 rounded text-xs">ACTIVE</span>'}</div>
-                    </div>
-                    <div class="bg-black/20 p-3 rounded border border-dev-border">
-                        <div class="text-dev-text text-[10px] uppercase mb-1">// Last_Login</div>
-                        <div class="text-gray-200">${formatDate(user.last_login)}</div>
-                    </div>
-                    <div class="bg-black/20 p-3 rounded border border-dev-border col-span-2">
-                        <div class="text-dev-text text-[10px] uppercase mb-1">// Created_At</div>
-                        <div class="text-gray-200">${formatDate(user.created_at)}</div>
+function editTemplate(id) {
+    const t = cacheTemplates.find(t => t.id === id);
+    if(!t) return;
+    document.getElementById('edit-template-id').value = id;
+    document.getElementById('new-t-name').value = t.name;
+    document.getElementById('template-modal-title').innerText = 'Edit Template';
+    openModal('template-modal');
+}
+
+function resetTemplateForm() {
+    document.getElementById('edit-template-id').value = '';
+    document.getElementById('new-t-name').value = '';
+    document.getElementById('template-modal-title').innerText = 'Save Template';
+}
+
+async function deleteTemplate(id) {
+    if(!confirm("Delete this template?")) return;
+    const { error } = await _supabase.from('templates').delete().eq('id', id);
+    if(error) return showToast(error.message, 'error');
+    showToast("Template deleted.", 'success');
+    loadTemplatesSidebar();
+    if(document.getElementById('view-templates').classList.contains('active')) renderTemplatesGrid();
+}
+
+async function loadTemplate(id) {
+    const { data, error } = await _supabase.from('templates').select('*').eq('id', id).single();
+    if(error || !data) return showToast("Error loading template", 'error');
+    
+    document.getElementById('mail-subject').value = data.subject;
+    quillEditor.root.innerHTML = data.html_content;
+    navigateTo('mail');
+    showToast(`Loaded "${data.name}"`, 'success');
+}
+
+// CAMPAIGNS CRUD
+async function deleteCampaign(id) {
+    if(!confirm("Delete this record? This cannot be undone.")) return;
+    const { error } = await _supabase.from('campaigns').delete().eq('id', id);
+    if(error) return showToast(error.message, 'error');
+    showToast("Record deleted.", 'success');
+    loadSentEmails();
+    loadStats();
+}
+
+// PROFILE
+async function updateProfile(e) {
+    e.preventDefault();
+    const name = document.getElementById('set-name').value.trim();
+    const { error } = await _supabase.auth.updateUser({ data: { full_name: name } });
+    if(error) return showToast(error.message, 'error');
+    showToast("Profile updated!", 'success');
+    document.getElementById('greeting-text').innerText = `${new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 18 ? 'Good afternoon' : 'Good evening'}, ${name}`;
+}
+
+// ==========================================
+// SUPER ADMIN FUNCTIONS (ENHANCED)
+// ==========================================
+
+let adminUsersDB = [
+    { 
+        id: 'usr_001', 
+        email: 'admin@luviio.com', 
+        name: 'Super Admin', 
+        role: 'super_admin',
+        ip: '192.168.1.100',
+        location: 'Kuala Lumpur, MY',
+        status: 'active',
+        last_login: new Date().toISOString(),
+        created_at: '2024-01-01T00:00:00Z',
+        is_banned: false,
+        is_suspended: false
+    },
+    { 
+        id: 'usr_002', 
+        email: 'user@example.com', 
+        name: 'Test User', 
+        role: 'user',
+        ip: '10.0.0.50',
+        location: 'Singapore, SG',
+        status: 'active',
+        last_login: new Date(Date.now() - 86400000).toISOString(),
+        created_at: '2024-06-15T12:00:00Z',
+        is_banned: false,
+        is_suspended: false
+    }
+];
+
+let systemLogs = [
+    { timestamp: new Date().toISOString(), type: 'info', message: 'System initialized', level: 'info' },
+    { timestamp: new Date(Date.now() - 3600000).toISOString(), type: 'login', message: 'User usr_002 logged in', level: 'success' }
+];
+
+async function loadAdminData() {
+    animateValue('admin-total-users', adminUsersDB.length);
+    animateValue('admin-active-users', adminUsersDB.filter(u => u.status === 'active').length);
+    
+    const { count } = await _supabase.from('campaigns').select('*', { count: 'exact', head: true }).eq('status', 'sent');
+    animateValue('admin-total-emails', count || 0);
+    animateValue('admin-total-logs', systemLogs.length);
+}
+
+function logSystemEvent(type, message, level = 'info') {
+    const entry = {
+        timestamp: new Date().toISOString(),
+        type: type,
+        message: message,
+        level: level
+    };
+    systemLogs.unshift(entry);
+    
+    updateAdminLogsDisplay();
+    
+    if(systemLogs.length > 1000) systemLogs = systemLogs.slice(0, 1000);
+}
+
+function updateAdminLogsDisplay() {
+    const container = document.getElementById('admin-logs-container');
+    if(!container) return;
+    
+    container.innerHTML = systemLogs.slice(0, 20).map((log, index) => `
+        <div class="log-entry ${log.level}" style="animation: slideInLog 0.4s ${index * 0.05}s both;">
+            <span class="dev-text">[${formatDate(log.timestamp)}]</span>
+            <span class="${log.level === 'error' ? 'dev-error' : log.level === 'warning' ? 'dev-warning' : log.level === 'success' ? 'dev-accent' : 'dev-info'}">
+                [${log.type.toUpperCase()}]
+            </span>
+            ${escapeHtml(log.message)}
+        </div>
+    `).join('');
+}
+
+async function refreshAdminUsers() {
+    const tbody = document.getElementById('admin-users-table');
+    tbody.innerHTML = '<tr><td colspan="8" class="p-8 text-center"><span class="spinner inline-block w-4 h-4 border-2 border-gray-300 border-t-white rounded-full mr-2"></span>Loading users...</td></tr>';
+    
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    tbody.innerHTML = adminUsersDB.map(u => `
+        <tr class="hover:bg-gray-800/30 transition-all duration-300 cursor-pointer hover:shadow-inner" onclick="openAdminUserDetail('${u.id}')">
+            <td class="p-4 font-mono text-dev-accent">${u.id.substring(0, 8)}...</td>
+            <td class="p-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded bg-dev-border flex items-center justify-center text-xs font-bold transition-transform duration-300">${u.name.charAt(0)}</div>
+                    <div>
+                        <div class="font-medium text-gray-200">${escapeHtml(u.name)}</div>
+                        <div class="text-xs dev-text">${u.email}</div>
                     </div>
                 </div>
-
-                <div class="border-t border-dev-border pt-4 mt-4">
-                    <div class="text-dev-text text-[10px] uppercase mb-2">// Recent_Activity</div>
-                    <div class="space-y-1 max-h-32 overflow-y-auto">
-                        ${systemLogs.filter(l => l.message.includes(user.email) || l.message.includes(user.id)).slice(0, 5).map(log => `
-                            <div class="text-xs font-mono ${log.level === 'error' ? 'text-red-400' : log.level === 'warning' ? 'text-yellow-400' : 'text-gray-400'}">
-                                [${formatDate(log.timestamp)}] ${log.type}: ${log.message}
-                            </div>
-                        `).join('<div class="text-dev-text italic">No recent activity</div>')}
-                    </div>
+            </td>
+            <td class="p-4">
+                <span class="px-2 py-1 rounded text-xs font-mono transition-all duration-300 ${u.role === 'super_admin' ? 'bg-purple-900/30 text-purple-400 border border-purple-800/50' : u.role === 'admin' ? 'bg-orange-900/30 text-orange-400 border border-orange-800/50' : 'bg-gray-700 text-gray-300 border border-gray-600'}">
+                    ${u.role}
+                </span>
+            </td>
+            <td class="p-4 font-mono text-dev-info">${u.ip}</td>
+            <td class="p-4 text-xs dev-text">${u.location}</td>
+            <td class="p-4">
+                ${u.is_banned ? '<span class="px-2 py-1 rounded text-xs font-mono status-banned transition-all duration-300">BANNED</span>' : 
+                  u.is_suspended ? '<span class="px-2 py-1 rounded text-xs font-mono status-suspended transition-all duration-300">SUSPENDED</span>' :
+                  '<span class="px-2 py-1 rounded text-xs font-mono status-active transition-all duration-300">ACTIVE</span>'}
+            </td>
+            <td class="p-4 text-xs dev-text">${formatDate(u.last_login)}</td>
+            <td class="p-4 text-right">
+                <div class="action-btn-group justify-end">
+                    <button onclick="event.stopPropagation(); openAdminUserDetail('${u.id}')" class="p-1.5 bg-blue-900/30 text-blue-400 hover:bg-blue-900/50 rounded transition-all duration-200 hover:scale-110" title="View Details">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    </button>
                 </div>
-            `;
+            </td>
+        </tr>
+    `).join('');
 
-            // Update ban button text
-            const banBtn = document.getElementById('ban-toggle-btn');
-            if(banBtn) {
-                banBtn.innerText = user.is_banned || user.is_suspended ? '[RESTORE_ACCOUNT]' : '[BAN_USER]';
-            }
+    document.getElementById('admin-total-users').innerText = adminUsersDB.length;
+    document.getElementById('admin-active-users').innerText = adminUsersDB.filter(u => u.status === 'active' && !u.is_banned && !u.is_suspended).length;
+    document.getElementById('admin-total-logs').innerText = systemLogs.length;
+}
 
-            openModal('admin-user-modal');
-        }
+function openAdminUserDetail(userId) {
+    selectedUserIdForAdmin = userId;
+    const user = adminUsersDB.find(u => u.id === userId);
+    if(!user) return;
 
-        async function resetUserPassword() {
-            if(!selectedUserIdForAdmin) return;
-            const user = adminUsersDB.find(u => u.id === selectedUserIdForAdmin);
-            if(!user) return;
+    const content = document.getElementById('admin-user-detail-content');
+    content.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="bg-black/20 p-3 rounded border border-dev-border transition-all duration-300 hover:border-gray-600">
+                <div class="text-dev-text text-[10px] uppercase mb-1">// User_ID</div>
+                <div class="text-dev-accent break-all">${user.id}</div>
+            </div>
+            <div class="bg-black/20 p-3 rounded border border-dev-border transition-all duration-300 hover:border-gray-600">
+                <div class="text-dev-text text-[10px] uppercase mb-1">// Email</div>
+                <div class="text-gray-200 break-all">${user.email}</div>
+            </div>
+            <div class="bg-black/20 p-3 rounded border border-dev-border transition-all duration-300 hover:border-gray-600">
+                <div class="text-dev-text text-[10px] uppercase mb-1">// Display_Name</div>
+                <div class="text-gray-200">${user.name}</div>
+            </div>
+            <div class="bg-black/20 p-3 rounded border border-dev-border transition-all duration-300 hover:border-gray-600">
+                <div class="text-dev-text text-[10px] uppercase mb-1">// Role</div>
+                <div class="${user.role === 'super_admin' ? 'text-purple-400' : 'text-gray-200'}">${user.role}</div>
+            </div>
+            <div class="bg-black/20 p-3 rounded border border-dev-border transition-all duration-300 hover:border-gray-600">
+                <div class="text-dev-text text-[10px] uppercase mb-1">// IP_Address</div>
+                <div class="text-dev-info font-mono">${user.ip}</div>
+            </div>
+            <div class="bg-black/20 p-3 rounded border border-dev-border transition-all duration-300 hover:border-gray-600">
+                <div class="text-dev-text text-[10px] uppercase mb-1">// Location</div>
+                <div class="text-gray-200">${user.location}</div>
+            </div>
+            <div class="bg-black/20 p-3 rounded border border-dev-border transition-all duration-300 hover:border-gray-600">
+                <div class="text-dev-text text-[10px] uppercase mb-1">// Status</div>
+                <div>${user.is_banned ? '<span class="status-banned px-2 py-1 rounded text-xs">BANNED</span>' : user.is_suspended ? '<span class="status-suspended px-2 py-1 rounded text-xs">SUSPENDED</span>' : '<span class="status-active px-2 py-1 rounded text-xs">ACTIVE</span>'}</div>
+            </div>
+            <div class="bg-black/20 p-3 rounded border border-dev-border transition-all duration-300 hover:border-gray-600">
+                <div class="text-dev-text text-[10px] uppercase mb-1">// Last_Login</div>
+                <div class="text-gray-200">${formatDate(user.last_login)}</div>
+            </div>
+            <div class="bg-black/20 p-3 rounded border border-dev-border col-span-2 transition-all duration-300 hover:border-gray-600">
+                <div class="text-dev-text text-[10px] uppercase mb-1">// Created_At</div>
+                <div class="text-gray-200">${formatDate(user.created_at)}</div>
+            </div>
+        </div>
 
-            if(!confirm(`Send password reset link to ${user.email}?`)) return;
+        <div class="border-t border-dev-border pt-4 mt-4">
+            <div class="text-dev-text text-[10px] uppercase mb-2">// Recent_Activity</div>
+            <div class="space-y-1 max-h-32 overflow-y-auto">
+                ${systemLogs.filter(l => l.message.includes(user.email) || l.message.includes(user.id)).slice(0, 5).map(log => `
+                    <div class="text-xs font-mono ${log.level === 'error' ? 'text-red-400' : log.level === 'warning' ? 'text-yellow-400' : 'text-gray-400'} transition-opacity duration-300 hover:opacity-80">
+                        [${formatDate(log.timestamp)}] ${log.type}: ${log.message}
+                    </div>
+                `).join('<div class="dev-text italic">No recent activity</div>')}
+            </div>
+        </div>
+    `;
 
-            try {
-                // In real implementation, call Supabase Admin API to generate password reset link
-                // For demo, we'll just log it
-                logSystemEvent('PASSWORD_RESET', `Admin initiated password reset for ${user.email}`, 'info');
-                showToast(`Password reset link sent to ${user.email}`, 'success');
-                
-                // Close modal after action
-                closeModal('admin-user-modal');
-            } catch(err) {
-                showToast(`Error: ${err.message}`, 'error');
-            }
-        }
+    const banBtn = document.getElementById('ban-toggle-btn');
+    if(banBtn) {
+        banBtn.innerText = user.is_banned || user.is_suspended ? '[RESTORE_ACCOUNT]' : '[BAN_USER]';
+    }
 
-        async function sendVerificationLink() {
-            if(!selectedUserIdForAdmin) return;
-            const user = adminUsersDB.find(u => u.id === selectedUserIdForAdmin);
-            if(!user) return;
+    openModal('admin-user-modal');
+}
 
-            if(!confirm(`Send verification email to ${user.email}?`)) return;
+async function resetUserPassword() {
+    if(!selectedUserIdForAdmin) return;
+    const user = adminUsersDB.find(u => u.id === selectedUserIdForAdmin);
+    if(!user) return;
 
-            try {
-                logSystemEvent('VERIFICATION_SENT', `Admin sent verification link to ${user.email}`, 'success');
-                showToast(`Verification email sent to ${user.email}`, 'success');
-                closeModal('admin-user-modal');
-            } catch(err) {
-                showToast(`Error: ${err.message}`, 'error');
-            }
-        }
+    if(!confirm(`Send password reset link to ${user.email}?`)) return;
 
-        async function toggleUserBan() {
-            if(!selectedUserIdForAdmin) return;
-            const userIndex = adminUsersDB.findIndex(u => u.id === selectedUserIdForAdmin);
-            if(userIndex === -1) return;
+    try {
+        logSystemEvent('PASSWORD_RESET', `Admin initiated password reset for ${user.email}`, 'info');
+        showToast(`Password reset link sent to ${user.email}`, 'success');
+        closeModal('admin-user-modal');
+    } catch(err) {
+        showToast(`Error: ${err.message}`, 'error');
+    }
+}
 
-            const user = adminUsersDB[userIndex];
+async function sendVerificationLink() {
+    if(!selectedUserIdForAdmin) return;
+    const user = adminUsersDB.find(u => u.id === selectedUserIdForAdmin);
+    if(!user) return;
+
+    if(!confirm(`Send verification email to ${user.email}?`)) return;
+
+    try {
+        logSystemEvent('VERIFICATION_SENT', `Admin sent verification link to ${user.email}`, 'success');
+        showToast(`Verification email sent to ${user.email}`, 'success');
+        closeModal('admin-user-modal');
+    } catch(err) {
+        showToast(`Error: ${err.message}`, 'error');
+    }
+}
+
+async function toggleUserBan() {
+    if(!selectedUserIdForAdmin) return;
+    const userIndex = adminUsersDB.findIndex(u => u.id === selectedUserIdForAdmin);
+    if(userIndex === -1) return;
+
+    const user = adminUsersDB[userIndex];
+    
+    if(user.is_banned || user.is_suspended) {
+        if(confirm(`Restore access for ${user.email}?`)) {
+            adminUsersDB[userIndex].is_banned = false;
+            adminUsersDB[userIndex].is_suspended = false;
+            adminUsersDB[userIndex].status = 'active';
             
-            if(user.is_banned || user.is_suspended) {
-                // Restore account
-                if(confirm(`Restore access for ${user.email}?`)) {
-                    adminUsersDB[userIndex].is_banned = false;
-                    adminUsersDB[userIndex].is_suspended = false;
-                    adminUsersDB[userIndex].status = 'active';
-                    
-                    logSystemEvent('ACCOUNT_RESTORED', `Admin restored account for ${user.email}`, 'success');
-                    showToast(`Account restored for ${user.email}`, 'success');
-                    refreshAdminUsers();
-                    closeModal('admin-user-modal');
-                }
-            } else {
-                // Ban/Suspend options
-                const action = prompt("Enter action:1. Ban (permanent)2. Suspend (temporary)Type 'ban' or 'suspend':");
-                
-                if(action?.toLowerCase() === 'ban') {
-                    adminUsersDB[userIndex].is_banned = true;
-                    adminUsersDB[userIndex].status = 'banned';
-                    logSystemEvent('USER_BANNED', `Admin banned user ${user.email}`, 'error');
-                    showToast(`${user.email} has been BANNED`, 'error');
-                    refreshAdminUsers();
-                    openAdminUserDetail(selectedUserIdForAdmin); // Refresh modal
-                } else if(action?.toLowerCase() === 'suspend') {
-                    adminUsersDB[userIndex].is_suspended = true;
-                    adminUsersDB[userIndex].status = 'suspended';
-                    logSystemEvent('USER_SUSPENDED', `Admin suspended user ${user.email}`, 'warning');
-                    showToast(`${user.email} has been SUSPENDED`, 'warning');
-                    refreshAdminUsers();
-                    openAdminUserDetail(selectedUserIdForAdmin); // Refresh modal
-                }
-            }
-        }
-
-        async function grantSuperAdmin() {
-            if(!selectedUserIdForAdmin) return;
-            const userIndex = adminUsersDB.findIndex(u => u.id === selectedUserIdForAdmin);
-            if(userIndex === -1) return;
-
-            const user = adminUsersDB[userIndex];
-            
-            if(user.role === 'super_admin') {
-                showToast("User already has SuperAdmin privileges", 'warning');
-                return;
-            }
-
-            if(!confirm(`Grant SuperAdmin privileges to ${user.email}? This gives full system access.`)) return;
-
-            adminUsersDB[userIndex].role = 'super_admin';
-            logSystemEvent('GRANT_SUPERADMIN', `Admin granted SuperAdmin to ${user.email}`, 'warning');
-            showToast(`SuperAdmin privileges granted to ${user.email}`, 'success');
+            logSystemEvent('ACCOUNT_RESTORED', `Admin restored account for ${user.email}`, 'success');
+            showToast(`Account restored for ${user.email}`, 'success');
             refreshAdminUsers();
-            openAdminUserDetail(selectedUserIdForAdmin); // Refresh modal
+            closeModal('admin-user-modal');
         }
+    } else {
+        const action = prompt(`Enter action:
+1. Ban (permanent)
+2. Suspend (temporary)
+Type 'ban' or 'suspend':`);
+        
+        if(action?.toLowerCase() === 'ban') {
+            adminUsersDB[userIndex].is_banned = true;
+            adminUsersDB[userIndex].status = 'banned';
+            logSystemEvent('USER_BANNED', `Admin banned user ${user.email}`, 'error');
+            showToast(`${user.email} has been BANNED`, 'error');
+            refreshAdminUsers();
+            openAdminUserDetail(selectedUserIdForAdmin);
+        } else if(action?.toLowerCase() === 'suspend') {
+            adminUsersDB[userIndex].is_suspended = true;
+            adminUsersDB[userIndex].status = 'suspended';
+            logSystemEvent('USER_SUSPENDED', `Admin suspended user ${user.email}`, 'warning');
+            showToast(`${user.email} has been SUSPENDED`, 'warning');
+            refreshAdminUsers();
+            openAdminUserDetail(selectedUserIdForAdmin);
+        }
+    }
+}
 
-        async function deleteUserAdmin() {
-            if(!selectedUserIdForAdmin) return;
-            const user = adminUsersDB.find(u => u.id === selectedUserIdForAdmin);
-            if(!user) return;
+async function grantSuperAdmin() {
+    if(!selectedUserIdForAdmin) return;
+    const userIndex = adminUsersDB.findIndex(u => u.id === selectedUserIdForAdmin);
+    if(userIndex === -1) return;
 
-            if(!confirm(`⚠️ PERMANENTLY DELETE user ${user.email}?
+    const user = adminUsersDB[userIndex];
+    
+    if(user.role === 'super_admin') {
+        showToast("User already has SuperAdmin privileges", 'warning');
+        return;
+    }
+
+    if(!confirm(`Grant SuperAdmin privileges to ${user.email}? This gives full system access.`)) return;
+
+    adminUsersDB[userIndex].role = 'super_admin';
+    logSystemEvent('GRANT_SUPERADMIN', `Admin granted SuperAdmin to ${user.email}`, 'warning');
+    showToast(`SuperAdmin privileges granted to ${user.email}`, 'success');
+    refreshAdminUsers();
+    openAdminUserDetail(selectedUserIdForAdmin);
+}
+
+async function deleteUserAdmin() {
+    if(!selectedUserIdForAdmin) return;
+    const user = adminUsersDB.find(u => u.id === selectedUserIdForAdmin);
+    if(!user) return;
+
+    if(!confirm(`⚠️ PERMANENTLY DELETE user ${user.email}?
 
 This can be restored later.`)) return;
 
-            // Remove from active list but keep in "deleted" state (soft delete)
-            const index = adminUsersDB.findIndex(u => u.id === selectedUserIdForAdmin);
-            if(index > -1) {
-                const deletedUser = adminUsersDB.splice(index, 1)[0];
-                deletedUser.status = 'deleted';
-                deletedUser.deleted_at = new Date().toISOString();
-                
-                // Store in a separate array for restoration (in real app, use soft_delete flag)
-                window.deletedUsers = window.deletedUsers || [];
-                window.deletedUsers.push(deletedUser);
+    const index = adminUsersDB.findIndex(u => u.id === selectedUserIdForAdmin);
+    if(index > -1) {
+        const deletedUser = adminUsersDB.splice(index, 1)[0];
+        deletedUser.status = 'deleted';
+        deletedUser.deleted_at = new Date().toISOString();
+        
+        window.deletedUsers = window.deletedUsers || [];
+        window.deletedUsers.push(deletedUser);
 
-                logSystemEvent('USER_DELETED', `Admin deleted user ${user.email}`, 'error');
-                showToast(`User ${user.email} deleted (can be restored)`, 'error');
-                refreshAdminUsers();
-                closeModal('admin-user-modal');
+        logSystemEvent('USER_DELETED', `Admin deleted user ${user.email}`, 'error');
+        showToast(`User ${user.email} deleted (can be restored)`, 'error');
+        refreshAdminUsers();
+        closeModal('admin-user-modal');
+    }
+}
+
+function restoreDeletedUser(userId) {
+    if(!window.deletedUsers) return;
+    
+    const index = window.deletedUsers.findIndex(u => u.id === userId);
+    if(index === -1) return;
+
+    const user = window.deletedUsers.splice(index, 1)[0];
+    delete user.deleted_at;
+    user.status = 'active';
+    adminUsersDB.push(user);
+
+    logSystemEvent('USER_RESTORED', `Admin restored previously deleted user ${user.email}`, 'success');
+    showToast(`User ${user.email} has been restored`, 'success');
+    refreshAdminUsers();
+}
+
+function viewFullLogs() {
+    const container = document.getElementById('full-logs-container');
+    container.innerHTML = systemLogs.map(log => `
+        <div class="log-entry ${log.level}">
+            <span class="dev-text">[${formatDate(log.timestamp)}]</span>
+            <span class="${log.level === 'error' ? 'dev-error' : log.level === 'warning' ? 'dev-warning' : log.level === 'success' ? 'dev-accent' : 'dev-info'}">
+                [${log.type.toUpperCase()}]
+            </span>
+            ${escapeHtml(log.message)}
+        </div>
+    `).join('');
+    
+    openModal('admin-log-modal');
+}
+
+function exportLogs() {
+    const dataStr = JSON.stringify(systemLogs, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+    const exportFileDefaultName = `luvmail_logs_${new Date().toISOString().split('T')[0]}.json`;
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+    
+    showToast("Logs exported successfully!", 'success');
+}
+
+// ==========================================
+// UTILITIES - Enhanced Smooth Transitions
+// ==========================================
+
+function setEditorMode(mode) {
+    const htmlContainer = document.getElementById('editor-html-container');
+    const codeContainer = document.getElementById('editor-code-container');
+    const textContainer = document.getElementById('editor-text-container');
+    const htmlBtn = document.getElementById('mode-html-btn');
+    const codeBtn = document.getElementById('mode-code-btn');
+    const textBtn = document.getElementById('mode-text-btn');
+
+    // Reset all with fade out
+    [htmlContainer, codeContainer, textContainer].forEach(c => {
+        if(c.style.display !== 'none') {
+            c.style.opacity = '0';
+            setTimeout(() => { c.style.display = 'none'; }, 200);
+        }
+    });
+    
+    [htmlBtn, codeBtn, textBtn].forEach(b => b.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md transition-all duration-300");
+
+    setTimeout(() => {
+        if(mode === 'html') {
+            htmlContainer.style.display = 'block';
+            htmlBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md";
+            setTimeout(() => { htmlContainer.style.opacity = '1'; }, 50);
+        } else if(mode === 'code') {
+            codeContainer.style.display = 'block';
+            codeBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md";
+            if(quillEditor) document.getElementById('comp-body-code').value = quillEditor.root.innerHTML;
+            setTimeout(() => { codeContainer.style.opacity = '1'; }, 50);
+        } else {
+            textContainer.style.display = 'block';
+            textBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md";
+            if(quillEditor) document.getElementById('comp-body-text').value = quillEditor.root.innerText;
+            setTimeout(() => { textContainer.style.opacity = '1'; }, 50);
+        }
+    }, 250);
+}
+
+function addToRecipients(email) {
+    const input = document.getElementById('mail-to');
+    const current = input.value;
+    const emails = current.split(',').map(e => e.trim()).filter(e => e);
+    
+    if(emails.includes(email)) {
+        showToast("Recipient already added", 'error');
+        return;
+    }
+    
+    input.value = emails.length > 0 ? `${current}, ${email}` : email;
+    closeModal('contact-picker-modal');
+    updateChecklist();
+    showToast(`${email} added`, 'success');
+}
+
+function toggleFloatingMenu() {
+    const menu = document.getElementById('floating-menu');
+    menu.classList.toggle('open');
+    
+    // Add ripple effect on trigger
+    const trigger = menu.querySelector('.floating-menu-trigger');
+    trigger.style.transform = menu.classList.contains('open') ? 'rotate(45deg) scale(1.1)' : '';
+}
+
+function openModal(id) { 
+    const modal = document.getElementById(id);
+    modal.classList.add('open'); 
+    
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+}
+function closeModal(id) { 
+    const modal = document.getElementById(id);
+    modal.classList.remove('open'); 
+    
+    // Restore body scroll
+    document.body.style.overflow = '';
+}
+
+function showToast(msg, type='success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    const iconPath = type === 'success' 
+        ? '<path d="M5 13l4 4L19 7"/>' 
+        : '<path d="M6 18L18 6M6 6l12 12"/>';
+    
+    const iconColor = type === 'success' ? 'text-emerald-500' : 'text-red-500';
+    
+    toast.innerHTML = `
+        <div class="${iconColor}">
+            <svg class="icon" viewBox="0 0 24 24">${iconPath}</svg>
+        </div>
+        <span class="font-medium text-gray-800 flex-1">${escapeHtml(msg)}</span>
+        <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+            <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+    `;
+    container.appendChild(toast);
+    
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => toast.classList.add('show'));
+    });
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 500);
+    }, 4500);
+}
+
+function animateValue(id, end) {
+    const el = document.getElementById(id);
+    const start = parseInt(el.innerText) || 0;
+    const range = end - start;
+    if(range === 0) return;
+    
+    const duration = 800;
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+        el.innerText = Math.floor(start + (range * eased));
+        
+        if(progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+}
+
+function escapeHtml(text) {
+    if(!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function formatDate(dateStr) {
+    if(!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString('en-US', { 
+        month: 'short', day: 'numeric', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+    });
+}
+
+function updateClock() {
+    const now = new Date();
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    
+    const timeEl = document.getElementById('current-time');
+    const dateEl = document.getElementById('current-date');
+    
+    if(timeEl) timeEl.innerText = now.toLocaleTimeString('en-US', timeOptions);
+    if(dateEl) dateEl.innerText = now.toLocaleDateString('en-US', dateOptions);
+}
+
+async function loadWeather(lat, lng, locationName) {
+    try {
+        const latitude = lat || 3.1390; // Default KL
+        const longitude = lng || 101.6869;
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=auto`);
+        const data = await response.json();
+        
+        if(data.current_weather) {
+            const temp = Math.round(data.current_weather.temperature);
+            const code = data.current_weather.weathercode;
+            const desc = getWeatherDesc(code);
+            const icon = getWeatherIcon(code);
+            
+            // Animate temperature change
+            const tempEl = document.getElementById('weather-temp');
+            tempEl.style.transform = 'scale(1.2)';
+            tempEl.innerText = `${temp}°C`;
+            setTimeout(() => { tempEl.style.transform = 'scale(1)'; }, 300);
+            
+            document.getElementById('weather-desc').innerText = desc;
+            document.getElementById('weather-icon').innerText = icon;
+            document.getElementById('weather-location').innerText = locationName || `${data.timezone.split('/')[1]?.replace('_', ' ') || 'Your Location'}`;
+            
+            if(data.daily) {
+                document.getElementById('weather-high').innerText = Math.round(data.daily.temperature_2m_max[0]);
+                document.getElementById('weather-low').innerText = Math.round(data.daily.temperature_2m_min[0]);
             }
         }
+    } catch (e) {
+        console.log("Weather unavailable", e);
+        document.getElementById('weather-temp').innerText = '--°C';
+        document.getElementById('weather-desc').innerText = 'Service Unavailable';
+        document.getElementById('weather-location').innerText = locationName || 'Location Unknown';
+    }
+}
 
-        function restoreDeletedUser(userId) {
-            if(!window.deletedUsers) return;
-            
-            const index = window.deletedUsers.findIndex(u => u.id === userId);
-            if(index === -1) return;
+function getWeatherDesc(code) {
+    const descs = {
+        0: 'Clear sky', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Overcast',
+        45: 'Foggy', 48: 'Depositing rime fog', 51: 'Light drizzle', 53: 'Moderate drizzle',
+        55: 'Dense drizzle', 61: 'Slight rain', 63: 'Moderate rain', 65: 'Heavy rain',
+        71: 'Slight snow fall', 73: 'Moderate snow fall', 75: 'Heavy snow fall',
+        95: 'Thunderstorm'
+    };
+    return descs[code] || 'Cloudy';
+}
 
-            const user = window.deletedUsers.splice(index, 1)[0];
-            delete user.deleted_at;
-            user.status = 'active';
-            adminUsersDB.push(user);
+function getWeatherIcon(code) {
+    if(code <= 1) return '☀️';
+    if(code <= 3) return '⛅';
+    if(code <= 48) return '🌫️';
+    if(code <= 67) return '🌧️';
+    if(code <= 77) return '❄️';
+    if(code <= 82) return '🌧️';
+    if(code <= 86) return '❄️';
+    if(code === 95) return '⛈️';
+    return '☁️';
+}
 
-            logSystemEvent('USER_RESTORED', `Admin restored previously deleted user ${user.email}`, 'success');
-            showToast(`User ${user.email} has been restored`, 'success');
-            refreshAdminUsers();
+// Close modals on outside click with smooth animation
+document.querySelectorAll('.modal-overlay').forEach(modal => {
+    modal.addEventListener('click', e => {
+        if(e.target === modal) closeModal(modal.id);
+    });
+});
+
+// Keyboard shortcut: Cmd/Ctrl + Enter to send
+document.addEventListener('keydown', (e) => {
+    if((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        if(document.getElementById('view-mail').classList.contains('active')) {
+            sendViaResend();
         }
-
-        function viewFullLogs() {
-            const container = document.getElementById('full-logs-container');
-            container.innerHTML = systemLogs.map(log => `
-                <div class="log-entry ${log.level}">
-                    <span class="dev-text">[${formatDate(log.timestamp)}]</span>
-                    <span class="${log.level === 'error' ? 'dev-error' : log.level === 'warning' ? 'dev-warning' : log.level === 'success' ? 'dev-accent' : 'dev-info'}">
-                        [${log.type.toUpperCase()}]
-                    </span>
-                    ${escapeHtml(log.message)}
-                </div>
-            `).join('');
-            
-            openModal('admin-log-modal');
-        }
-
-        function exportLogs() {
-            const dataStr = JSON.stringify(systemLogs, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            
-            const exportFileDefaultName = `luvmail_logs_${new Date().toISOString().split('T')[0]}.json`;
-            
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-            
-            showToast("Logs exported successfully!", 'success');
-        }
-
-        // ==========================================
-        // UTILITIES
-        // ==========================================
-
-        function setEditorMode(mode) {
-            const htmlContainer = document.getElementById('editor-html-container');
-            const codeContainer = document.getElementById('editor-code-container');
-            const textContainer = document.getElementById('editor-text-container');
-            const htmlBtn = document.getElementById('mode-html-btn');
-            const codeBtn = document.getElementById('mode-code-btn');
-            const textBtn = document.getElementById('mode-text-btn');
-
-            // Reset all
-            [htmlContainer, codeContainer, textContainer].forEach(c => c.style.display = 'none');
-            [htmlBtn, codeBtn, textBtn].forEach(b => b.className = "text-xs font-bold text-gray-400 hover:text-black px-3 py-1 rounded-md");
-
-            if(mode === 'html') {
-                htmlContainer.style.display = 'block';
-                htmlBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md";
-            } else if(mode === 'code') {
-                codeContainer.style.display = 'block';
-                codeBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md";
-                // Sync content
-                if(quillEditor) document.getElementById('comp-body-code').value = quillEditor.root.innerHTML;
-            } else {
-                textContainer.style.display = 'block';
-                textBtn.className = "text-xs font-bold text-black bg-black/5 px-3 py-1 rounded-md";
-                if(quillEditor) document.getElementById('comp-body-text').value = quillEditor.root.innerText;
-            }
-        }
-
-        function addToRecipients(email) {
-            const input = document.getElementById('mail-to');
-            const current = input.value;
-            const emails = current.split(',').map(e => e.trim()).filter(e => e);
-            
-            if(emails.includes(email)) {
-                showToast("Recipient already added", 'error');
-                return;
-            }
-            
-            input.value = emails.length > 0 ? `${current}, ${email}` : email;
-            closeModal('contact-picker-modal');
-            updateChecklist();
-            showToast(`${email} added`, 'success');
-        }
-
-        function toggleFloatingMenu() {
-            document.getElementById('floating-menu').classList.toggle('open');
-        }
-
-        function openModal(id) { document.getElementById(id).classList.add('open'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-        function showToast(msg, type='success') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            
-            const iconPath = type === 'success' 
-                ? '<path d="M5 13l4 4L19 7"/>' 
-                : '<path d="M6 18L18 6M6 6l12 12"/>';
-            
-            const iconColor = type === 'success' ? 'text-emerald-500' : 'text-red-500';
-            
-            toast.innerHTML = `
-                <div class="${iconColor}">
-                    <svg class="icon" viewBox="0 0 24 24">${iconPath}</svg>
-                </div>
-                <span class="font-medium text-gray-800 flex-1">${escapeHtml(msg)}</span>
-                <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="icon w-4 h-4" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            `;
-            container.appendChild(toast);
-            
-            requestAnimationFrame(() => toast.classList.add('show'));
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 400);
-            }, 4500);
-        }
-
-        function animateValue(id, end) {
-            const el = document.getElementById(id);
-            const start = parseInt(el.innerText) || 0;
-            const range = end - start;
-            if(range === 0) return;
-            
-            const duration = 800;
-            const startTime = performance.now();
-            
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                el.innerText = Math.floor(start + (range * eased));
-                
-                if(progress < 1) requestAnimationFrame(update);
-            }
-            requestAnimationFrame(update);
-        }
-
-        function escapeHtml(text) {
-            if(!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function formatDate(dateStr) {
-            if(!dateStr) return '';
-            return new Date(dateStr).toLocaleDateString('en-US', { 
-                month: 'short', day: 'numeric', year: 'numeric',
-                hour: '2-digit', minute: '2-digit'
-            });
-        }
-
-        function updateClock() {
-            const now = new Date();
-            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            
-            const timeEl = document.getElementById('current-time');
-            const dateEl = document.getElementById('current-date');
-            
-            if(timeEl) timeEl.innerText = now.toLocaleTimeString('en-US', timeOptions);
-            if(dateEl) dateEl.innerText = now.toLocaleDateString('en-US', dateOptions);
-        }
-
-        async function loadWeather(lat, lng, locationName) {
-            // Using Open-Meteo API (Free, No Key Required)
-            try {
-                const latitude = lat || 3.1390; // Default KL
-                const longitude = lng || 101.6869;
-                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=auto`);
-                const data = await response.json();
-                
-                if(data.current_weather) {
-                    const temp = Math.round(data.current_weather.temperature);
-                    const code = data.current_weather.weathercode;
-                    const desc = getWeatherDesc(code);
-                    const icon = getWeatherIcon(code);
-                    
-                    document.getElementById('weather-temp').innerText = `${temp}°C`;
-                    document.getElementById('weather-desc').innerText = desc;
-                    document.getElementById('weather-icon').innerText = icon;
-                    document.getElementById('weather-location').innerText = locationName || `${data.timezone.split('/')[1]?.replace('_', ' ') || 'Your Location'}`;
-                    
-                    if(data.daily) {
-                        document.getElementById('weather-high').innerText = Math.round(data.daily.temperature_2m_max[0]);
-                        document.getElementById('weather-low').innerText = Math.round(data.daily.temperature_2m_min[0]);
-                    }
-                }
-            } catch (e) {
-                console.log("Weather unavailable", e);
-                document.getElementById('weather-temp').innerText = '--°C';
-                document.getElementById('weather-desc').innerText = 'Service Unavailable';
-                document.getElementById('weather-location').innerText = locationName || 'Location Unknown';
-            }
-        }
-
-        function getWeatherDesc(code) {
-            const descs = {
-                0: 'Clear sky', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Overcast',
-                45: 'Foggy', 48: 'Depositing rime fog', 51: 'Light drizzle', 53: 'Moderate drizzle',
-                55: 'Dense drizzle', 61: 'Slight rain', 63: 'Moderate rain', 65: 'Heavy rain',
-                71: 'Slight snow fall', 73: 'Moderate snow fall', 75: 'Heavy snow fall',
-                95: 'Thunderstorm'
-            };
-            return descs[code] || 'Cloudy';
-        }
-
-        function getWeatherIcon(code) {
-            if(code <= 1) return '☀️';
-            if(code <= 3) return '⛅';
-            if(code <= 48) return '🌫️';
-            if(code <= 67) return '🌧️';
-            if(code <= 77) return '❄️';
-            if(code <= 82) return '🌧️';
-            if(code <= 86) return '❄️';
-            if(code === 95) return '⛈️';
-            return '☁️';
-        }
-
-        // Close modals on outside click
-        document.querySelectorAll('.modal-overlay').forEach(modal => {
-            modal.addEventListener('click', e => {
-                if(e.target === modal) closeModal(modal.id);
-            });
+    }
+    
+    // Escape to close modals
+    if(e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.open').forEach(modal => {
+            closeModal(modal.id);
         });
         
-        // Keyboard shortcut: Cmd/Ctrl + Enter to send
-        document.addEventListener('keydown', (e) => {
-            if((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-                if(document.getElementById('view-mail').classList.contains('active')) {
-                    sendViaResend();
-                }
-            }
-        });
+        // Close floating menu if open
+        document.getElementById('floating-menu').classList.remove('open');
+    }
+});
 
-        // Initialize floating menu animation
-        document.addEventListener('DOMContentLoaded', () => {
-            // Add initial system log
-            logSystemEvent('INIT', 'LuvMail Enterprise System Initialized', 'success');
-        });
+// Initialize system logs on load
+document.addEventListener('DOMContentLoaded', () => {
+    logSystemEvent('INIT', 'LuvMail Enterprise System Initialized', 'success');
+});
     </script>
 </body>
 </html>
