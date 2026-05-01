@@ -304,24 +304,20 @@
         input:checked + .slider { background-color: #000; }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* Footer Styles */
+        /* Footer Styles - Updated: Minimal, No Background */
         .app-footer {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             z-index: 50;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-top: 1px solid rgba(255, 255, 255, 0.6);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 0.75rem;
             color: var(--text-sub);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.03);
+            /* Removed: background, backdrop-filter, border-top, box-shadow */
         }
         .footer-links a {
             color: var(--text-sub);
@@ -610,7 +606,7 @@
         <main class="max-w-6xl mx-auto px-4 mt-8">
 
             <!-- DASHBOARD (/dashboard) -->
-            <section id="view-dashboard" class="page-view active">
+            <section id="view-dashboard" class="page-view">
                 <header class="mb-8">
                     <div class="flex items-center justify-between mb-2">
                         <h1 class="font-display text-3xl font-bold tracking-tight">Dashboard</h1>
@@ -1354,6 +1350,7 @@
 
         const router = {
             routes: {
+                '/auth/login': 'auth',
                 '/dashboard': 'dashboard',
                 '/marketing': 'marketing',
                 '/mail': 'mail',
@@ -1375,7 +1372,9 @@
                 // Handle initial load
                 const path = window.location.pathname;
                 const route = Object.keys(this.routes).find(r => path.startsWith(r)) || '/dashboard';
-                this.showRoute(route, false);
+                
+                // Force show route even if it matches current active (fixes refresh data bug)
+                this.showRoute(route, false, true);
             },
             
             navigate(path) {
@@ -1386,7 +1385,7 @@
                 this.showRoute(path, true);
             },
             
-            showRoute(route, animate = true) {
+            showRoute(route, animate = true, forceLoad = false) {
                 const viewId = this.routes[route];
                 if(!viewId) return;
 
@@ -1406,9 +1405,9 @@
                 const currentActive = document.querySelector('.page-view.active');
                 const targetView = document.getElementById(`view-${viewId}`);
 
-                if(currentActive === targetView) return; // Already here
+                if(currentActive === targetView && !forceLoad) return; // Already here and not forced
 
-                if(animate && currentActive) {
+                if(animate && currentActive && currentActive !== targetView) {
                     // Exit animation
                     currentActive.classList.add('exiting');
                     currentActive.classList.remove('active');
@@ -1419,7 +1418,9 @@
                         this.onRouteChange(viewId);
                     }, 250);
                 } else {
-                    if(currentActive) currentActive.classList.remove('active');
+                    if(currentActive && currentActive !== targetView) {
+                        currentActive.classList.remove('active');
+                    }
                     targetView.classList.add('active');
                     this.onRouteChange(viewId);
                 }
@@ -1468,7 +1469,9 @@
                 initApp(session.user);
                 router.init(); // Initialize router after app ready
             } else {
+                // Show auth view and set route to /auth/login
                 document.getElementById('view-auth').classList.add('active');
+                window.history.replaceState({route: '/auth/login'}, '', '/auth/login');
                 
                 _supabase.auth.onAuthStateChange((event, session) => {
                     if (event === 'SIGNED_IN' && session) {
@@ -1594,6 +1597,7 @@
             
             setTimeout(() => {
                 document.getElementById('view-auth').classList.add('active');
+                window.history.pushState({route: '/auth/login'}, '', '/auth/login');
             }, 100);
         }
 
@@ -1617,8 +1621,8 @@
             const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
             document.getElementById('dashboard-greeting').innerHTML = `Hi, <strong>${escapeHtml(displayName)}</strong>! Welcome back to your infrastructure overview.`;
             
-            // Check Admin Role
-            const isAdmin = user.app_metadata?.role === 'admin' || user.email === 'admin@luviio.com'; // Simple check
+            // Check Admin Role - UPDATED: Based on people@luviio.com
+            const isAdmin = user.email === 'people@luviio.com'; 
             if(isAdmin) {
                 document.getElementById('nav-admin').classList.remove('hidden');
                 document.getElementById('admin-indicator').classList.remove('hidden');
@@ -1651,11 +1655,10 @@
                 });
             }
 
+            // Load all base data first
             await Promise.allSettled([
                 loadSenders(),
                 loadContacts(),
-                loadStats(),
-                loadRecentCampaigns(),
                 loadTemplatesSidebar(),
                 loadTemplatesTable(),
                 loadSentEmails()
@@ -1664,7 +1667,7 @@
             document.getElementById('set-email').value = user.email;
             document.getElementById('set-name').value = displayName;
             
-            // Navigate to dashboard or current hash
+            // Initialize router (will handle showing correct view and loading its specific data)
             router.init();
         }
 
@@ -2397,7 +2400,7 @@ document.addEventListener('change', (e) => {
         // ==========================================
 
         async function loadAdminData() {
-            // Simulated stats for demo
+            // Simulated stats for demo - in production fetch from users table
             animateValue('stat-total-users', Math.floor(Math.random() * 50) + 10);
             animateValue('stat-active-users', Math.floor(Math.random() * 20) + 5);
             animateValue('stat-admin-count', 2);
@@ -2846,7 +2849,7 @@ document.addEventListener('change', (e) => {
             setTimeout(() => {
                 toast.classList.remove('show');
                 setTimeout(() => {
-                    if(toist.parentElement) toast.remove();
+                    if(toast.parentElement) toast.remove();
                 }, 300);
             }, 4500);
         }
