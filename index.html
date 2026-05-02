@@ -40,9 +40,7 @@
       --glass-border: rgba(255, 255, 255, 0.1);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -52,33 +50,20 @@
       overflow-x: hidden;
     }
 
-    /* Liquid Glass Effect */
     .glass {
-      background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.05) 0%,
-        rgba(255, 255, 255, 0.02) 100%
-      );
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
-      box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
     .glass-strong {
-      background: linear-gradient(
-        135deg,
-        rgba(30, 30, 35, 0.9) 0%,
-        rgba(15, 15, 20, 0.95) 100%
-      );
+      background: linear-gradient(135deg, rgba(30, 30, 35, 0.9) 0%, rgba(15, 15, 20, 0.95) 100%);
       backdrop-filter: blur(40px);
       -webkit-backdrop-filter: blur(40px);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 
-        0 16px 48px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     .glass-input {
@@ -94,7 +79,6 @@
       box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.15);
     }
 
-    /* Background Effects */
     .bg-mesh {
       position: fixed;
       inset: 0;
@@ -125,63 +109,30 @@
       position: fixed;
       inset: 0;
       z-index: -1;
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
       background-size: 60px 60px;
       mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 20%, transparent 70%);
     }
 
-    /* Animations */
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes slideInLeft {
-      from {
-        opacity: 0;
-        transform: translateX(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
     }
 
     @keyframes scaleIn {
-      from {
-        opacity: 0;
-        transform: scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
-    @keyframes pulse-glow {
-      0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 170, 0.3); }
-      50% { box-shadow: 0 0 40px rgba(0, 212, 170, 0.5); }
-    }
-
-    .animate-fade-in-up {
-      animation: fadeInUp 0.6s ease-out forwards;
-    }
-
-    .animate-slide-left {
-      animation: slideInLeft 0.5s ease-out forwards;
-    }
-
-    .animate-scale-in {
-      animation: scaleIn 0.4s ease-out forwards;
-    }
+    .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+    .animate-slide-left { animation: slideInLeft 0.5s ease-out forwards; }
+    .animate-scale-in { animation: scaleIn 0.4s ease-out forwards; }
 
     .stagger-1 { animation-delay: 0.1s; opacity: 0; }
     .stagger-2 { animation-delay: 0.2s; opacity: 0; }
@@ -196,26 +147,11 @@
       }
     }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
 
-    ::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.3);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.25);
-    }
-
-    /* Button Styles */
     .btn-primary {
       background: linear-gradient(135deg, #00d4aa 0%, #00a88a 100%);
       color: #000;
@@ -225,8 +161,6 @@
       border: none;
       cursor: pointer;
       transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
     }
 
     .btn-primary:hover {
@@ -234,8 +168,10 @@
       box-shadow: 0 8px 24px rgba(0, 212, 170, 0.35);
     }
 
-    .btn-primary:active {
-      transform: translateY(0);
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .btn-secondary {
@@ -254,7 +190,6 @@
       border-color: rgba(255, 255, 255, 0.2);
     }
 
-    /* Sidebar */
     .sidebar-item {
       padding: 14px 18px;
       border-radius: 12px;
@@ -277,29 +212,18 @@
       border: 1px solid rgba(0, 212, 170, 0.2);
     }
 
-    /* Stats Card */
-    .stat-card {
-      position: relative;
-      overflow: hidden;
-    }
-
+    .stat-card { position: relative; overflow: hidden; }
     .stat-card::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 3px;
       background: linear-gradient(90deg, var(--accent), transparent);
       opacity: 0;
       transition: opacity 0.3s ease;
     }
+    .stat-card:hover::before { opacity: 1; }
 
-    .stat-card:hover::before {
-      opacity: 1;
-    }
-
-    /* Tab System */
     .tab-btn {
       padding: 10px 20px;
       border-radius: 10px;
@@ -312,17 +236,9 @@
       border: none;
     }
 
-    .tab-btn:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.05);
-    }
+    .tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+    .tab-btn.active { background: rgba(0, 212, 170, 0.15); color: var(--accent); }
 
-    .tab-btn.active {
-      background: rgba(0, 212, 170, 0.15);
-      color: var(--accent);
-    }
-
-    /* Modal */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -337,21 +253,10 @@
       transition: all 0.3s ease;
     }
 
-    .modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-content { transform: scale(0.9) translateY(20px); transition: all 0.3s ease; }
+    .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
 
-    .modal-content {
-      transform: scale(0.9) translateY(20px);
-      transition: all 0.3s ease;
-    }
-
-    .modal-overlay.active .modal-content {
-      transform: scale(1) translateY(0);
-    }
-
-    /* Template Card */
     .template-card {
       cursor: pointer;
       transition: all 0.3s ease;
@@ -363,12 +268,8 @@
       transform: translateY(-4px);
     }
 
-    .template-card.selected {
-      border-color: var(--accent);
-      box-shadow: 0 0 30px rgba(0, 212, 170, 0.2);
-    }
+    .template-card.selected { border-color: var(--accent); box-shadow: 0 0 30px rgba(0, 212, 170, 0.2); }
 
-    /* Toast Notification */
     .toast {
       position: fixed;
       bottom: 100px;
@@ -380,32 +281,19 @@
       transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
 
-    .toast.show {
-      transform: translateX(0);
-    }
+    .toast.show { transform: translateX(0); }
+    .toast.success { background: linear-gradient(135deg, rgba(0, 212, 170, 0.95), rgba(0, 168, 138, 0.95)); color: #000; }
+    .toast.error { background: linear-gradient(135deg, rgba(239, 68, 68, 0.95), rgba(185, 28, 28, 0.95)); color: #fff; }
 
-    .toast.success {
-      background: linear-gradient(135deg, rgba(0, 212, 170, 0.9), rgba(0, 168, 138, 0.9));
-      color: #000;
-    }
-
-    .toast.error {
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(185, 28, 28, 0.9));
-      color: #fff;
-    }
-
-    /* Footer */
     .fixed-footer {
       position: fixed;
       bottom: 0;
-      left: 0;
-      right: 0;
+      left: 0; right: 0;
       z-index: 50;
-      background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 100%);
+      background: linear-gradient(to top, rgba(0,0,0,0.98) 0%, transparent 100%);
       padding: 20px 32px;
     }
 
-    /* Code Editor Style */
     .code-editor {
       font-family: 'JetBrains Mono', 'Fira Code', monospace;
       font-size: 13px;
@@ -413,7 +301,6 @@
       tab-size: 2;
     }
 
-    /* Floating Orbs */
     .orb {
       position: absolute;
       border-radius: 50%;
@@ -423,20 +310,16 @@
     }
 
     .orb-1 {
-      width: 400px;
-      height: 400px;
+      width: 400px; height: 400px;
       background: radial-gradient(circle, rgba(0, 212, 170, 0.3) 0%, transparent 70%);
-      top: 10%;
-      right: 10%;
+      top: 10%; right: 10%;
       animation: floatOrb 20s ease-in-out infinite;
     }
 
     .orb-2 {
-      width: 300px;
-      height: 300px;
+      width: 300px; height: 300px;
       background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
-      bottom: 20%;
-      left: 5%;
+      bottom: 20%; left: 5%;
       animation: floatOrb 25s ease-in-out infinite reverse;
     }
 
@@ -446,21 +329,16 @@
       66% { transform: translate(-20px, 20px); }
     }
 
-    /* Loading Spinner */
     .spinner {
-      width: 20px;
-      height: 20px;
+      width: 20px; height: 20px;
       border: 2px solid rgba(255, 255, 255, 0.2);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Focus States */
     button:focus-visible,
     input:focus-visible,
     textarea:focus-visible,
@@ -478,9 +356,7 @@
   <div class="orb orb-2"></div>
 
   <!-- Toast Notification -->
-  <div id="toast" class="toast">
-    <span id="toastMessage"></span>
-  </div>
+  <div id="toast" class="toast"><span id="toastMessage"></span></div>
 
   <!-- Login Page -->
   <div id="loginPage" class="min-h-screen flex items-center justify-center p-4">
@@ -627,9 +503,7 @@
       <div class="absolute bottom-6 left-6 right-6">
         <div class="glass rounded-xl p-4">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold" id="userAvatar">
-              U
-            </div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold" id="userAvatar">U</div>
             <div class="flex-1 min-w-0">
               <p class="font-medium truncate" id="userName">User</p>
               <p class="text-xs text-muted truncate" id="userEmail">user@email.com</p>
@@ -653,7 +527,6 @@
           <p class="text-muted">Welcome back! Here's your email marketing overview.</p>
         </header>
 
-        <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           <div class="glass rounded-2xl p-6 stat-card animate-fade-in-up stagger-1">
             <div class="flex items-center justify-between mb-4">
@@ -708,7 +581,6 @@
           </div>
         </div>
 
-        <!-- Quick Actions & Recent Activity -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="lg:col-span-2 glass rounded-2xl p-6 animate-fade-in-up stagger-4">
             <h2 class="font-display text-xl font-semibold mb-6">Quick Actions</h2>
@@ -800,7 +672,6 @@
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Template 1 -->
           <div class="template-card glass rounded-2xl overflow-hidden" data-template="1" onclick="selectTemplate(1)">
             <div class="p-4 border-b border-white/10 flex items-center justify-between">
               <div>
@@ -818,7 +689,6 @@
             </div>
           </div>
 
-          <!-- Template 2 -->
           <div class="template-card glass rounded-2xl overflow-hidden" data-template="2" onclick="selectTemplate(2)">
             <div class="p-4 border-b border-white/10 flex items-center justify-between">
               <div>
@@ -887,7 +757,6 @@
       </div>
 
       <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 180px);">
-        <!-- Email Type Selection -->
         <div class="mb-6">
           <label class="block text-sm font-medium mb-3 text-gray-300">Email Type</label>
           <select id="emailType" class="glass-input w-full px-4 py-3 rounded-xl text-white">
@@ -899,7 +768,6 @@
           </select>
         </div>
 
-        <!-- Recipients -->
         <div class="mb-6">
           <label class="block text-sm font-medium mb-3 text-gray-300">To (comma separated)</label>
           <input type="text" id="emailTo" required
@@ -907,7 +775,6 @@
             placeholder="recipient@email.com, another@email.com">
         </div>
 
-        <!-- Subject -->
         <div class="mb-6">
           <label class="block text-sm font-medium mb-3 text-gray-300">Subject</label>
           <input type="text" id="emailSubject" required
@@ -915,7 +782,6 @@
             placeholder="Enter email subject">
         </div>
 
-        <!-- Content Mode Tabs -->
         <div class="mb-6">
           <label class="block text-sm font-medium mb-3 text-gray-300">Content Mode</label>
           <div class="flex gap-2 p-1 glass rounded-xl w-fit">
@@ -925,7 +791,6 @@
           </div>
         </div>
 
-        <!-- Template Section -->
         <div id="templateSection" class="content-section">
           <div class="mb-4">
             <label class="block text-sm font-medium mb-3 text-gray-300">Select Template</label>
@@ -945,7 +810,6 @@
             </div>
           </div>
 
-          <!-- Template Variables -->
           <div id="templateVariables" class="glass rounded-xl p-5 space-y-4">
             <h4 class="font-medium text-sm text-gray-300 mb-3">Template Variables</h4>
             
@@ -972,7 +836,6 @@
           </div>
         </div>
 
-        <!-- HTML Code Section -->
         <div id="htmlSection" class="content-section hidden">
           <div class="mb-3 flex items-center justify-between">
             <label class="block text-sm font-medium text-gray-300">HTML Source Code</label>
@@ -983,7 +846,6 @@
             placeholder="<html>&#10;  <head>...&#10;</html>"></textarea>
         </div>
 
-        <!-- Plain Text Section -->
         <div id="plainSection" class="content-section hidden">
           <label class="block text-sm font-medium mb-3 text-gray-300">Plain Text Content</label>
           <textarea id="plainText" rows="10"
@@ -1035,48 +897,35 @@
     </div>
   </footer>
 
-  <!-- Appwrite SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.0"></script>
+  <!-- Appwrite SDK - Using UMD build for browser compatibility -->
+  <script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.0/dist/appwrite.umd.js"></script>
   
   <script>
     // ============================================
     // INITIALIZATION & CONFIGURATION
     // ============================================
     
-    // Initialize variables first before any function calls
+    // Initialize state variables FIRST before any function calls
     let currentUser = null;
     let selectedTemplate = 1;
     let currentContentMode = 'template';
     let sendHistory = [];
-    let stats = {
-      sent: 0,
-      campaigns: 0,
-      recipients: 0,
-      delivered: 0
-    };
+    let stats = { sent: 0, campaigns: 0, recipients: 0, delivered: 0 };
 
     // Appwrite Configuration
-    const appwriteConfig = {
+    const APPWRITE_CONFIG = {
       endpoint: 'https://sgp.cloud.appwrite.io/v1',
-      projectId: '69f4fd2f0034a47fd0ef',
-      apiKey: 'standard_2d3468a240d95bb0d31d9cf98846c45dd6c8b6b0e81bf09d2c1e5c3d7e18d627a855e59c6eb9329c0bd9821fc1474c8f8ba0a0914c6d59dfaf24294f3bfa6c4c9f002e10cbf4b4ef30a266d139c2889b66ba40b65e62352b935480851dc72c8655b3718515222d1b74c50e9b8c45c7e2df3011d631800015ef4defebc222248a'
+      projectId: '69f4fd2f0034a47fd0ef'
     };
 
-    // Initialize Appwrite Client
+    // Initialize Appwrite Client using UMD global
     const client = new window.Appwrite.Client();
-    client.setEndpoint(appwriteConfig.endpoint).setProject(appwriteConfig.projectId);
+    client.setEndpoint(APPWRITE_CONFIG.endpoint).setProject(APPWRITE_CONFIG.projectId);
 
     const account = new window.Appwrite.Account(client);
     const databases = new window.Appwrite.Databases(client);
 
-    // Database ID
-    const DATABASE_ID = 'luviio_mail';
-    const COLLECTIONS = {
-      emails: 'emails_sent',
-      stats: 'statistics'
-    };
-
-    // Email Templates
+    // Email Templates (stored as constants)
     const EMAIL_TEMPLATES = {
       1: `<!DOCTYPE html>
 <html>
@@ -1085,108 +934,55 @@
   <title>Luviio Email</title>
 </head>
 <body style="margin:0; padding:0; background-color:#f3f4f6; font-family: Arial, Helvetica, sans-serif;">
-
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f3f4f6; padding:40px 0;">
     <tr>
       <td align="center">
-
-        <!-- Card Container -->
-        <table width="600" cellpadding="0" cellspacing="0" border="0"
-          style="background-color:#ffffff; border-radius:10px; border:1px solid #e5e7eb;">
-
-          <!-- Inner Padding -->
+        <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; border-radius:10px; border:1px solid #e5e7eb;">
           <tr>
             <td style="padding:50px 50px 40px 50px;">
-
-              <!-- Logo -->
               <table width="100%">
                 <tr>
                   <td align="center" style="padding-bottom:40px;">
-                    <img src="https://images.luviio.com/LUVIOO-03.png"
-                         width="150"
-                         alt="Luviio Logo"
-                         style="display:block;">
+                    <img src="https://images.luviio.com/LUVIOO-03.png" width="150" alt="Luviio Logo" style="display:block;">
                   </td>
                 </tr>
               </table>
-
-              <!-- Greeting -->
               <table width="100%">
                 <tr>
-                  <td style="font-size:24px; font-weight:600; color:#111827; padding-bottom:20px;">
-                    Hi {{GREETING}},
-                  </td>
+                  <td style="font-size:24px; font-weight:600; color:#111827; padding-bottom:20px;">Hi {{GREETING}},</td>
                 </tr>
               </table>
-
-              <!-- Message -->
               <table width="100%">
                 <tr>
-                  <td style="font-size:16px; color:#4b5563; line-height:1.7; padding-bottom:20px;">
-                    {{CONTENT}}
-                  </td>
+                  <td style="font-size:16px; color:#4b5563; line-height:1.7; padding-bottom:20px;">{{CONTENT}}</td>
                 </tr>
-
                 <tr>
                   <td style="font-size:16px; color:#4b5563; line-height:1.7; padding-bottom:30px;">
-                    To ensure a smooth process, please make sure your information is
-                    <strong style="color:#111827;">complete and up to date</strong>.
+                    To ensure a smooth process, please make sure your information is <strong style="color:#111827;">complete and up to date</strong>.
                   </td>
                 </tr>
               </table>
-
-              <!-- Divider -->
               <table width="100%">
                 <tr>
-                  <td style="border-top:1px solid #e5e7eb; padding-top:25px;">
-                  </td>
+                  <td style="border-top:1px solid #e5e7eb; padding-top:25px;"></td>
                 </tr>
               </table>
-
-              <!-- Signature -->
               <table width="100%">
                 <tr>
-                  <td style="font-size:15px; color:#6b7280; line-height:1.6;">
-                    Best,<br>
-                    <strong style="color:#111827;">{{SIGNATURE}}</strong>
-                  </td>
+                  <td style="font-size:15px; color:#6b7280; line-height:1.6;">Best,<br><strong style="color:#111827;">{{SIGNATURE}}</strong></td>
                 </tr>
               </table>
-
             </td>
           </tr>
-
         </table>
-
-        <!-- Footer -->
         <table width="600" cellpadding="0" cellspacing="0" border="0" style="text-align:center; padding-top:30px;">
-          
-          <tr>
-            <td style="font-size:14px; color:#6b7280; padding-bottom:8px;">
-              <strong style="color:#111827;">Luviio</strong>
-            </td>
-          </tr>
-
-          <tr>
-            <td style="font-size:13px; color:#9ca3af; padding-bottom:15px;">
-              Kedah, Malaysia, 08000.
-            </td>
-          </tr>
-
-          <tr>
-            <td style="font-size:13px;">
-              <a href="#" style="color:#6b7280; text-decoration:underline;">
-                Manage your email preferences
-              </a>
-            </td>
-          </tr>
-
+          <tr><td style="font-size:14px; color:#6b7280; padding-bottom:8px;"><strong style="color:#111827;">Luviio</strong></td></tr>
+          <tr><td style="font-size:13px; color:#9ca3af; padding-bottom:15px;">Kedah, Malaysia, 08000.</td></tr>
+          <tr><td style="font-size:13px;"><a href="#" style="color:#6b7280; text-decoration:underline;">Manage your email preferences</a></td></tr>
         </table>
-
       </td>
     </tr>
   </table>
-
 </body>
 </html>`,
 
@@ -1197,112 +993,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome to luviio!</title>
 </head>
-
 <body style="margin:0; padding:0; background:#ffffff; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#1a1a1a;">
-
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
       <td align="center">
-
-        <!-- Container -->
         <table width="600" cellpadding="0" cellspacing="0" border="0" style="padding:40px 20px;">
           <tr>
             <td style="font-size:16px; line-height:1.65;">
-
-              <!-- Title -->
-              <p style="margin:0 0 20px 0; font-size:18px;">
-                Hi {{GREETING}},
-              </p>
-
-              <!-- Intro -->
-              <p style="margin:0 0 24px 0;">
-                {{CONTENT}}
-              </p>
-
-              <!-- Section -->
-              <p style="margin:0 0 10px 0; font-weight:700;">
-                What now?
-              </p>
-
-              <p style="margin:0 0 16px 0;">
-                The docs are your best friend and are packed with tutorials and examples. Including how to deploy your first site, connect your AI tooling, your domain, and manage data.
-              </p>
-
-              <p style="margin:0 0 24px 0;">
-                <a href="#" style="color:#0044cc; text-decoration:underline;">Explore the docs</a>
-              </p>
-
-              <p style="margin:0 0 16px 0;">
-                Join us on Discord to get the most out of luviio with the support of the team and community.
-              </p>
-
-              <p style="margin:0 0 24px 0;">
-                <a href="#" style="color:#0044cc; text-decoration:underline;">Go to Discord</a>
-              </p>
-
-              <p style="margin:0 0 8px 0;">
-                Build like a team of hundreds_
-              </p>
-
-              <!-- Signature -->
-              <p style="margin:24px 0 4px 0;">
-                Happy coding!
-              </p>
-
-              <p style="margin:0;">
-                <strong>{{SIGNATURE}}</strong>
-              </p>
-
-              <p style="margin:0 0 16px 0;">
-                Founder & CEO
-              </p>
-
-              <p style="margin:0 0 24px 0;">
-                <a href="#" style="color:#0044cc; text-decoration:none;">@danialdanish</a>
-              </p>
-
-              <!-- Social Icons (TABLE = email-safe) -->
+              <p style="margin:0 0 20px 0; font-size:18px;">Hi {{GREETING}},</p>
+              <p style="margin:0 0 24px 0;">{{CONTENT}}</p>
+              <p style="margin:0 0 10px 0; font-weight:700;">What now?</p>
+              <p style="margin:0 0 16px 0;">The docs are your best friend and are packed with tutorials and examples.</p>
+              <p style="margin:0 0 24px 0;"><a href="#" style="color:#0044cc; text-decoration:underline;">Explore the docs</a></p>
+              <p style="margin:0 0 16px 0;">Join us on Discord to get the most out of luviio.</p>
+              <p style="margin:0 0 24px 0;"><a href="#" style="color:#0044cc; text-decoration:underline;">Go to Discord</a></p>
+              <p style="margin:0 0 8px 0;">Build like a team of hundreds_</p>
+              <p style="margin:24px 0 4px 0;">Happy coding!</p>
+              <p style="margin:0;"><strong>{{SIGNATURE}}</strong></p>
+              <p style="margin:0 0 16px 0;">Founder & CEO</p>
+              <p style="margin:0 0 24px 0;"><a href="#" style="color:#0044cc; text-decoration:none;">@danialdanish</a></p>
               <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:32px;">
                 <tr>
-
-                  <td style="padding-right:8px;">
-                    <a href="#">
-                      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" width="20" height="20" style="display:block;">
-                    </a>
-                  </td>
-
-                  <td style="padding-right:8px;">
-                    <a href="#">
-                      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" width="20" height="20" style="display:block;">
-                    </a>
-                  </td>
-
-                  <td>
-                    <a href="#">
-                      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" width="20" height="20" style="display:block;">
-                    </a>
-                  </td>
-
+                  <td style="padding-right:8px;"><a href="#"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" width="20" height="20" style="display:block;"></a></td>
+                  <td style="padding-right:8px;"><a href="#"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" width="20" height="20" style="display:block;"></a></td>
+                  <td><a href="#"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" width="20" height="20" style="display:block;"></a></td>
                 </tr>
               </table>
-
-              <!-- Footer -->
               <p style="margin:0; font-size:13px; color:#666666; line-height:1.5;">
-                You're receiving this message as a subscriber of 
-                <a href="#" style="color:#666666; text-decoration:underline;">luviio</a>.
-                If you prefer to not receive these messages anymore, feel free to 
-                <a href="#" style="color:#666666; text-decoration:underline;">unsubscribe</a>.<br><br>
+                You're receiving this message as a subscriber of <a href="#" style="color:#666666; text-decoration:underline;">luviio</a>.
+                If you prefer to not receive these messages anymore, feel free to <a href="#" style="color:#666666; text-decoration:underline;">unsubscribe</a>.<br><br>
                 Kedah, Malaysia, 08000.
               </p>
-
             </td>
           </tr>
         </table>
-
       </td>
     </tr>
   </table>
-
 </body>
 </html>`
     };
@@ -1313,79 +1040,164 @@
 
     async function initializeApp() {
       try {
-        // Check existing session
+        console.log('Checking session...');
+        // Try to get current session
         const session = await account.get();
         currentUser = session;
+        console.log('Session found:', session.email);
         showDashboard();
         loadUserData();
       } catch (error) {
-        // No session, show login
-        console.log('No active session');
+        console.log('No active session:', error.message || error);
+        // Show login page - no session exists
       }
     }
 
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    async function handleLogin(e) {
       e.preventDefault();
       
-      const email = document.getElementById('loginEmail').value;
+      const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
       const btn = e.target.querySelector('button[type="submit"]');
       
+      if (!email || !password) {
+        showToast('Please fill in all fields', 'error');
+        return;
+      }
+
       try {
         btn.innerHTML = '<div class="spinner"></div>';
         btn.disabled = true;
 
-        await account.createEmailPasswordSession(email, password);
+        console.log('Attempting login for:', email);
+
+        // Use createEmailPasswordSession with correct method signature
+        // Method: createEmailPasswordSession(email, password)
+        const response = await account.createEmailPasswordSession(email, password);
         
+        console.log('Login response:', response);
+        
+        // Get user data after successful login
         currentUser = await account.get();
+        
         showToast('Login successful!', 'success');
         showDashboard();
         loadUserData();
+
       } catch (error) {
-        showToast(error.message || 'Login failed', 'error');
+        console.error('Login error:', error);
+        let errorMsg = 'Login failed';
+        
+        if (error.message) {
+          if (error.message.includes('invalid_credentials')) {
+            errorMsg = 'Invalid email or password';
+          } else if (error.message.includes('user_not_found')) {
+            errorMsg = 'Account not found. Please sign up.';
+          } else if (error.message.includes('too_many_requests')) {
+            errorMsg = 'Too many attempts. Please try again later.';
+          } else {
+            errorMsg = error.message;
+          }
+        } else if (error.type) {
+          errorMsg = error.type.replace(/_/g, ' ');
+        }
+        
+        showToast(errorMsg, 'error');
+      } finally {
         btn.innerHTML = '<span>Sign In</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>';
         btn.disabled = false;
       }
-    });
+    }
 
-    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+    async function handleSignup(e) {
       e.preventDefault();
       
-      const name = document.getElementById('signupName').value;
-      const email = document.getElementById('signupEmail').value;
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
       const password = document.getElementById('signupPassword').value;
       const btn = e.target.querySelector('button[type="submit"]');
+
+      if (!name || !email || !password) {
+        showToast('Please fill in all fields', 'error');
+        return;
+      }
+
+      if (password.length < 8) {
+        showToast('Password must be at least 8 characters', 'error');
+        return;
+      }
 
       try {
         btn.innerHTML = '<div class="spinner"></div>';
         btn.disabled = true;
 
-        // Create user
-        await account.create(window.Appwrite.ID.unique(), email, password, name);
-        
-        // Create session
+        console.log('Creating account for:', email);
+
+        // Create user account first
+        // Method: create(userId, email, password, name)
+        await account.create(
+          window.Appwrite.ID.unique(), // Generate unique ID
+          email,
+          password,
+          name
+        );
+
+        console.log('User created, creating session...');
+
+        // Now create session (login)
         await account.createEmailPasswordSession(email, password);
         
+        // Get user data
         currentUser = await account.get();
+
         showToast('Account created successfully!', 'success');
         showDashboard();
         loadUserData();
+
       } catch (error) {
-        showToast(error.message || 'Signup failed', 'error');
+        console.error('Signup error:', error);
+        let errorMsg = 'Signup failed';
+
+        if (error.message) {
+          if (error.message.includes('already_exists')) {
+            errorMsg = 'An account with this email already exists';
+          } else if (error.message.includes('invalid_email')) {
+            errorMsg = 'Invalid email address format';
+          } else if (error.message.includes('weak_password')) {
+            errorMsg = 'Password is too weak';
+          } else {
+            errorMsg = error.message;
+          }
+        }
+
+        showToast(errorMsg, 'error');
+      } finally {
         btn.innerHTML = '<span>Create Account</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>';
         btn.disabled = false;
       }
-    });
+    }
 
     async function logout() {
       try {
+        console.log('Logging out...');
+        // Delete current session
         await account.deleteSession('current');
         currentUser = null;
+        
         document.getElementById('dashboard').classList.add('hidden');
         document.getElementById('loginPage').classList.remove('hidden');
+        
+        // Reset form
+        document.getElementById('loginForm').reset();
+        
         showToast('Logged out successfully', 'success');
       } catch (error) {
         console.error('Logout error:', error);
+        // Even if API fails, still logout locally
+        currentUser = null;
+        document.getElementById('dashboard').classList.add('hidden');
+        document.getElementById('loginPage').classList.remove('hidden');
+        showToast('Logged out', 'success');
       }
     }
 
@@ -1408,8 +1220,9 @@
     function loadUserData() {
       if (currentUser) {
         document.getElementById('userName').textContent = currentUser.name || 'User';
-        document.getElementById('userEmail').textContent = currentUser.email;
-        document.getElementById('userAvatar').textContent = (currentUser.name || 'U').charAt(0).toUpperCase();
+        document.getElementById('userEmail').textContent = currentUser.email || 'user@email.com';
+        const initials = (currentUser.name || 'U').charAt(0).toUpperCase();
+        document.getElementById('userAvatar').textContent = initials;
       }
     }
 
@@ -1418,23 +1231,13 @@
     // ============================================
 
     function showPage(pageName) {
-      // Hide all pages
-      document.querySelectorAll('.page-content').forEach(page => {
-        page.classList.add('hidden');
-      });
+      document.querySelectorAll('.page-content').forEach(page => page.classList.add('hidden'));
       
-      // Show selected page
       const targetPage = document.getElementById(`page-${pageName}`);
-      if (targetPage) {
-        targetPage.classList.remove('hidden');
-      }
+      if (targetPage) targetPage.classList.remove('hidden');
 
-      // Update sidebar active state
       document.querySelectorAll('.sidebar-item').forEach(item => {
-        item.classList.remove('active');
-        if (item.dataset.page === pageName) {
-          item.classList.add('active');
-        }
+        item.classList.toggle('active', item.dataset.page === pageName);
       });
     }
 
@@ -1462,17 +1265,22 @@
       document.getElementById('htmlCode').value = '';
       document.getElementById('plainText').value = '';
       switchContentMode('template');
+      selectedTemplate = 1;
+      
+      // Reset template selection visual
+      document.querySelectorAll('.template-select-card').forEach((card, index) => {
+        card.style.borderColor = index === 0 ? '#00d4aa' : 'transparent';
+        card.classList.toggle('selected', index === 0);
+      });
     }
 
     function switchContentMode(mode) {
       currentContentMode = mode;
       
-      // Update tab buttons
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.mode === mode);
       });
 
-      // Show/hide sections
       document.getElementById('templateSection').classList.toggle('hidden', mode !== 'template');
       document.getElementById('htmlSection').classList.toggle('hidden', mode !== 'html');
       document.getElementById('plainSection').classList.toggle('hidden', mode !== 'plain');
@@ -1482,12 +1290,9 @@
       selectedTemplate = templateNum;
       
       document.querySelectorAll('.template-select-card').forEach(card => {
-        card.classList.toggle('selected', parseInt(card.dataset.template) === templateNum);
-        if (parseInt(card.dataset.template) === templateNum) {
-          card.style.borderColor = '#00d4aa';
-        } else {
-          card.style.borderColor = 'transparent';
-        }
+        const isSelected = parseInt(card.dataset.template) === templateNum;
+        card.classList.toggle('selected', isSelected);
+        card.style.borderColor = isSelected ? '#00d4aa' : 'transparent';
       });
     }
 
@@ -1501,7 +1306,7 @@
     function useTemplate(templateNum) {
       selectedTemplate = templateNum;
       openComposeModal();
-      selectComposeTemplate(templateNum);
+      setTimeout(() => selectComposeTemplate(templateNum), 100);
     }
 
     function previewTemplate(templateNum) {
@@ -1509,7 +1314,7 @@
       const content = document.getElementById('varContent').value || 'Your message content here...';
       const signature = document.getElementById('varSignature').value || 'Luviio Studio Team';
 
-      let html = EMAIL_TEMPLATES[templateNum];
+      let html = EMAIL_TEMPLATES[templateNum] || EMAIL_TEMPLATES[1];
       html = html.replace(/\{\{GREETING\}\}/g, greeting);
       html = html.replace(/\{\{CONTENT\}\}/g, content);
       html = html.replace(/\{\{SIGNATURE\}\}/g, signature);
@@ -1545,7 +1350,7 @@
         return { html: htmlCode, text: stripHtml(htmlCode) };
       } else {
         const plainText = document.getElementById('plainText').value;
-        return { html: `<html><body><p>${plainText}</p></body></html>`, text: plainText };
+        return { html: `<html><body><p>${escapeHtml(plainText)}</p></body></html>`, text: plainText };
       }
     }
 
@@ -1565,7 +1370,7 @@
         return;
       }
 
-      const recipients = to.split(',').map(r => r.trim()).filter(r => r);
+      const recipients = to.split(',').map(r => r.trim()).filter(r => r && r.includes('@'));
       if (recipients.length === 0) {
         showToast('Please enter valid email addresses', 'error');
         return;
@@ -1578,11 +1383,12 @@
         sendBtn.innerHTML = '<div class="spinner"></div><span>Sending...</span>';
         sendBtn.disabled = true;
 
-        // Send via Resend API through Appwrite Functions or direct call
+        // Process each recipient
         for (const recipient of recipients) {
-          await sendViaResend(recipient, subject, content.html, content.text, emailType);
+          // Simulate sending (replace with actual Resend API call)
+          await simulateSendEmail(recipient, subject, content.html, content.text, emailType);
           
-          // Save to history
+          // Add to history
           addToHistory({
             to: recipient,
             subject: subject,
@@ -1595,6 +1401,7 @@
         // Update stats
         stats.sent += recipients.length;
         stats.recipients += recipients.length;
+        stats.delivered += recipients.length;
         updateStatsDisplay();
 
         showToast(`Email sent successfully to ${recipients.length} recipient(s)!`, 'success');
@@ -1604,19 +1411,23 @@
         console.error('Send error:', error);
         showToast(error.message || 'Failed to send email', 'error');
       } finally {
-        sendBtn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg><span>Send Email</span>';
+        sendBtn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg><span>Send Email</span>`;
         sendBtn.disabled = false;
       }
     }
 
-    async function sendViaResend(to, subject, html, text, type) {
-      // Using Appwrite's fetch to call Resend API
-      // In production, you'd use Appwrite Functions for security
+    async function simulateSendEmail(to, subject, html, text, type) {
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 800));
       
+      console.log('[SIMULATED SEND]', { to, subject, type });
+      
+      // In production, call Resend API:
+      /*
       const response = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer re_YOUR_RESEND_API_KEY', // Replace with actual key
+          'Authorization': 'Bearer re_YOUR_API_KEY',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -1628,23 +1439,12 @@
           tags: [{ name: 'type', value: type }]
         })
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to send email');
-      }
-
-      return response.json();
-    }
-
-    // For demo purposes - simulate sending
-    async function sendViaResend(to, subject, html, text, type) {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
       
-      // Simulate success (in production, use real Resend API)
-      console.log('Email would be sent:', { to, subject, type });
-      return { id: 'simulated_' + Date.now(), success: true };
+      if (!response.ok) throw new Error('Failed to send email');
+      return response.json();
+      */
+      
+      return { success: true };
     }
 
     // ============================================
@@ -1669,19 +1469,16 @@
               </svg>
               No emails sent yet
             </td>
-          </tr>
-        `;
+          </tr>`;
         return;
       }
 
-      tbody.innerHTML = sendHistory.slice(0, 20).map(entry => `
+      tbody.innerHTML = sendHistory.slice(0, 50).map(entry => `
         <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
           <td class="p-4">${escapeHtml(entry.to)}</td>
           <td class="p-4 font-medium">${escapeHtml(entry.subject)}</td>
           <td class="p-4">
-            <span class="text-xs px-2 py-1 rounded-full capitalize ${getTypeColor(entry.type)}">
-              ${entry.type}
-            </span>
+            <span class="text-xs px-2 py-1 rounded-full capitalize ${getTypeColor(entry.type)}">${entry.type}</span>
           </td>
           <td class="p-4 text-muted text-sm">${formatDate(entry.date)}</td>
           <td class="p-4">
@@ -1718,8 +1515,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
             </svg>
             <p class="text-sm">No recent activity</p>
-          </div>
-        `;
+          </div>`;
         return;
       }
 
@@ -1750,7 +1546,9 @@
 
     function animateNumber(elementId, targetValue) {
       const element = document.getElementById(elementId);
-      const startValue = parseInt(element.textContent) || 0;
+      if (!element) return;
+      
+      const startValue = parseInt(element.textContent.replace(/,/g, '')) || 0;
       const duration = 500;
       const startTime = performance.now();
 
@@ -1774,6 +1572,7 @@
     // ============================================
 
     function escapeHtml(text) {
+      if (!text) return '';
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
@@ -1818,47 +1617,32 @@
     // EVENT LISTENERS & INITIALIZATION
     // ============================================
 
-    // Close modals on overlay click
-    document.getElementById('composeModal').addEventListener('click', function(e) {
-      if (e.target === this) closeComposeModal();
-    });
-
-    document.getElementById('previewModal').addEventListener('click', function(e) {
-      if (e.target === this) closePreviewModal();
-    });
-
-    // Keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        closeComposeModal();
-        closePreviewModal();
-      }
-    });
-
-    // Initialize app when DOM is ready
+    // Attach event listeners after DOM is ready
     document.addEventListener('DOMContentLoaded', function() {
-      initializeApp();
-      updateStatsDisplay();
-    });
+      // Form submissions
+      document.getElementById('loginForm').addEventListener('submit', handleLogin);
+      document.getElementById('signupForm').addEventListener('submit', handleSignup);
 
-    // Intersection Observer for animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
+      // Modal close handlers
+      document.getElementById('composeModal').addEventListener('click', function(e) {
+        if (e.target === this) closeComposeModal();
+      });
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
+      document.getElementById('previewModal').addEventListener('click', function(e) {
+        if (e.target === this) closePreviewModal();
+      });
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeComposeModal();
+          closePreviewModal();
         }
       });
-    }, observerOptions);
 
-    // Observe animated elements
-    document.querySelectorAll('.animate-fade-in-up, .animate-slide-left').forEach(el => {
-      observer.observe(el);
+      // Initialize app
+      initializeApp();
+      updateStatsDisplay();
     });
   </script>
 </body>
